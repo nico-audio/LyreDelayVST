@@ -6,6 +6,8 @@
               pluginManufacturerCode="Nico" pluginCode="GDel" cppLanguageStandard="20">
   <MAINGROUP id="qi5Naz" name="GDelay">
     <GROUP id="{F4EB2649-9D18-B53A-5C88-218FAE2EC3CD}" name="Source">
+      <FILE id="g587kI" name="Parameters.cpp" compile="1" resource="0" file="Source/Parameters.cpp"/>
+      <FILE id="RQIP8K" name="Parameters.h" compile="0" resource="0" file="Source/Parameters.h"/>
       <FILE id="BqEtzi" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>
       <FILE id="zxJqMS" name="PluginProcessor.h" compile="0" resource="0"
