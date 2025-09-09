@@ -10,18 +10,15 @@
 #include "PluginEditor.h"
 
 //==============================================================================
-GDelayAudioProcessor::GDelayAudioProcessor()
-#ifndef JucePlugin_PreferredChannelConfigurations
-     : AudioProcessor (BusesProperties()
-                     #if ! JucePlugin_IsMidiEffect
-                      #if ! JucePlugin_IsSynth
-                       .withInput  ("Input",  juce::AudioChannelSet::stereo(), true)
-                      #endif
-                       .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
-                     #endif
-                       )
-#endif
+GDelayAudioProcessor::GDelayAudioProcessor():
+    AudioProcessor(
+        BusesProperties()
+        .withInput("Input", juce::AudioChannelSet::stereo(), true)
+        .withOutput("Output", juce::AudioChannelSet::stereo(), true)
+    )
 {
+    auto* param = apvts.getParameter(gainParamID.getParamID());
+    gainParam = dynamic_cast<juce::AudioParameterFloat*>(param);
 }
 
 GDelayAudioProcessor::~GDelayAudioProcessor()
@@ -106,30 +103,11 @@ void GDelayAudioProcessor::releaseResources()
 #ifndef JucePlugin_PreferredChannelConfigurations
 bool GDelayAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
 {
-  #if JucePlugin_IsMidiEffect
-    juce::ignoreUnused (layouts);
-    return true;
-  #else
-    // This is the place where you check if the layout is supported.
-    // In this template code we only support mono or stereo.
-    // Some plugin hosts, such as certain GarageBand versions, will only
-    // load plugins that support stereo bus layouts.
-    if (layouts.getMainOutputChannelSet() != juce::AudioChannelSet::mono()
-     && layouts.getMainOutputChannelSet() != juce::AudioChannelSet::stereo())
-        return false;
-
-    // This checks if the input layout matches the output layout
-   #if ! JucePlugin_IsSynth
-    if (layouts.getMainOutputChannelSet() != layouts.getMainInputChannelSet())
-        return false;
-   #endif
-
-    return true;
-  #endif
+    return layouts.getMainOutputChannelSet() == juce::AudioChannelSet::stereo();
 }
 #endif
 
-void GDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
+void GDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[maybe_unused]] juce::MidiBuffer& midiMessages)
 {
     juce::ScopedNoDenormals noDenormals;
     auto totalNumInputChannels  = getTotalNumInputChannels();
@@ -141,8 +119,17 @@ void GDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce:
     // This is here to avoid people getting screaming feedback
     // when they first compile a plugin, but obviously you don't need to keep
     // this code if your algorithm always overwrites all the output channels.
+    
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
+    
+    // Output gain convert to dB
+    float gainInDecibels = gainParam->get();
+    float gain = juce::Decibels::decibelsToGain(gainInDecibels);
+
+    // Output apply gain
+    buffer.applyGain(gain);
+
 
     // This is the place where you'd normally do the guts of your plugin's
     // audio processing...
@@ -150,12 +137,14 @@ void GDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce:
     // the samples and the outer loop is handling the channels.
     // Alternatively, you can process the samples with the channels
     // interleaved by keeping the same state.
+    /*
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
     {
         auto* channelData = buffer.getWritePointer (channel);
 
         // ..do something to the data...
     }
+    */
 }
 
 //==============================================================================
@@ -188,4 +177,18 @@ void GDelayAudioProcessor::setStateInformation (const void* data, int sizeInByte
 juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
     return new GDelayAudioProcessor();
+}
+
+// Plugin parameters
+juce::AudioProcessorValueTreeState::ParameterLayout
+    GDelayAudioProcessor::createParameterLayout()
+{
+    juce::AudioProcessorValueTreeState::ParameterLayout layout;
+    layout.add(std::make_unique<juce::AudioParameterFloat>(
+        gainParamID,
+        "Output gain",
+        juce::NormalisableRange<float> { -12.0f, 12.0f },
+        0.0f));
+
+    return layout;
 }
