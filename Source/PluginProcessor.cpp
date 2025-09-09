@@ -10,18 +10,15 @@
 #include "PluginEditor.h"
 
 //==============================================================================
-GDelayAudioProcessor::GDelayAudioProcessor()
-#ifndef JucePlugin_PreferredChannelConfigurations
-     : AudioProcessor (BusesProperties()
-                     #if ! JucePlugin_IsMidiEffect
-                      #if ! JucePlugin_IsSynth
-                       .withInput  ("Input",  juce::AudioChannelSet::stereo(), true)
-                      #endif
-                       .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
-                     #endif
-                       )
-#endif
+GDelayAudioProcessor::GDelayAudioProcessor():
+    AudioProcessor(
+        BusesProperties()
+        .withInput("Input", juce::AudioChannelSet::stereo(), true)
+        .withOutput("Output", juce::AudioChannelSet::stereo(), true)
+    )
 {
+    auto* param = apvts.getParameter(gainParamID.getParamID());
+    gainParam = dynamic_cast<juce::AudioParameterFloat*>(param);
 }
 
 GDelayAudioProcessor::~GDelayAudioProcessor()
@@ -127,7 +124,7 @@ void GDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[may
         buffer.clear (i, 0, buffer.getNumSamples());
     
     // Output gain convert to dB
-    float gainInDecibels = apvts.getRawParameterValue("gain")->load();
+    float gainInDecibels = gainParam->get();
     float gain = juce::Decibels::decibelsToGain(gainInDecibels);
 
     // Output apply gain
@@ -188,7 +185,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout
 {
     juce::AudioProcessorValueTreeState::ParameterLayout layout;
     layout.add(std::make_unique<juce::AudioParameterFloat>(
-        juce::ParameterID { "gain", 1 },
+        gainParamID,
         "Output gain",
         juce::NormalisableRange<float> { -12.0f, 12.0f },
         0.0f));
