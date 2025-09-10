@@ -15,10 +15,10 @@ GDelayAudioProcessor::GDelayAudioProcessor():
         BusesProperties()
         .withInput("Input", juce::AudioChannelSet::stereo(), true)
         .withOutput("Output", juce::AudioChannelSet::stereo(), true)
-    )
+    ),
+    params(apvts)
 {
-    auto* param = apvts.getParameter(gainParamID.getParamID());
-    gainParam = dynamic_cast<juce::AudioParameterFloat*>(param);
+    // do nothing
 }
 
 GDelayAudioProcessor::~GDelayAudioProcessor()
@@ -124,8 +124,8 @@ void GDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[may
         buffer.clear (i, 0, buffer.getNumSamples());
     
     // Output gain convert to dB
-    float gainInDecibels = gainParam->get();
-    float gain = juce::Decibels::decibelsToGain(gainInDecibels);
+    params.update();
+    float gain = params.gain;
 
     // Output apply gain
     buffer.applyGain(gain);
@@ -161,15 +161,15 @@ juce::AudioProcessorEditor* GDelayAudioProcessor::createEditor()
 //==============================================================================
 void GDelayAudioProcessor::getStateInformation (juce::MemoryBlock& destData)
 {
-    // You should use this method to store your parameters in the memory block.
-    // You could do that either as raw data, or use the XML or ValueTree classes
-    // as intermediaries to make it easy to save and load complex data.
+    copyXmlToBinary(*apvts.copyState().createXml(), destData);
 }
 
 void GDelayAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
-    // You should use this method to restore your parameters from this memory block,
-    // whose contents will have been created by the getStateInformation() call.
+    std::unique_ptr<juce::XmlElement> xml(getXmlFromBinary(data, sizeInBytes));
+    if (xml.get() != nullptr && xml->hasTagName(apvts.state.getType())) {
+        apvts.replaceState(juce::ValueTree::fromXml(*xml));
+    }
 }
 
 //==============================================================================
@@ -177,18 +177,4 @@ void GDelayAudioProcessor::setStateInformation (const void* data, int sizeInByte
 juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
     return new GDelayAudioProcessor();
-}
-
-// Plugin parameters
-juce::AudioProcessorValueTreeState::ParameterLayout
-    GDelayAudioProcessor::createParameterLayout()
-{
-    juce::AudioProcessorValueTreeState::ParameterLayout layout;
-    layout.add(std::make_unique<juce::AudioParameterFloat>(
-        gainParamID,
-        "Output gain",
-        juce::NormalisableRange<float> { -12.0f, 12.0f },
-        0.0f));
-
-    return layout;
 }
