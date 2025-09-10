@@ -124,8 +124,8 @@ void GDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[may
         buffer.clear (i, 0, buffer.getNumSamples());
     
     // Output gain convert to dB
-    float gainInDecibels = params.gainParam->get();
-    float gain = juce::Decibels::decibelsToGain(gainInDecibels);
+    params.update();
+    float gain = params.gain;
 
     // Output apply gain
     buffer.applyGain(gain);
