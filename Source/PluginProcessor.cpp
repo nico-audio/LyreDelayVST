@@ -90,8 +90,8 @@ void GDelayAudioProcessor::changeProgramName (int index, const juce::String& new
 //==============================================================================
 void GDelayAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
-    // Use this method as the place to do any pre-playback
-    // initialisation that you need..
+    params.prepareToPlay(sampleRate);
+    params.reset();
 }
 
 void GDelayAudioProcessor::releaseResources()
@@ -123,12 +123,20 @@ void GDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[may
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
     
-    // Output gain convert to dB
+    // Update parameters
     params.update();
-    float gain = params.gain;
 
-    // Output apply gain
-    buffer.applyGain(gain);
+    // Get write pointers for left and right channels
+    float* channelDataL = buffer.getWritePointer(0);
+    float* channelDataR = buffer.getWritePointer(1);
+
+    // Apply smoothed gain per sample
+    for (int sample = 0; sample < buffer.getNumSamples(); ++sample) {
+        params.smoothen();
+        channelDataL[sample] *= params.gain;
+        channelDataR[sample] *= params.gain;
+    }
+}
 
 
     // This is the place where you'd normally do the guts of your plugin's
@@ -145,7 +153,6 @@ void GDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[may
         // ..do something to the data...
     }
     */
-}
 
 //==============================================================================
 bool GDelayAudioProcessor::hasEditor() const
