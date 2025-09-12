@@ -140,7 +140,9 @@ void GDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[may
     params.update();
 
     // Set delay length
-    delayLine.setDelay(48000.0f);
+    float sampleRate = float(getSampleRate());
+    float delayInSamples = params.delayTime / 1000.0f * sampleRate;
+    delayLine.setDelay(delayInSamples);
 
     // Get write pointers for left and right channels
     float* channelDataL = buffer.getWritePointer(0);
