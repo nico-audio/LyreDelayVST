@@ -90,8 +90,21 @@ void GDelayAudioProcessor::changeProgramName (int index, const juce::String& new
 //==============================================================================
 void GDelayAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
-    // Use this method as the place to do any pre-playback
-    // initialisation that you need..
+    params.prepareToPlay(sampleRate);
+    params.reset();
+
+    juce::dsp::ProcessSpec specifications;
+    specifications.sampleRate = sampleRate;
+    specifications.maximumBlockSize = juce::uint32(samplesPerBlock);
+    specifications.numChannels = 2;
+    delayLine.prepare(specifications);
+
+    double numSamples = Parameters::maxDelayTime / 1000.0 * sampleRate;
+    int maxDelayInSamples = int(std::ceil(numSamples));
+    delayLine.setMaximumDelayInSamples(maxDelayInSamples);
+    delayLine.reset();
+
+    // DBG(maxDelayInSamples);
 }
 
 void GDelayAudioProcessor::releaseResources()
@@ -123,12 +136,35 @@ void GDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[may
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
     
-    // Output gain convert to dB
+    // Update parameters
     params.update();
-    float gain = params.gain;
 
-    // Output apply gain
-    buffer.applyGain(gain);
+    // Set delay length
+    float sampleRate = float(getSampleRate());
+    float delayInSamples = params.delayTime / 1000.0f * sampleRate;
+    delayLine.setDelay(delayInSamples);
+
+    // Get write pointers for left and right channels
+    float* channelDataL = buffer.getWritePointer(0);
+    float* channelDataR = buffer.getWritePointer(1);
+
+    // Apply smoothed gain per sample
+    for (int sample = 0; sample < buffer.getNumSamples(); ++sample) {
+        params.smoothen();
+
+        float dryL = channelDataL[sample];
+        float dryR = channelDataR[sample];
+
+        delayLine.pushSample(0, dryL);
+        delayLine.pushSample(1, dryR);
+
+        float wetL = delayLine.popSample(0);
+        float wetR = delayLine.popSample(1);
+
+        channelDataL[sample] = (dryL + wetL) * params.gain;
+        channelDataR[sample] = (dryR + wetR) * params.gain;
+    }
+}
 
 
     // This is the place where you'd normally do the guts of your plugin's
@@ -145,7 +181,6 @@ void GDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[may
         // ..do something to the data...
     }
     */
-}
 
 //==============================================================================
 bool GDelayAudioProcessor::hasEditor() const
