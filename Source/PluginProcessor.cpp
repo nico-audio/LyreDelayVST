@@ -139,10 +139,8 @@ void GDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[may
     // Update parameters
     params.update();
 
-    // Set delay length
+    // Get sample rate
     float sampleRate = float(getSampleRate());
-    float delayInSamples = params.delayTime / 1000.0f * sampleRate;
-    delayLine.setDelay(delayInSamples);
 
     // Get write pointers for left and right channels
     float* channelDataL = buffer.getWritePointer(0);
@@ -151,6 +149,10 @@ void GDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[may
     // Apply smoothed gain per sample
     for (int sample = 0; sample < buffer.getNumSamples(); ++sample) {
         params.smoothen();
+
+        // Set delay length
+        float delayInSamples = params.delayTime / 1000.0f * sampleRate;
+        delayLine.setDelay(delayInSamples);
 
         float dryL = channelDataL[sample];
         float dryR = channelDataR[sample];
@@ -165,22 +167,6 @@ void GDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[may
         channelDataR[sample] = (dryR + wetR) * params.gain;
     }
 }
-
-
-    // This is the place where you'd normally do the guts of your plugin's
-    // audio processing...
-    // Make sure to reset the state if your inner loop is processing
-    // the samples and the outer loop is handling the channels.
-    // Alternatively, you can process the samples with the channels
-    // interleaved by keeping the same state.
-    /*
-    for (int channel = 0; channel < totalNumInputChannels; ++channel)
-    {
-        auto* channelData = buffer.getWritePointer (channel);
-
-        // ..do something to the data...
-    }
-    */
 
 //==============================================================================
 bool GDelayAudioProcessor::hasEditor() const
