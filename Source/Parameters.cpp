@@ -40,11 +40,17 @@ static juce::String stringFromMilliseconds(float value, int)
     }
 }
 
+static juce::String stringFromPercent(float value, int)
+{
+    return juce::String(int(value)) + " %";
+}
+
 // Constructor
 Parameters::Parameters(juce::AudioProcessorValueTreeState& apvts)
 {
     castParameter(apvts, gainParamID, gainParam);
     castParameter(apvts, delayTimeParamID, delayTimeParam);
+    castParameter(apvts, mixParamID, mixParam);
 }
 
 // Plugin parameters
@@ -62,10 +68,18 @@ Parameters::createParameterLayout()
 
     layout.add(std::make_unique<juce::AudioParameterFloat>(
         delayTimeParamID,
-        "Delay Time",
+        "Delay time",
         juce::NormalisableRange<float> { minDelayTime, maxDelayTime, delayTimeStepSize, delayTimeSkew },
         100.0f,
         juce::AudioParameterFloatAttributes().withStringFromValueFunction(stringFromMilliseconds)
+    ));
+
+    layout.add(std::make_unique<juce::AudioParameterFloat>(
+        mixParamID,
+        "Dry/Wet",
+        juce::NormalisableRange<float> {minMix, maxMix, mixStepSize},
+        defaultMix,
+        juce::AudioParameterFloatAttributes().withStringFromValueFunction(stringFromPercent)
     ));
 
     return layout;
@@ -78,6 +92,8 @@ void Parameters::prepareToPlay(double sampleRate) noexcept
 
     // Used for parameter smoothing
     filterCoefficient = 1.0f - std::exp(-1.0f / (0.2f * float(sampleRate)));
+
+    mixSmoother.reset(sampleRate, duration);
 }
 
 void Parameters::reset() noexcept
@@ -87,6 +103,9 @@ void Parameters::reset() noexcept
         juce::Decibels::decibelsToGain(gainParam->get()));
     
     delayTime = 0.0f;
+
+    mix = 1.0f;
+    mixSmoother.setCurrentAndTargetValue(mixParam->get() * 0.01f);
 }
 
 void Parameters::update() noexcept
@@ -96,10 +115,13 @@ void Parameters::update() noexcept
     if (delayTime == 0.0f) {
         delayTime == targetDelayTime;
     }
+    
+    mixSmoother.setTargetValue(mixParam->get() * 0.01f);
 }
 
 void Parameters::smoothen() noexcept
 {
     gain = gainSmoother.getNextValue();
     delayTime += (targetDelayTime - delayTime) * filterCoefficient;
+    mix = mixSmoother.getNextValue();
 }

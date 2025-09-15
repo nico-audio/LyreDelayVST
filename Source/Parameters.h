@@ -13,6 +13,7 @@
 
 const juce::ParameterID gainParamID{ "gain", 1 };
 const juce::ParameterID delayTimeParamID{ "delayTime", 1 };
+const juce::ParameterID mixParamID{ "mix", 1 };
 
 class Parameters
 {
@@ -27,17 +28,30 @@ public:
 
     float gain = 0.0f;
     float delayTime = 0.0f;
-
+    float mix = 1.0f;
+   
     static constexpr float minDelayTime { 5.0f };
     static constexpr float maxDelayTime { 5000.0f };
     static constexpr float delayTimeStepSize { 0.001f };
     static constexpr float delayTimeSkew { 0.25f };
+
+    static constexpr float minMix{ 0.0f };
+    static constexpr float maxMix{ 100.0f };
+    static constexpr float mixStepSize{ 1.0f };
+    static constexpr float defaultMix{ 100.0f };
     
-private:    
+private:
+    // Gain
     juce::AudioParameterFloat* gainParam;
-    juce::AudioParameterFloat* delayTimeParam;
     juce::LinearSmoothedValue<float> gainSmoother;
 
+    // Delay line
+    juce::AudioParameterFloat* delayTimeParam;
     float targetDelayTime = 0.0f;
     float filterCoefficient = 0.0f;
+
+    // Mix
+    juce::AudioParameterFloat* mixParam;
+    juce::LinearSmoothedValue<float> mixSmoother;
+
 };
