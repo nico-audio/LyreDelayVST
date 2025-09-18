@@ -11,6 +11,7 @@
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
 #include "Parameters.h"
+#include "RotaryKnob.h"
 
 //==============================================================================
 /**
@@ -27,13 +28,13 @@ public:
 
 private:
     GDelayAudioProcessor& audioProcessor;
+    RotaryKnob gainKnob { "Gain", audioProcessor.apvts, gainParamID };
 
-    juce::Slider slider;
-    juce::Label label;
-
+    /*
     juce::AudioProcessorValueTreeState::SliderAttachment attachment{
-        audioProcessor.apvts, gainParamID.getParamID(), slider
-    };
+        audioProcessor.apvts, gainParamID.getParamID(), gainKnob.slider
+    };  
+    */
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (GDelayAudioProcessorEditor)
 };
