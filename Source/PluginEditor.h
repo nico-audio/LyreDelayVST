@@ -10,6 +10,8 @@
 
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
+#include "Parameters.h"
+#include "RotaryKnob.h"
 
 //==============================================================================
 /**
@@ -26,9 +28,11 @@ public:
 
 private:
     GDelayAudioProcessor& audioProcessor;
-
-    juce::Slider slider;
-    juce::Label label;
+    RotaryKnob gainKnob { "Gain", audioProcessor.apvts, gainParamID };
+    RotaryKnob mixKnob{ "Mix", audioProcessor.apvts, mixParamID };
+    RotaryKnob delayTimeKnob{ "Time", audioProcessor.apvts, delayTimeParamID };
+    
+    juce::GroupComponent grainGroup, delayGroup, outputGroup;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (GDelayAudioProcessorEditor)
 };

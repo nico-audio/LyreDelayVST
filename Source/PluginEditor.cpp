@@ -9,20 +9,23 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 
-//==============================================================================
 GDelayAudioProcessorEditor::GDelayAudioProcessorEditor (GDelayAudioProcessor& p)
     : AudioProcessorEditor (&p), audioProcessor (p)
 {
-    slider.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
-    slider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 70, 16);
-    slider.setBounds(0, 0, 70, 86);
-    addAndMakeVisible(slider);
+    delayGroup.setText("Delay");
+    delayGroup.setTextLabelPosition(juce::Justification::horizontallyCentred);
+    delayGroup.addAndMakeVisible(delayTimeKnob);
+    addAndMakeVisible(delayGroup);
 
-    label.setText("Gain", juce::NotificationType::dontSendNotification);
-    label.setJustificationType(juce::Justification::horizontallyCentred);
-    label.setBorderSize(juce::BorderSize<int>{ 0, 0, 2, 0 });
-    label.attachToComponent(&slider, false);
-    addAndMakeVisible(label);
+    grainGroup.setText("Feedback-GrainPlaceholder");
+    grainGroup.setTextLabelPosition(juce::Justification::horizontallyCentred);
+    addAndMakeVisible(grainGroup);
+    
+    outputGroup.setText("Output");
+    outputGroup.setTextLabelPosition(juce::Justification::horizontallyCentred);
+    addAndMakeVisible(gainKnob);
+    addAndMakeVisible(mixKnob);
+    addAndMakeVisible(outputGroup);
 
     setSize (500, 330);
 }
@@ -31,7 +34,6 @@ GDelayAudioProcessorEditor::~GDelayAudioProcessorEditor()
 {
 }
 
-//==============================================================================
 void GDelayAudioProcessorEditor::paint (juce::Graphics& g)
 {
     // (Our component is opaque, so we must completely fill the background with a solid colour)
@@ -46,5 +48,29 @@ void GDelayAudioProcessorEditor::paint (juce::Graphics& g)
 
 void GDelayAudioProcessorEditor::resized()
 {
-    slider.setTopLeftPosition(215, 120);
+    auto bounds = getLocalBounds();
+    
+    const int groupSpacing { 10 };
+    const int delayGroupWidth { 110 };
+    const int outputGroupWidth { 150 };
+    const int delayLeftEdge { 10 };
+    const int outputRightEdge { 160 };
+    
+    int topMargin = 10;
+    int height = bounds.getHeight() - 20;
+
+    // Position the groups
+    delayGroup.setBounds(delayLeftEdge, topMargin, delayGroupWidth, height);
+    
+    outputGroup.setBounds(bounds.getWidth() - outputRightEdge, topMargin, outputGroupWidth, height);
+    
+    grainGroup.setBounds(delayGroup.getRight() + groupSpacing, topMargin,
+        outputGroup.getX() - delayGroup.getRight() - 20,
+        height);
+    
+    // Position the knobs inside the groups
+    delayTimeKnob.setTopLeftPosition(20, 20);
+    mixKnob.setTopLeftPosition(380, 20);
+    gainKnob.setTopLeftPosition(mixKnob.getX(), mixKnob.getBottom() + 10);
+    
 }
