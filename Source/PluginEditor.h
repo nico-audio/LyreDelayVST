@@ -29,12 +29,10 @@ public:
 private:
     GDelayAudioProcessor& audioProcessor;
     RotaryKnob gainKnob { "Gain", audioProcessor.apvts, gainParamID };
-
-    /*
-    juce::AudioProcessorValueTreeState::SliderAttachment attachment{
-        audioProcessor.apvts, gainParamID.getParamID(), gainKnob.slider
-    };  
-    */
+    RotaryKnob mixKnob{ "Mix", audioProcessor.apvts, mixParamID };
+    RotaryKnob delayTimeKnob{ "Time", audioProcessor.apvts, delayTimeParamID };
+    
+    juce::GroupComponent grainGroup, delayGroup, outputGroup;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (GDelayAudioProcessorEditor)
 };
