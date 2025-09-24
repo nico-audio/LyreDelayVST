@@ -10,8 +10,9 @@
 
 #include <JuceHeader.h>
 #include "RotaryKnob.h"
+#include "LookAndFeel.h"
 
-//==============================================================================
+
 RotaryKnob::RotaryKnob(const juce::String& text, juce::AudioProcessorValueTreeState& apvts, const juce::ParameterID& parameterID) :
 	attachment(apvts, parameterID.getParamID(), slider)
 {
@@ -27,26 +28,13 @@ RotaryKnob::RotaryKnob(const juce::String& text, juce::AudioProcessorValueTreeSt
     addAndMakeVisible(label);
 
     setSize(70, 110);
+
+    setLookAndFeel(RotaryKnobLookAndFeel::get());
 }
 
 RotaryKnob::~RotaryKnob()
 {
 }
-
-/*
-void RotaryKnob::paint (juce::Graphics& g)
-{
-    g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));   // clear the background
-
-    g.setColour (juce::Colours::grey);
-    g.drawRect (getLocalBounds(), 1);   // draw an outline around the component
-
-    g.setColour (juce::Colours::white);
-    g.setFont (juce::FontOptions (14.0f));
-    g.drawText ("RotaryKnob", getLocalBounds(),
-                juce::Justification::centred, true);   // draw some placeholder text
-}
-*/
 
 void RotaryKnob::resized()
 {

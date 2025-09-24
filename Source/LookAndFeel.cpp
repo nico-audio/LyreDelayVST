@@ -3,9 +3,42 @@
 
     LookAndFeel.cpp
     Created: 24 Sep 2025 9:42:12am
-    Author:  Nico
+    Author:  Nico V.
 
   ==============================================================================
 */
 
 #include "LookAndFeel.h"
+
+RotaryKnobLookAndFeel::RotaryKnobLookAndFeel()
+{
+    setColour(juce::Label::textColourId, Colors::Knob::label);
+    setColour(juce::Slider::textBoxTextColourId, Colors::Knob::label);
+}
+
+
+void RotaryKnobLookAndFeel::drawRotarySlider(juce::Graphics& g, int x, int y, int width, [[maybe_unused]] int height,
+                       float sliderPos, float rotaryStartAngle,
+                       float rotaryEndAngle, juce::Slider& slider)
+{
+    // bounds
+    auto bounds = juce::Rectangle<int>(x, y, width, width).toFloat();
+    auto knobRect = bounds.reduced(10.0f, 10.0f);
+    
+    // knob shadow
+    auto path = juce::Path();
+    path.addEllipse(knobRect);
+    dropShadow.drawForPath(g, path);
+    
+    // knob color
+    g.setColour(Colors::Knob::outline);
+    g.fillEllipse(knobRect);
+
+    // gradient
+    auto innerRect = knobRect.reduced(2.0f, 2.0f);
+    auto gradient = juce::ColourGradient(Colors::Knob::gradientTop, 0.0f, innerRect.getY(),
+                                         Colors::Knob::gradientBottom, 0.0f, innerRect.getBottom(), false);
+    g.setGradientFill(gradient);
+    g.fillEllipse(innerRect);
+}
+
