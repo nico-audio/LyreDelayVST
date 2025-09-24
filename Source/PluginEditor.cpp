@@ -36,14 +36,7 @@ GDelayAudioProcessorEditor::~GDelayAudioProcessorEditor()
 
 void GDelayAudioProcessorEditor::paint (juce::Graphics& g)
 {
-    // (Our component is opaque, so we must completely fill the background with a solid colour)
-    g.fillAll(juce::Colours::darkgrey);
-
-    /*
-    g.setColour (juce::Colours::white);
-    g.setFont (juce::FontOptions (40.0f));
-    g.drawFittedText ("Delay plugin!", getLocalBounds(), juce::Justification::centred, 1);
-    */
+    g.fillAll(Colors::background);
 }
 
 void GDelayAudioProcessorEditor::resized()
