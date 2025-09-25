@@ -30,6 +30,9 @@ RotaryKnob::RotaryKnob(const juce::String& text, juce::AudioProcessorValueTreeSt
     setSize(70, 110);
 
     setLookAndFeel(RotaryKnobLookAndFeel::get());
+
+    float pi = juce::MathConstants<float>::pi;
+    slider.setRotaryParameters(1.25f * pi, 2.75f * pi, true);
 }
 
 RotaryKnob::~RotaryKnob()
