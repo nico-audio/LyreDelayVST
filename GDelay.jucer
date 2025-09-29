@@ -5,6 +5,9 @@
               version="0.0.1" pluginManufacturer="Nico" bundleIdentifier="NicoGDelay"
               pluginManufacturerCode="Nico" pluginCode="GDel" cppLanguageStandard="20">
   <MAINGROUP id="qi5Naz" name="GDelay">
+    <GROUP id="{B5B72528-351F-738B-7D8D-B58043B449C8}" name="Assets">
+      <FILE id="inzFxx" name="INTERDIM.TTF" compile="0" resource="1" file="../../../GameDevProjects/Fonts/interdimensional/INTERDIM.TTF"/>
+    </GROUP>
     <GROUP id="{F4EB2649-9D18-B53A-5C88-218FAE2EC3CD}" name="Source">
       <FILE id="hsz7Z9" name="LookAndFeel.h" compile="0" resource="0" file="Source/LookAndFeel.h"/>
       <FILE id="SzWa9K" name="LookAndFeel.cpp" compile="1" resource="0" file="Source/LookAndFeel.cpp"/>

@@ -10,6 +10,14 @@
 
 #include "LookAndFeel.h"
 
+const juce::Typeface::Ptr Fonts::typeface = juce::Typeface::createSystemTypefaceFor(
+    BinaryData::INTERDIM_TTF, BinaryData::INTERDIM_TTFSize);
+
+juce::Font Fonts::getFont(float height)
+{
+    return juce::Font(typeface).withHeight(height);
+}
+
 RotaryKnobLookAndFeel::RotaryKnobLookAndFeel()
 {
     setColour(juce::Label::textColourId, Colors::Knob::label);
@@ -86,5 +94,10 @@ void RotaryKnobLookAndFeel::drawRotarySlider(juce::Graphics& g, int x, int y, in
         g.setColour(slider.findColour(juce::Slider::rotarySliderFillColourId));
         g.strokePath(valueArc, strokeType);
     }
+}
+
+juce::Font RotaryKnobLookAndFeel::getLabelFont([[maybe_unused]] juce::Label& label)
+{
+    return Fonts::getFont();
 }
 
