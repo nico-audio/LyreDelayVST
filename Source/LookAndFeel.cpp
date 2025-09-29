@@ -14,6 +14,7 @@ RotaryKnobLookAndFeel::RotaryKnobLookAndFeel()
 {
     setColour(juce::Label::textColourId, Colors::Knob::label);
     setColour(juce::Slider::textBoxTextColourId, Colors::Knob::label);
+    setColour(juce::Slider::rotarySliderFillColourId, Colors::Knob::trackActive);
 }
 
 
@@ -65,10 +66,25 @@ void RotaryKnobLookAndFeel::drawRotarySlider(juce::Graphics& g, int x, int y, in
 
     // dial path
     juce::Path dialPath;
+    
     dialPath.startNewSubPath(dialStart);
     dialPath.lineTo(dialEnd);
     g.setColour(Colors::Knob::dial);
     g.strokePath(dialPath, strokeType);
 
+    // track color
+    if (slider.isEnabled()) {
+        float fromAngle = rotaryStartAngle;
+        if (slider.getProperties()["drawFromMiddle"]) {
+            fromAngle += (rotaryEndAngle - rotaryStartAngle) / 2.0f;
+        }
+
+        juce::Path valueArc;
+        
+        valueArc.addCentredArc(center.x, center.y, arcRadius, arcRadius, 0.0f, fromAngle, toAngle, true);
+
+        g.setColour(slider.findColour(juce::Slider::rotarySliderFillColourId));
+        g.strokePath(valueArc, strokeType);
+    }
 }
 

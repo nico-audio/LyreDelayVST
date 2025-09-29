@@ -13,8 +13,9 @@
 #include "LookAndFeel.h"
 
 
-RotaryKnob::RotaryKnob(const juce::String& text, juce::AudioProcessorValueTreeState& apvts, const juce::ParameterID& parameterID) :
-	attachment(apvts, parameterID.getParamID(), slider)
+RotaryKnob::RotaryKnob(const juce::String& text, juce::AudioProcessorValueTreeState& apvts, 
+                       const juce::ParameterID& parameterID, bool drawFromMiddle)
+    : attachment(apvts, parameterID.getParamID(), slider)
 {
     // slider
     slider.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
@@ -37,6 +38,9 @@ RotaryKnob::RotaryKnob(const juce::String& text, juce::AudioProcessorValueTreeSt
     // change default start and end angles
     float pi = juce::MathConstants<float>::pi;
     slider.setRotaryParameters(1.25f * pi, 2.75f * pi, true);
+
+    // draw track - draw from middle
+    slider.getProperties().set("drawFromMiddle", drawFromMiddle);
 }
 
 RotaryKnob::~RotaryKnob()
