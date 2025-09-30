@@ -32,10 +32,12 @@ GDelayAudioProcessorEditor::GDelayAudioProcessorEditor (GDelayAudioProcessor& p)
     // gain track color override
     gainKnob.slider.setColour(juce::Slider::rotarySliderFillColourId, juce::Colour (0, 198, 204));
 
+    setLookAndFeel(&mainLF);
 }
 
 GDelayAudioProcessorEditor::~GDelayAudioProcessorEditor()
 {
+    setLookAndFeel(nullptr);
 }
 
 void GDelayAudioProcessorEditor::paint (juce::Graphics& g)
