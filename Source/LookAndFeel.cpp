@@ -10,10 +10,19 @@
 
 #include "LookAndFeel.h"
 
+const juce::Typeface::Ptr Fonts::typeface = juce::Typeface::createSystemTypefaceFor(
+    BinaryData::INTERDIM_TTF, BinaryData::INTERDIM_TTFSize);
+
+juce::Font Fonts::getFont(float height)
+{
+    return juce::Font(typeface).withHeight(height);
+}
+
 RotaryKnobLookAndFeel::RotaryKnobLookAndFeel()
 {
     setColour(juce::Label::textColourId, Colors::Knob::label);
     setColour(juce::Slider::textBoxTextColourId, Colors::Knob::label);
+    setColour(juce::Slider::rotarySliderFillColourId, Colors::Knob::trackActive);
 }
 
 
@@ -40,5 +49,65 @@ void RotaryKnobLookAndFeel::drawRotarySlider(juce::Graphics& g, int x, int y, in
                                          Colors::Knob::gradientBottom, 0.0f, innerRect.getBottom(), false);
     g.setGradientFill(gradient);
     g.fillEllipse(innerRect);
+
+    // draw track
+    auto center = bounds.getCentre();
+    auto radius = bounds.getWidth() / 2.0f;
+    auto lineWidth = 3.0f;
+    auto arcRadius = radius - lineWidth / 2.0f;
+    
+    juce::Path backgroundArc;
+    backgroundArc.addCentredArc(center.x, center.y, arcRadius, arcRadius,
+                                0.0f, rotaryStartAngle, rotaryEndAngle, true);
+    
+    auto strokeType = juce::PathStrokeType(lineWidth, juce::PathStrokeType::curved, juce::PathStrokeType::rounded);
+
+    g.setColour(Colors::Knob::trackBackground);
+    g.strokePath(backgroundArc, strokeType);
+
+    // draw dial - calculate angles
+    auto dialRadius = innerRect.getHeight() / 2.0f - lineWidth;
+    auto toAngle = rotaryStartAngle + sliderPos * (rotaryEndAngle - rotaryStartAngle);
+
+    juce::Point<float> dialStart(center.x + 10.0f * std::sin(toAngle), center.y - 10.0f * std::cos(toAngle));
+    juce::Point<float> dialEnd(center.x + dialRadius * std::sin(toAngle), center.y - dialRadius * std::cos(toAngle));
+
+    // dial path
+    juce::Path dialPath;
+    
+    dialPath.startNewSubPath(dialStart);
+    dialPath.lineTo(dialEnd);
+    g.setColour(Colors::Knob::dial);
+    g.strokePath(dialPath, strokeType);
+
+    // track color
+    if (slider.isEnabled()) {
+        float fromAngle = rotaryStartAngle;
+        if (slider.getProperties()["drawFromMiddle"]) {
+            fromAngle += (rotaryEndAngle - rotaryStartAngle) / 2.0f;
+        }
+
+        juce::Path valueArc;
+        
+        valueArc.addCentredArc(center.x, center.y, arcRadius, arcRadius, 0.0f, fromAngle, toAngle, true);
+
+        g.setColour(slider.findColour(juce::Slider::rotarySliderFillColourId));
+        g.strokePath(valueArc, strokeType);
+    }
+}
+
+juce::Font RotaryKnobLookAndFeel::getLabelFont([[maybe_unused]] juce::Label& label)
+{
+    return Fonts::getFont();
+}
+
+MainLookAndFeel::MainLookAndFeel()
+{
+    setColour(juce::GroupComponent::textColourId, Colors::Group::label);
+    setColour(juce::GroupComponent::outlineColourId, Colors::Group::outline);
+}
+juce::Font MainLookAndFeel::getLabelFont([[maybe_unused]] juce::Label& label)
+{
+    return Fonts::getFont();
 }
 
