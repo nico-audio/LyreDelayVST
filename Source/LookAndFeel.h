@@ -41,7 +41,7 @@ class Fonts
 {
 public:
     Fonts() = delete;
-    static juce::Font getFont(float height = 16.0f);
+    static juce::Font getFont(float height = 14.0f);
 private:
     static const juce::Typeface::Ptr typeface;
 };
@@ -60,6 +60,10 @@ public:
                           float rotaryEndAngle, juce::Slider& slider) override;
     
     juce::Font getLabelFont(juce::Label&) override;
+    juce::Label* createSliderTextBox(juce::Slider&) override;
+
+    void drawTextEditorOutline(juce::Graphics&, int, int, juce::TextEditor&) override {}
+    void fillTextEditorBackground(juce::Graphics&, int width, int height, juce::TextEditor&) override;
     
 private:
     juce::DropShadow dropShadow{ Colors::Knob::dropShadow, 6, { 0, 3 } };
