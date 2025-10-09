@@ -27,7 +27,7 @@ GDelayAudioProcessorEditor::GDelayAudioProcessorEditor (GDelayAudioProcessor& p)
     addAndMakeVisible(mixKnob);
     addAndMakeVisible(outputGroup);
 
-    setSize (500, 330);
+    setSize (630, 430);
 
     // gain track color override
     gainKnob.slider.setColour(juce::Slider::rotarySliderFillColourId, juce::Colour (0, 198, 204));
@@ -87,7 +87,7 @@ void GDelayAudioProcessorEditor::resized()
     
     // Position the knobs inside the groups
     delayTimeKnob.setTopLeftPosition(20, 20);
-    mixKnob.setTopLeftPosition(380, 65);
+    mixKnob.setTopLeftPosition(490, 85);
     gainKnob.setTopLeftPosition(mixKnob.getX(), mixKnob.getBottom() + 10);
     
 }
