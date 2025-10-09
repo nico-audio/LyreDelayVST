@@ -16,9 +16,11 @@ GDelayAudioProcessor::GDelayAudioProcessor():
         .withInput("Input", juce::AudioChannelSet::stereo(), true)
         .withOutput("Output", juce::AudioChannelSet::stereo(), true)
     ),
-    params(apvts)
+    params(apvts),
+    waveViewer(2)
 {
-    // do nothing
+    waveViewer.setRepaintRate(30);
+    waveViewer.setBufferSize(256);
 }
 
 GDelayAudioProcessor::~GDelayAudioProcessor()
@@ -169,7 +171,10 @@ void GDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[may
         channelDataL[sample] = mixL * params.gain;
         channelDataR[sample] = mixR * params.gain;
     }
-}
+    
+    // Push waveform to audio visualizer component
+    waveViewer.pushBuffer(buffer);
+}   
 
 //==============================================================================
 bool GDelayAudioProcessor::hasEditor() const

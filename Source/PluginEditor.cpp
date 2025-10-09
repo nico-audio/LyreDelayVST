@@ -27,6 +27,9 @@ GDelayAudioProcessorEditor::GDelayAudioProcessorEditor (GDelayAudioProcessor& p)
     addAndMakeVisible(mixKnob);
     addAndMakeVisible(outputGroup);
 
+    addAndMakeVisible(audioProcessor.waveViewer);
+    audioProcessor.waveViewer.setColours(juce::Colour (252, 209, 253), juce::Colour (12, 12, 20));
+
     setSize (630, 430);
 
     // gain track color override
@@ -72,9 +75,11 @@ void GDelayAudioProcessorEditor::resized()
     const int outputGroupWidth { 150 };
     const int delayLeftEdge { 10 };
     const int outputRightEdge { 160 };
+    const int waveViewerHeight{ 50 };
+    const int waveViewerWidth { 600 };
     
-    int topMargin = 50;
-    int height = bounds.getHeight() - 60;
+    int topMargin = 100;
+    int height = bounds.getHeight() - 110;
 
     // Position the groups
     delayGroup.setBounds(delayLeftEdge, topMargin, delayGroupWidth, height);
@@ -87,7 +92,9 @@ void GDelayAudioProcessorEditor::resized()
     
     // Position the knobs inside the groups
     delayTimeKnob.setTopLeftPosition(20, 20);
-    mixKnob.setTopLeftPosition(490, 85);
+    mixKnob.setTopLeftPosition(490, 120);
     gainKnob.setTopLeftPosition(mixKnob.getX(), mixKnob.getBottom() + 10);
     
+    // Audio visualizer
+    audioProcessor.waveViewer.setBounds(15, 45, waveViewerWidth, waveViewerHeight);
 }

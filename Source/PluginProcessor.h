@@ -58,6 +58,8 @@ public:
         *this, nullptr, "Parameters", Parameters::createParameterLayout()
     };
 
+    juce::AudioVisualiserComponent waveViewer;
+
 private:
     Parameters params;
 
