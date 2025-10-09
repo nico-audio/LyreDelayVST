@@ -14,7 +14,7 @@
 namespace Colors
 {
     const juce::Colour background{ 9, 7, 18 };
-    const juce::Colour header{ 40, 40, 40 };
+    const juce::Colour header{ 25, 27, 54 };
     
     namespace Knob
     {
@@ -25,15 +25,15 @@ namespace Colors
         const juce::Colour gradientBottom{ 156, 157, 158 };
         const juce::Colour dial{ 100, 100, 100 };
         const juce::Colour dropShadow{ 82, 68, 109 };
-        const juce::Colour label{ 250, 216, 248 };
+        const juce::Colour label{ 9, 7, 18 };
         const juce::Colour textBoxBackground{ 80, 80, 80 };
         const juce::Colour value{ 240, 240, 240 };
         const juce::Colour caret{ 255, 255, 255 };
     }
     namespace Group
     {
-        const juce::Colour label{ 255, 255, 255 };
-        const juce::Colour outline{ 235, 230, 225 };
+        const juce::Colour label{ 82, 68, 109 };
+        const juce::Colour outline{ 82, 68, 109 };
     }
 }
 
