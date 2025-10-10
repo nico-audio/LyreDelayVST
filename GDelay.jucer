@@ -6,6 +6,8 @@
               pluginManufacturerCode="Nico" pluginCode="GDel" cppLanguageStandard="20">
   <MAINGROUP id="qi5Naz" name="GDelay">
     <GROUP id="{B5B72528-351F-738B-7D8D-B58043B449C8}" name="Assets">
+      <FILE id="xgBpxU" name="bg_texture.png" compile="0" resource="1" file="../../Graphics/bg_texture.png"/>
+      <FILE id="wqoicw" name="GDelay_logo.png" compile="0" resource="1" file="../../Graphics/GDelay_logo.png"/>
       <FILE id="inzFxx" name="INTERDIM.TTF" compile="0" resource="1" file="../../../GameDevProjects/Fonts/interdimensional/INTERDIM.TTF"/>
     </GROUP>
     <GROUP id="{F4EB2649-9D18-B53A-5C88-218FAE2EC3CD}" name="Source">

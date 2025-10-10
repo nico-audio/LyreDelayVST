@@ -27,7 +27,10 @@ GDelayAudioProcessorEditor::GDelayAudioProcessorEditor (GDelayAudioProcessor& p)
     addAndMakeVisible(mixKnob);
     addAndMakeVisible(outputGroup);
 
-    setSize (500, 330);
+    addAndMakeVisible(audioProcessor.waveViewer);
+    audioProcessor.waveViewer.setColours(juce::Colour (252, 209, 253), juce::Colour (12, 12, 20));
+
+    setSize (630, 430);
 
     // gain track color override
     gainKnob.slider.setColour(juce::Slider::rotarySliderFillColourId, juce::Colour (0, 198, 204));
@@ -42,7 +45,25 @@ GDelayAudioProcessorEditor::~GDelayAudioProcessorEditor()
 
 void GDelayAudioProcessorEditor::paint (juce::Graphics& g)
 {
-    g.fillAll(Colors::background);
+    // noise background texture
+    auto noise = juce::ImageCache::getFromMemory(BinaryData::bg_texture_png, BinaryData::bg_texture_pngSize);
+    auto fillType = juce::FillType(noise, juce::AffineTransform::scale(0.5f));
+    g.setFillType(fillType);
+    g.fillRect(getLocalBounds());
+
+    // top logo image
+    const float scaleFactor { 0.15f };
+
+    auto rect = getLocalBounds().withHeight(40);
+    g.setColour(Colors::header);
+    g.fillRect(rect);
+    auto image = juce::ImageCache::getFromMemory(BinaryData::GDelay_logo_png, BinaryData::GDelay_logo_pngSize);
+    int destWidth = image.getWidth() * scaleFactor;
+    int destHeight = image.getHeight() * scaleFactor;
+
+    float verticalPosition = rect.getY() + (rect.getHeight() - destHeight) / 2;
+
+    g.drawImage(image, getWidth() / 2 - destWidth / 2, verticalPosition, destWidth, destHeight, 0, 0, image.getWidth(), image.getHeight());
 }
 
 void GDelayAudioProcessorEditor::resized()
@@ -54,9 +75,11 @@ void GDelayAudioProcessorEditor::resized()
     const int outputGroupWidth { 150 };
     const int delayLeftEdge { 10 };
     const int outputRightEdge { 160 };
+    const int waveViewerHeight{ 50 };
+    const int waveViewerWidth { 600 };
     
-    int topMargin = 10;
-    int height = bounds.getHeight() - 20;
+    int topMargin = 100;
+    int height = bounds.getHeight() - 110;
 
     // Position the groups
     delayGroup.setBounds(delayLeftEdge, topMargin, delayGroupWidth, height);
@@ -69,7 +92,9 @@ void GDelayAudioProcessorEditor::resized()
     
     // Position the knobs inside the groups
     delayTimeKnob.setTopLeftPosition(20, 20);
-    mixKnob.setTopLeftPosition(380, 20);
+    mixKnob.setTopLeftPosition(490, 120);
     gainKnob.setTopLeftPosition(mixKnob.getX(), mixKnob.getBottom() + 10);
     
+    // Audio visualizer
+    audioProcessor.waveViewer.setBounds(15, 45, waveViewerWidth, waveViewerHeight);
 }

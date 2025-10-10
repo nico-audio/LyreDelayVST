@@ -14,7 +14,7 @@
 namespace Colors
 {
     const juce::Colour background{ 9, 7, 18 };
-    const juce::Colour header{ 40, 40, 40 };
+    const juce::Colour header{ 25, 27, 54 };
     
     namespace Knob
     {
@@ -25,15 +25,15 @@ namespace Colors
         const juce::Colour gradientBottom{ 156, 157, 158 };
         const juce::Colour dial{ 100, 100, 100 };
         const juce::Colour dropShadow{ 82, 68, 109 };
-        const juce::Colour label{ 250, 216, 248 };
+        const juce::Colour label{ 9, 7, 18 };
         const juce::Colour textBoxBackground{ 80, 80, 80 };
         const juce::Colour value{ 240, 240, 240 };
         const juce::Colour caret{ 255, 255, 255 };
     }
     namespace Group
     {
-        const juce::Colour label{ 255, 255, 255 };
-        const juce::Colour outline{ 235, 230, 225 };
+        const juce::Colour label{ 82, 68, 109 };
+        const juce::Colour outline{ 82, 68, 109 };
     }
 }
 
@@ -41,7 +41,7 @@ class Fonts
 {
 public:
     Fonts() = delete;
-    static juce::Font getFont(float height = 16.0f);
+    static juce::Font getFont(float height = 14.0f);
 private:
     static const juce::Typeface::Ptr typeface;
 };
@@ -60,6 +60,10 @@ public:
                           float rotaryEndAngle, juce::Slider& slider) override;
     
     juce::Font getLabelFont(juce::Label&) override;
+    juce::Label* createSliderTextBox(juce::Slider&) override;
+
+    void drawTextEditorOutline(juce::Graphics&, int, int, juce::TextEditor&) override {}
+    void fillTextEditorBackground(juce::Graphics&, int width, int height, juce::TextEditor&) override;
     
 private:
     juce::DropShadow dropShadow{ Colors::Knob::dropShadow, 6, { 0, 3 } };
