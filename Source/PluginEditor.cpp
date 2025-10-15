@@ -15,6 +15,7 @@ GDelayAudioProcessorEditor::GDelayAudioProcessorEditor (GDelayAudioProcessor& p)
     delayGroup.setText("Delay");
     delayGroup.setTextLabelPosition(juce::Justification::horizontallyCentred);
     delayGroup.addAndMakeVisible(delayTimeKnob);
+    delayGroup.addAndMakeVisible(feedbackKnob);
     addAndMakeVisible(delayGroup);
 
     grainGroup.setText("Feedback-GrainPlaceholder");
@@ -92,6 +93,7 @@ void GDelayAudioProcessorEditor::resized()
     
     // Position the knobs inside the groups
     delayTimeKnob.setTopLeftPosition(20, 20);
+    feedbackKnob.setTopLeftPosition(delayTimeKnob.getX(), delayTimeKnob.getBottom() + 10);
     mixKnob.setTopLeftPosition(490, 120);
     gainKnob.setTopLeftPosition(mixKnob.getX(), mixKnob.getBottom() + 10);
     

@@ -10,7 +10,7 @@
 #include "PluginEditor.h"
 #include "ProtectYourEars.h"
 
-//==============================================================================
+
 GDelayAudioProcessor::GDelayAudioProcessor():
     AudioProcessor(
         BusesProperties()
@@ -108,6 +108,10 @@ void GDelayAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock
     delayLine.reset();
 
     // DBG(maxDelayInSamples);
+
+    // Clear out any old sample values from the feedback path
+    feedbackL = 0.0f;
+    feedbackR = 0.0f;
 }
 
 void GDelayAudioProcessor::releaseResources()
@@ -153,8 +157,8 @@ void GDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[may
         float dryL = channelDataL[sample];
         float dryR = channelDataR[sample];
 
-        delayLine.pushSample(0, dryL);
-        delayLine.pushSample(1, dryR);
+        delayLine.pushSample(0, dryL + feedbackL);
+        delayLine.pushSample(1, dryR + feedbackR);
 
         float wetL = delayLine.popSample(0);
         float wetR = delayLine.popSample(1);
@@ -163,6 +167,9 @@ void GDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[may
         wetL += delayLine.popSample(0, delayInSamples * 2.0f, false) * 0.7f;
         wetR += delayLine.popSample(1, delayInSamples * 2.0f, false) * 0.7f;
         */
+
+        feedbackL = wetL * params.feedback;
+        feedbackR = wetR * params.feedback;
 
         float mixL = dryL + wetL * params.mix;
         float mixR = dryR + wetR * params.mix;
