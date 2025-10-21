@@ -157,8 +157,12 @@ void GDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[may
         float dryL = channelDataL[sample];
         float dryR = channelDataR[sample];
 
-        delayLine.pushSample(0, dryL + feedbackL);
-        delayLine.pushSample(1, dryR + feedbackR);
+        // convert stereo to mono
+        float mono = (dryL + dryR) * 0.5f;
+
+        // push mono signal into the delay line
+        delayLine.pushSample(0, mono * params.panL + feedbackR);
+        delayLine.pushSample(1, mono * params.panR + feedbackL);
 
         float wetL = delayLine.popSample(0);
         float wetR = delayLine.popSample(1);
