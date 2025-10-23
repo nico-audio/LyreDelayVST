@@ -78,7 +78,7 @@ void GDelayAudioProcessorEditor::resized()
     const int delayLeftEdge { 10 };
     const int outputRightEdge { 160 };
     const int waveViewerHeight{ 50 };
-    const int waveViewerWidth { 600 };
+    const int waveViewerWidth { 630 };
     
     int topMargin = 100;
     int height = bounds.getHeight() - 110;
