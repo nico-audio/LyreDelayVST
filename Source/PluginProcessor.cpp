@@ -28,7 +28,7 @@ GDelayAudioProcessor::~GDelayAudioProcessor()
 {
 }
 
-//==============================================================================
+
 const juce::String GDelayAudioProcessor::getName() const
 {
     return JucePlugin_Name;
@@ -90,7 +90,6 @@ void GDelayAudioProcessor::changeProgramName (int index, const juce::String& new
 {
 }
 
-//==============================================================================
 void GDelayAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
     params.prepareToPlay(sampleRate);
@@ -123,7 +122,18 @@ void GDelayAudioProcessor::releaseResources()
 #ifndef JucePlugin_PreferredChannelConfigurations
 bool GDelayAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
 {
-    return layouts.getMainOutputChannelSet() == juce::AudioChannelSet::stereo();
+    const auto mono = juce::AudioChannelSet::mono();
+    const auto stereo = juce::AudioChannelSet::stereo();
+    const auto mainIn = layouts.getMainInputChannelSet();
+    const auto mainOut = layouts.getMainOutputChannelSet();
+
+    DBG ("isBusesLayoutSupported, in: " << mainIn.getDescription() << ", out: " << mainOut.getDescription());
+
+    if (mainIn == mono && mainOut == mono) { return true; }
+    if (mainIn == mono && mainOut == stereo) { return true; }
+    if (mainIn == stereo && mainOut == stereo) { return true; }
+
+    return false;
 }
 #endif
 
@@ -142,9 +152,20 @@ void GDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[may
     // Get sample rate
     float sampleRate = float(getSampleRate());
 
-    // Get write pointers for left and right channels
-    float* channelDataL = buffer.getWritePointer(0);
-    float* channelDataR = buffer.getWritePointer(1);
+    /* Get read and write pointers for the input and output buffers. Handles mono-to-stereo processing by using the left channel's data
+    for the right channel if the input is mono.*/ 
+
+    auto mainInput = getBusBuffer(buffer, true, 0);
+    auto mainInputChannels = mainInput.getNumChannels();
+    auto isMainInputStereo = mainInputChannels > 1;
+    const float* inputDataL = mainInput.getReadPointer(0);
+    const float* inputDataR = mainInput.getReadPointer(isMainInputStereo ? 1 : 0);
+
+    auto mainOutput = getBusBuffer(buffer, false, 0);
+    auto mainOutputChannels = mainOutput.getNumChannels();
+    auto isMainOutputStereo = mainOutputChannels > 1;
+    float* outputDataL = mainOutput.getWritePointer(0);
+    float* outputDataR = mainOutput.getWritePointer(isMainOutputStereo ? 1 : 0);
 
     // Apply smoothed gain per sample
     for (int sample = 0; sample < buffer.getNumSamples(); ++sample) {
@@ -154,8 +175,9 @@ void GDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[may
         float delayInSamples = params.delayTime / 1000.0f * sampleRate;
         delayLine.setDelay(delayInSamples);
 
-        float dryL = channelDataL[sample];
-        float dryR = channelDataR[sample];
+        // Read pointers
+        float dryL = inputDataL[sample];
+        float dryR = inputDataR[sample];
 
         // convert stereo to mono
         float mono = (dryL + dryR) * 0.5f;
@@ -178,8 +200,9 @@ void GDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[may
         float mixL = dryL + wetL * params.mix;
         float mixR = dryR + wetR * params.mix;
 
-        channelDataL[sample] = mixL * params.gain;
-        channelDataR[sample] = mixR * params.gain;
+        // Write pointers
+        outputDataL[sample] = mixL * params.gain;
+        outputDataR[sample] = mixR * params.gain;
     }
     
     // Push waveform to audio visualizer component
