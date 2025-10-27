@@ -127,7 +127,7 @@ bool GDelayAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) c
     const auto mainIn = layouts.getMainInputChannelSet();
     const auto mainOut = layouts.getMainOutputChannelSet();
 
-    DBG ("isBusesLayoutSupported, in: " << mainIn.getDescription() << ", out: " << mainOut.getDescription());
+    // DBG ("isBusesLayoutSupported, in: " << mainIn.getDescription() << ", out: " << mainOut.getDescription());
 
     if (mainIn == mono && mainOut == mono) { return true; }
     if (mainIn == mono && mainOut == stereo) { return true; }

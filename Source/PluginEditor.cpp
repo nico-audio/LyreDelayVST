@@ -21,6 +21,8 @@ GDelayAudioProcessorEditor::GDelayAudioProcessorEditor (GDelayAudioProcessor& p)
 
     grainGroup.setText("Feedback-GrainPlaceholder");
     grainGroup.setTextLabelPosition(juce::Justification::horizontallyCentred);
+    grainGroup.addAndMakeVisible(lowCutKnob);
+    grainGroup.addAndMakeVisible(highCutKnob);
     addAndMakeVisible(grainGroup);
     
     outputGroup.setText("Output");
@@ -95,9 +97,13 @@ void GDelayAudioProcessorEditor::resized()
     // Position the knobs inside the groups
     delayTimeKnob.setTopLeftPosition(20, 20);
     feedbackKnob.setTopLeftPosition(delayTimeKnob.getX(), delayTimeKnob.getBottom() + 10);
+    stereoKnob.setTopLeftPosition(feedbackKnob.getX(), feedbackKnob.getBottom() + 10);
+
+    lowCutKnob.setTopLeftPosition(80, 210);
+    highCutKnob.setTopLeftPosition(lowCutKnob.getRight() + 20, lowCutKnob.getY());
+
     mixKnob.setTopLeftPosition(520, 120);
     gainKnob.setTopLeftPosition(mixKnob.getX(), mixKnob.getBottom() + 10);
-    stereoKnob.setTopLeftPosition(feedbackKnob.getX(), feedbackKnob.getBottom() + 10);
     
     // Audio visualizer
     audioProcessor.waveViewer.setBounds(15, 45, waveViewerWidth, waveViewerHeight);

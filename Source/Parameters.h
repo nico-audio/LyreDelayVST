@@ -16,6 +16,8 @@ const juce::ParameterID delayTimeParamID{ "delayTime", 1 };
 const juce::ParameterID mixParamID{ "mix", 1 };
 const juce::ParameterID feedbackParamID{ "feedback", 1 };
 const juce::ParameterID stereoParamID{ "stereoWidth", 1 };
+const juce::ParameterID lowCutParamID{ "lowCut", 1 };
+const juce::ParameterID highCutParamID{ "highCut", 1 };
 
 class Parameters
 {
@@ -34,6 +36,8 @@ public:
     float feedback = 0.0f;
     float panL = 0.0f;
     float panR = 1.0f;
+    float lowCut = 20.0f;
+    float highCut = 20000.0f;
    
     static constexpr float minDelayTime { 5.0f };
     static constexpr float maxDelayTime { 5000.0f };
@@ -44,6 +48,13 @@ public:
     static constexpr float maxMix{ 100.0f };
     static constexpr float mixStepSize{ 1.0f };
     static constexpr float defaultMix{ 100.0f };
+
+    static constexpr float minFilterCutoff { 20.0f };
+    static constexpr float maxFilterCutoff { 20000.0f };
+    static constexpr float filterStepSize { 1.0f };
+    static constexpr float filterSkewFactor { 0.3f };
+    static constexpr float defaultHighCutoff { 20000.0f };
+    static constexpr float defaultLowCutoff{ 20.0f };
     
 private:
     // Gain
@@ -66,6 +77,13 @@ private:
     // Stereo Width
     juce::AudioParameterFloat* stereoParam;
     juce::LinearSmoothedValue<float> stereoSmoother;
+
+    // SVF Filter - high and low cut
+    juce::AudioParameterFloat* lowCutParam;
+    juce::LinearSmoothedValue<float> lowCutSmoother;
+
+    juce::AudioParameterFloat* highCutParam;
+    juce::LinearSmoothedValue<float> highCutSmoother;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Parameters)
 };
