@@ -14,13 +14,14 @@
 
 
 RotaryKnob::RotaryKnob(const juce::String& text, juce::AudioProcessorValueTreeState& apvts, 
-                       const juce::ParameterID& parameterID, bool drawFromMiddle)
+                       const juce::ParameterID& parameterID, bool drawFromMiddle,
+                       juce::Rectangle<int> sliderBounds)
     : attachment(apvts, parameterID.getParamID(), slider)
 {
     // slider
     slider.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
-    slider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 70, 16);
-    slider.setBounds(0, 0, 70, 86);
+    slider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, sliderBounds.getWidth(), 16);
+    slider.setBounds(sliderBounds);
     addAndMakeVisible(slider);
 
     // label
@@ -30,8 +31,8 @@ RotaryKnob::RotaryKnob(const juce::String& text, juce::AudioProcessorValueTreeSt
     label.attachToComponent(&slider, false);
     addAndMakeVisible(label);
 
-    // screen size
-    setSize(70, 110);
+    // component size
+    setSize(sliderBounds.getWidth(), sliderBounds.getHeight() + 24);
 
     setLookAndFeel(RotaryKnobLookAndFeel::get());
 

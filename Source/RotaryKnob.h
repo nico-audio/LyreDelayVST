@@ -15,8 +15,11 @@
 class RotaryKnob  : public juce::Component
 {
 public:
-    RotaryKnob(const juce::String& text,juce::AudioProcessorValueTreeState& apvts,const juce::ParameterID& parameterID, 
-               bool drawFromMiddle = false);
+    RotaryKnob(const juce::String& text,
+               juce::AudioProcessorValueTreeState& apvts,
+               const juce::ParameterID& parameterID,
+               bool drawFromMiddle = false,
+               juce::Rectangle<int> sliderBounds = { 0, 0, 70, 86 });
     ~RotaryKnob() override;
 
     void resized() override;

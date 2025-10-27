@@ -11,6 +11,7 @@
       <FILE id="inzFxx" name="INTERDIM.TTF" compile="0" resource="1" file="../../../GameDevProjects/Fonts/interdimensional/INTERDIM.TTF"/>
     </GROUP>
     <GROUP id="{F4EB2649-9D18-B53A-5C88-218FAE2EC3CD}" name="Source">
+      <FILE id="bX0Cws" name="DSP.h" compile="0" resource="0" file="Source/DSP.h"/>
       <FILE id="OhDzH0" name="ProtectYourEars.h" compile="0" resource="0"
             file="Source/ProtectYourEars.h"/>
       <FILE id="hsz7Z9" name="LookAndFeel.h" compile="0" resource="0" file="Source/LookAndFeel.h"/>
