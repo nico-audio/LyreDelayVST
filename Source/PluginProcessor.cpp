@@ -20,6 +20,9 @@ GDelayAudioProcessor::GDelayAudioProcessor():
     params(apvts),
     waveViewer(2)
 {
+    lowCutFilter.setType(juce::dsp::StateVariableTPTFilterType::highpass);
+    highCutFilter.setType(juce::dsp::StateVariableTPTFilterType::lowpass);
+
     waveViewer.setRepaintRate(30);
     waveViewer.setBufferSize(256);
 }
@@ -111,6 +114,12 @@ void GDelayAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock
     // Clear out any old sample values from the feedback path
     feedbackL = 0.0f;
     feedbackR = 0.0f;
+
+    lowCutFilter.prepare(specifications);
+    lowCutFilter.reset();
+
+    highCutFilter.prepare(specifications);
+    highCutFilter.reset();
 }
 
 void GDelayAudioProcessor::releaseResources()
@@ -175,6 +184,10 @@ void GDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[may
         float delayInSamples = params.delayTime / 1000.0f * sampleRate;
         delayLine.setDelay(delayInSamples);
 
+        // Filter set cutoff - since the variables are smoothened, call setCutoffFrequency() on every sample timestep.
+        lowCutFilter.setCutoffFrequency(params.lowCut);
+        highCutFilter.setCutoffFrequency(params.highCut);
+
         // Read pointers
         float dryL = inputDataL[sample];
         float dryR = inputDataR[sample];
@@ -195,7 +208,12 @@ void GDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[may
         */
 
         feedbackL = wetL * params.feedback;
+        feedbackL = lowCutFilter.processSample(0, feedbackL);
+        feedbackL = highCutFilter.processSample(0, feedbackL);
+
         feedbackR = wetR * params.feedback;
+        feedbackR = lowCutFilter.processSample(1, feedbackR);
+        feedbackR = highCutFilter.processSample(1, feedbackR);
 
         float mixL = dryL + wetL * params.mix;
         float mixR = dryR + wetR * params.mix;
