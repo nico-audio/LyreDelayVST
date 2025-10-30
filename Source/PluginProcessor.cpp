@@ -120,6 +120,9 @@ void GDelayAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock
 
     highCutFilter.prepare(specifications);
     highCutFilter.reset();
+
+    lastLowCut = -1.0f;
+    lastHighCut = -1.0f;    
 }
 
 void GDelayAudioProcessor::releaseResources()
@@ -184,9 +187,15 @@ void GDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[may
         float delayInSamples = params.delayTime / 1000.0f * sampleRate;
         delayLine.setDelay(delayInSamples);
 
-        // Filter set cutoff - since the variables are smoothened, call setCutoffFrequency() on every sample timestep.
-        lowCutFilter.setCutoffFrequency(params.lowCut);
-        highCutFilter.setCutoffFrequency(params.highCut);
+        // Filter set cutoff - only calls setCutoffFrequency if values are changed
+        if (params.lowCut != lastLowCut) {
+            lowCutFilter.setCutoffFrequency(params.lowCut);
+            lastLowCut = params.lowCut;
+        }
+        if (params.highCut != lastHighCut) {
+            highCutFilter.setCutoffFrequency(params.highCut);
+            lastHighCut = params.highCut;
+        }
 
         // Read pointers
         float dryL = inputDataL[sample];
