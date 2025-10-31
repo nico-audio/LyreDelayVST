@@ -18,6 +18,8 @@ const juce::ParameterID feedbackParamID{ "feedback", 1 };
 const juce::ParameterID stereoParamID{ "stereoWidth", 1 };
 const juce::ParameterID lowCutParamID{ "lowCut", 1 };
 const juce::ParameterID highCutParamID{ "highCut", 1 };
+const juce::ParameterID tempoSyncParamID{ "tempoSync", 1 };
+const juce::ParameterID delayNoteParamID{ "delayNote", 1 };
 
 class Parameters
 {
@@ -38,6 +40,8 @@ public:
     float panR = 1.0f;
     float lowCut = 20.0f;
     float highCut = 20000.0f;
+    int delayNote = 0;
+    bool tempoSync = false;
    
     static constexpr float minDelayTime { 5.0f };
     static constexpr float maxDelayTime { 5000.0f };
@@ -84,6 +88,10 @@ private:
 
     juce::AudioParameterFloat* highCutParam;
     juce::LinearSmoothedValue<float> highCutSmoother;
+
+    // Tempo sync
+    juce::AudioParameterBool* tempoSyncParam;
+    juce::AudioParameterChoice* delayNoteParam;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Parameters)
 };

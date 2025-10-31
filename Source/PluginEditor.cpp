@@ -15,12 +15,13 @@ GDelayAudioProcessorEditor::GDelayAudioProcessorEditor (GDelayAudioProcessor& p)
     delayGroup.setText("Delay");
     delayGroup.setTextLabelPosition(juce::Justification::horizontallyCentred);
     delayGroup.addAndMakeVisible(delayTimeKnob);
-    delayGroup.addAndMakeVisible(feedbackKnob);
-    delayGroup.addAndMakeVisible(stereoKnob);
+    delayGroup.addAndMakeVisible(delayNoteKnob);
     addAndMakeVisible(delayGroup);
 
     grainGroup.setText("Feedback-GrainPlaceholder");
     grainGroup.setTextLabelPosition(juce::Justification::horizontallyCentred);
+    grainGroup.addAndMakeVisible(feedbackKnob);
+    grainGroup.addAndMakeVisible(stereoKnob);
     grainGroup.addAndMakeVisible(lowCutKnob);
     grainGroup.addAndMakeVisible(highCutKnob);
     addAndMakeVisible(grainGroup);
@@ -33,6 +34,12 @@ GDelayAudioProcessorEditor::GDelayAudioProcessorEditor (GDelayAudioProcessor& p)
 
     addAndMakeVisible(audioProcessor.waveViewer);
     audioProcessor.waveViewer.setColours(juce::Colour (252, 209, 253), juce::Colour (12, 12, 20));
+
+    tempoSyncButton.setButtonText("Sync");
+    tempoSyncButton.setClickingTogglesState(true);
+    tempoSyncButton.setBounds(0, 0, 70, 27);
+    tempoSyncButton.setColour(juce::TextButton::ColourIds::buttonOnColourId,juce::Colours::red);
+    delayGroup.addAndMakeVisible(tempoSyncButton);
 
     setSize (660, 470);
 
@@ -96,10 +103,13 @@ void GDelayAudioProcessorEditor::resized()
     
     // Position the knobs inside the groups
     delayTimeKnob.setTopLeftPosition(20, 20);
-    feedbackKnob.setTopLeftPosition(delayTimeKnob.getX(), delayTimeKnob.getBottom() + 10);
-    stereoKnob.setTopLeftPosition(feedbackKnob.getX(), feedbackKnob.getBottom() + 10);
+    tempoSyncButton.setTopLeftPosition(20, delayTimeKnob.getBottom() + 10);
+    delayNoteKnob.setTopLeftPosition(20, tempoSyncButton.getBottom() - 5);
 
-    lowCutKnob.setTopLeftPosition(80, 210);
+    feedbackKnob.setTopLeftPosition(20,20);
+    stereoKnob.setTopLeftPosition(feedbackKnob.getX(), feedbackKnob.getBottom() + 5);
+
+    lowCutKnob.setTopLeftPosition(80, 230);
     highCutKnob.setTopLeftPosition(lowCutKnob.getRight() + 20, lowCutKnob.getY());
 
     mixKnob.setTopLeftPosition(520, 120);

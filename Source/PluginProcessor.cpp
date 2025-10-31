@@ -201,7 +201,7 @@ void GDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[may
         float dryL = inputDataL[sample];
         float dryR = inputDataR[sample];
 
-        // convert stereo to mono
+        // convert stereo to mono -  takes the average value of both channels
         float mono = (dryL + dryR) * 0.5f;
 
         // push mono signal into the delay line

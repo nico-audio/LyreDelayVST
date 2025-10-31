@@ -51,4 +51,5 @@ RotaryKnob::~RotaryKnob()
 void RotaryKnob::resized()
 {
     slider.setTopLeftPosition(0, 24);
+    //DBG("Label bounds: " << getBounds().toString());
 }
