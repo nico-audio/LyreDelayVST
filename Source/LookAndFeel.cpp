@@ -34,7 +34,7 @@ void RotaryKnobLookAndFeel::drawRotarySlider(juce::Graphics& g, int x, int y, in
 {
     // bounds
     auto bounds = juce::Rectangle<int>(x, y, width, width).toFloat();
-    auto knobRect = bounds.reduced(10.0f, 10.0f);
+    auto knobRect = bounds.reduced(14.0f, 14.0f);
     
     // knob shadow
     auto path = juce::Path();

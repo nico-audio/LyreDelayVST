@@ -19,7 +19,7 @@ public:
                juce::AudioProcessorValueTreeState& apvts,
                const juce::ParameterID& parameterID,
                bool drawFromMiddle = false,
-               juce::Rectangle<int> sliderBounds = { 0, 0, 70, 86 });
+               juce::Rectangle<int> sliderBounds = { 0, 0, 80, 90 });
     ~RotaryKnob() override;
 
     void resized() override;

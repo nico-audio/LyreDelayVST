@@ -20,6 +20,9 @@ GDelayAudioProcessor::GDelayAudioProcessor():
     params(apvts),
     waveViewer(2)
 {
+    lowCutFilter.setType(juce::dsp::StateVariableTPTFilterType::highpass);
+    highCutFilter.setType(juce::dsp::StateVariableTPTFilterType::lowpass);
+
     waveViewer.setRepaintRate(30);
     waveViewer.setBufferSize(256);
 }
@@ -111,6 +114,15 @@ void GDelayAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock
     // Clear out any old sample values from the feedback path
     feedbackL = 0.0f;
     feedbackR = 0.0f;
+
+    lowCutFilter.prepare(specifications);
+    lowCutFilter.reset();
+
+    highCutFilter.prepare(specifications);
+    highCutFilter.reset();
+
+    lastLowCut = -1.0f;
+    lastHighCut = -1.0f;    
 }
 
 void GDelayAudioProcessor::releaseResources()
@@ -175,11 +187,21 @@ void GDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[may
         float delayInSamples = params.delayTime / 1000.0f * sampleRate;
         delayLine.setDelay(delayInSamples);
 
+        // Filter set cutoff - only calls setCutoffFrequency if values are changed
+        if (params.lowCut != lastLowCut) {
+            lowCutFilter.setCutoffFrequency(params.lowCut);
+            lastLowCut = params.lowCut;
+        }
+        if (params.highCut != lastHighCut) {
+            highCutFilter.setCutoffFrequency(params.highCut);
+            lastHighCut = params.highCut;
+        }
+
         // Read pointers
         float dryL = inputDataL[sample];
         float dryR = inputDataR[sample];
 
-        // convert stereo to mono
+        // convert stereo to mono -  takes the average value of both channels
         float mono = (dryL + dryR) * 0.5f;
 
         // push mono signal into the delay line
@@ -195,7 +217,12 @@ void GDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[may
         */
 
         feedbackL = wetL * params.feedback;
+        feedbackL = lowCutFilter.processSample(0, feedbackL);
+        feedbackL = highCutFilter.processSample(0, feedbackL);
+
         feedbackR = wetR * params.feedback;
+        feedbackR = lowCutFilter.processSample(1, feedbackR);
+        feedbackR = highCutFilter.processSample(1, feedbackR);
 
         float mixL = dryL + wetL * params.mix;
         float mixR = dryR + wetR * params.mix;
