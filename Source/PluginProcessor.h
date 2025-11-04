@@ -57,6 +57,11 @@ public:
 
     juce::AudioVisualiserComponent waveViewer;
 
+    static float millisecondsToSamples(float milliseconds, float sampleRate)
+    {
+        return milliseconds / 1000.0f * sampleRate;
+    }
+
 private:
     Parameters params;
 
