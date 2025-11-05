@@ -1,10 +1,16 @@
 /*
   ==============================================================================
-
-    Tempo.cpp
-    Created: 3 Nov 2025 8:14:32am
-    Author:  Nico V.
-
+ * File: [Tempo.cpp]
+ * Author:  [Nico V.]
+ * Last updated:[05/11/2025]
+ * Notes:
+ * This file implements the Tempo class methods.
+ * - noteLengthMultipliers: An array of multipliers to convert BPM to delay 
+ *   times for different note lengths.
+ * - reset: resets the BPM to a default value of 120.0.
+ * - update: updates the BPM from the host's playhead information.
+ * - getMillisecondsForNoteLength: Calculates the delay time in milliseconds 
+ *   for a given note length index based on the current BPM.
   ==============================================================================
 */
 
