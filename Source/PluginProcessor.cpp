@@ -122,7 +122,9 @@ void GDelayAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock
     highCutFilter.reset();
 
     lastLowCut = -1.0f;
-    lastHighCut = -1.0f;    
+    lastHighCut = -1.0f;
+
+    tempo.reset();
 }
 
 void GDelayAudioProcessor::releaseResources()
@@ -161,6 +163,14 @@ void GDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[may
     // Update parameters
     params.update();
 
+    // Get tempo from host to sync delay time
+    tempo.update(getPlayHead());
+
+    float syncedTime = float(tempo.getMillisecondsForNoteLength(params.delayNote));
+    if (syncedTime > Parameters::maxDelayTime) {
+        syncedTime = Parameters::maxDelayTime;
+    }
+
     // Get sample rate
     float sampleRate = float(getSampleRate());
 
@@ -183,6 +193,7 @@ void GDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[may
     for (int sample = 0; sample < buffer.getNumSamples(); ++sample) {
         params.smoothen();
 
+        float delayTime = params.tempoSync ? syncedTime : params.delayTime;
         float delayInSamples = millisecondsToSamples(params.delayTime, sampleRate);
         delayLine.setDelay(delayInSamples);
 
