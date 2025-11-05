@@ -194,7 +194,7 @@ void GDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[may
         params.smoothen();
 
         float delayTime = params.tempoSync ? syncedTime : params.delayTime;
-        float delayInSamples = millisecondsToSamples(params.delayTime, sampleRate);
+        float delayInSamples = millisecondsToSamples(delayTime, sampleRate);
         delayLine.setDelay(delayInSamples);
 
         // Filter set cutoff - only calls setCutoffFrequency if values are changed
