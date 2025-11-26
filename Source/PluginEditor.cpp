@@ -33,12 +33,12 @@ GDelayAudioProcessorEditor::GDelayAudioProcessorEditor (GDelayAudioProcessor& p)
     addAndMakeVisible(outputGroup);
 
     addAndMakeVisible(audioProcessor.waveViewer);
-    audioProcessor.waveViewer.setColours(juce::Colour (252, 209, 253), juce::Colour (12, 12, 20));
+    audioProcessor.waveViewer.setColours(juce::Colour (74, 54, 23), juce::Colour (206, 148, 92));
 
     tempoSyncButton.setButtonText("Sync");
     tempoSyncButton.setClickingTogglesState(true);
     tempoSyncButton.setBounds(0, 0, 70, 27);
-    tempoSyncButton.setColour(juce::TextButton::ColourIds::buttonOnColourId,juce::Colours::red);
+    tempoSyncButton.setLookAndFeel(ButtonLookAndFeel::get());
     delayGroup.addAndMakeVisible(tempoSyncButton);
 
     setSize (660, 470);
@@ -56,9 +56,10 @@ GDelayAudioProcessorEditor::~GDelayAudioProcessorEditor()
 
 void GDelayAudioProcessorEditor::paint (juce::Graphics& g)
 {
-    // noise background texture
-    auto noise = juce::ImageCache::getFromMemory(BinaryData::bg_texture_png, BinaryData::bg_texture_pngSize);
-    auto fillType = juce::FillType(noise, juce::AffineTransform::scale(0.5f));
+    // background texture
+    auto bgTexture = juce::ImageCache::getFromMemory(BinaryData::Lyre_BG_Texture_brushed_metal_png, BinaryData::Lyre_BG_Texture_brushed_metal_pngSize);
+    g.drawImageAt(bgTexture, 0, 0);
+    auto fillType = juce::FillType(bgTexture, juce::AffineTransform::scale(0.5f));
     g.setFillType(fillType);
     g.fillRect(getLocalBounds());
 
@@ -68,7 +69,7 @@ void GDelayAudioProcessorEditor::paint (juce::Graphics& g)
     auto rect = getLocalBounds().withHeight(40);
     g.setColour(Colors::header);
     g.fillRect(rect);
-    auto image = juce::ImageCache::getFromMemory(BinaryData::GDelay_logo_png, BinaryData::GDelay_logo_pngSize);
+    auto image = juce::ImageCache::getFromMemory(BinaryData::lyre_logo_1_png, BinaryData::lyre_logo_1_pngSize);
     int destWidth = image.getWidth() * scaleFactor;
     int destHeight = image.getHeight() * scaleFactor;
 
@@ -103,8 +104,8 @@ void GDelayAudioProcessorEditor::resized()
     
     // Position the knobs inside the groups
     delayTimeKnob.setTopLeftPosition(20, 20);
-    tempoSyncButton.setTopLeftPosition(20, delayTimeKnob.getBottom() + 10);
-    delayNoteKnob.setTopLeftPosition(20, tempoSyncButton.getBottom() - 5);
+    tempoSyncButton.setTopLeftPosition(30, delayTimeKnob.getBottom() + 10);
+    delayNoteKnob.setTopLeftPosition(20, tempoSyncButton.getBottom() + 5);
 
     feedbackKnob.setTopLeftPosition(20,20);
     stereoKnob.setTopLeftPosition(feedbackKnob.getX(), feedbackKnob.getBottom() + 5);
