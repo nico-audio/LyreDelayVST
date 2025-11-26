@@ -8,7 +8,7 @@
  * - update: This function will be called from within processBlock to inspect 
  *           the current state of the host’s audio transport using the 
  *           juce::AudioPlayHead object.
- * - getMillisecondsForNoteLength: convert a give note length into a time in 
+ * - getMillisecondsForNoteLength: convert a given note length into a time in 
  *                                 milliseconds.
  * - getTempo: returns the value of the private member variable bpm
   =============================================================================

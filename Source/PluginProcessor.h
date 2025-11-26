@@ -10,6 +10,7 @@
 
 #include <JuceHeader.h>
 #include "Parameters.h"
+#include "Tempo.h"
 
 class GDelayAudioProcessor  : public juce::AudioProcessor
 {
@@ -57,6 +58,11 @@ public:
 
     juce::AudioVisualiserComponent waveViewer;
 
+    static float millisecondsToSamples(float milliseconds, float sampleRate)
+    {
+        return milliseconds / 1000.0f * sampleRate;
+    }
+
 private:
     Parameters params;
 
@@ -70,6 +76,8 @@ private:
 
     float lastLowCut = -1.0f;
     float lastHighCut = -1.0f;
+
+    Tempo tempo;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (GDelayAudioProcessor)
 };

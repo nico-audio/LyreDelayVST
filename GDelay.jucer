@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="CQE3fq" name="GDelay" projectType="audioplug" useAppConfig="0"
+<JUCERPROJECT id="CQE3fq" name="Lyre" projectType="audioplug" useAppConfig="0"
               addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1" pluginFormats="buildAU,buildLV2,buildStandalone,buildVST3"
-              version="0.0.1" pluginManufacturer="Nico" bundleIdentifier="NicoGDelay"
-              pluginManufacturerCode="Nico" pluginCode="GDel" cppLanguageStandard="20">
-  <MAINGROUP id="qi5Naz" name="GDelay">
+              version="0.0.1" pluginManufacturer="Nico" bundleIdentifier="NicoLyre"
+              pluginManufacturerCode="Nico" pluginCode="Lyre" cppLanguageStandard="20">
+  <MAINGROUP id="qi5Naz" name="Lyre">
     <GROUP id="{B5B72528-351F-738B-7D8D-B58043B449C8}" name="Assets">
-      <FILE id="xgBpxU" name="bg_texture.png" compile="0" resource="1" file="../../Graphics/bg_texture.png"/>
       <FILE id="wqoicw" name="GDelay_logo.png" compile="0" resource="1" file="../../Graphics/GDelay_logo.png"/>
       <FILE id="inzFxx" name="INTERDIM.TTF" compile="0" resource="1" file="../../../GameDevProjects/Fonts/interdimensional/INTERDIM.TTF"/>
+      <FILE id="gOEGHm" name="Lyre_BG_Texture_brushed_2.png" compile="0"
+            resource="1" file="../../Graphics/Lyre/Lyre_BG_Texture_brushed_2.png"/>
+      <FILE id="Wpv9ra" name="Lyre_BG_Texture_brushed_metal.png" compile="0"
+            resource="1" file="../../Graphics/Lyre/Lyre_BG_Texture_brushed_metal.png"/>
+      <FILE id="i3Pg40" name="lyre_logo_1.png" compile="0" resource="1" file="../../Graphics/Lyre/lyre_logo_1.png"/>
     </GROUP>
     <GROUP id="{F4EB2649-9D18-B53A-5C88-218FAE2EC3CD}" name="Source">
       <FILE id="mhpmtU" name="Tempo.cpp" compile="1" resource="0" file="Source/Tempo.cpp"/>
@@ -51,9 +55,9 @@
   <EXPORTFORMATS>
     <VS2022 targetFolder="Builds/VisualStudio2022">
       <CONFIGURATIONS>
-        <CONFIGURATION isDebug="1" name="Debug" targetName="GDelay" enablePluginBinaryCopyStep="1"
+        <CONFIGURATION isDebug="1" name="Debug" targetName="Lyre" enablePluginBinaryCopyStep="1"
                        winWarningLevel="4"/>
-        <CONFIGURATION isDebug="0" name="Release" targetName="GDelay"/>
+        <CONFIGURATION isDebug="0" name="Release" targetName="Lyre"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_audio_basics" path="../../JUCE/modules"/>

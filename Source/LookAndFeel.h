@@ -14,26 +14,35 @@
 namespace Colors
 {
     const juce::Colour background{ 9, 7, 18 };
-    const juce::Colour header{ 25, 27, 54 };
+    const juce::Colour header{ 11, 2, 0 };
     
     namespace Knob
     {
         const juce::Colour trackBackground{ 205, 200, 195 };
-        const juce::Colour trackActive{ 150, 106, 173 };
+        const juce::Colour trackActive{ 229, 168, 106 };
         const juce::Colour outline{ 30, 31, 32 };
         const juce::Colour gradientTop{ 110, 112, 113 };
         const juce::Colour gradientBottom{ 156, 157, 158 };
         const juce::Colour dial{ 100, 100, 100 };
         const juce::Colour dropShadow{ 82, 68, 109 };
-        const juce::Colour label{ 9, 7, 18 };
+        const juce::Colour label{ 255, 255, 240 };
         const juce::Colour textBoxBackground{ 80, 80, 80 };
         const juce::Colour value{ 240, 240, 240 };
         const juce::Colour caret{ 255, 255, 255 };
     }
     namespace Group
     {
-        const juce::Colour label{ 82, 68, 109 };
-        const juce::Colour outline{ 82, 68, 109 };
+        const juce::Colour label{ 255, 255, 240 };
+        const juce::Colour outline{ 122, 84, 50 };
+    }
+
+    namespace Button
+    {
+        const juce::Colour text{ 255, 255, 240 };
+        const juce::Colour textToggled{ 255, 255, 240 };
+        const juce::Colour background{ 74, 54, 23 };
+        const juce::Colour backgroundToggled{ 206, 148, 92 };
+        const juce::Colour outline{ 69, 69, 69 };
     }
 }
 
@@ -79,4 +88,27 @@ public:
     juce::Font getLabelFont(juce::Label&) override;
 private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MainLookAndFeel)
+};
+
+class ButtonLookAndFeel : public juce::LookAndFeel_V4
+{
+public:
+    ButtonLookAndFeel();
+    
+    static ButtonLookAndFeel* get()
+    {
+        static ButtonLookAndFeel instance;
+        return &instance;
+    }
+
+    void drawButtonBackground(juce::Graphics & g, juce::Button & button,
+                              const juce::Colour & backgroundColour,
+                              bool shouldDrawButtonAsHighlighted,
+                              bool shouldDrawButtonAsDown) override;
+    
+    void drawButtonText(juce::Graphics & g, juce::TextButton & button,
+                        bool shouldDrawButtonAsHighlighted,
+                        bool shouldDrawButtonAsDown) override;
+private:
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(ButtonLookAndFeel)
 };
