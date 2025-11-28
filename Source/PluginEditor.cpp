@@ -15,7 +15,7 @@ GDelayAudioProcessorEditor::GDelayAudioProcessorEditor (GDelayAudioProcessor& p)
     delayGroup.setText("Delay");
     delayGroup.setTextLabelPosition(juce::Justification::horizontallyCentred);
     delayGroup.addAndMakeVisible(delayTimeKnob);
-    delayGroup.addAndMakeVisible(delayNoteKnob);
+    delayGroup.addChildComponent(delayNoteKnob);
     addAndMakeVisible(delayGroup);
 
     grainGroup.setText("Feedback-GrainPlaceholder");
@@ -47,10 +47,13 @@ GDelayAudioProcessorEditor::GDelayAudioProcessorEditor (GDelayAudioProcessor& p)
     gainKnob.slider.setColour(juce::Slider::rotarySliderFillColourId, juce::Colour (0, 198, 204));
 
     setLookAndFeel(&mainLF);
+
+    audioProcessor.params.tempoSyncParam->addListener(this);
 }
 
 GDelayAudioProcessorEditor::~GDelayAudioProcessorEditor()
 {
+    audioProcessor.params.tempoSyncParam->removeListener(this);
     setLookAndFeel(nullptr);
 }
 
@@ -105,7 +108,7 @@ void GDelayAudioProcessorEditor::resized()
     // Position the knobs inside the groups
     delayTimeKnob.setTopLeftPosition(20, 20);
     tempoSyncButton.setTopLeftPosition(30, delayTimeKnob.getBottom() + 10);
-    delayNoteKnob.setTopLeftPosition(20, tempoSyncButton.getBottom() + 5);
+    delayNoteKnob.setTopLeftPosition(delayTimeKnob.getX(), delayTimeKnob.getY());
 
     feedbackKnob.setTopLeftPosition(20,20);
     stereoKnob.setTopLeftPosition(feedbackKnob.getX(), feedbackKnob.getBottom() + 5);
@@ -118,4 +121,25 @@ void GDelayAudioProcessorEditor::resized()
     
     // Audio visualizer
     audioProcessor.waveViewer.setBounds(15, 45, waveViewerWidth, waveViewerHeight);
+}
+
+void GDelayAudioProcessorEditor::parameterValueChanged(int, float value)
+{
+    if (juce::MessageManager::getInstance()->isThisTheMessageThread()) {
+        updateDelayKnobs(value != 0.0f);
+    }
+    else {
+        juce::MessageManager::callAsync([this, value]
+        {
+            updateDelayKnobs(value != 0.0f);
+        });
+    }
+
+    //DBG("parameter changed: " << value);
+}
+
+void GDelayAudioProcessorEditor::updateDelayKnobs(bool tempoSyncActive)
+{
+    delayTimeKnob.setVisible(!tempoSyncActive);
+    delayNoteKnob.setVisible(tempoSyncActive);
 }

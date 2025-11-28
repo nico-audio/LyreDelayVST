@@ -59,6 +59,8 @@ public:
     static constexpr float filterSkewFactor { 0.3f };
     static constexpr float defaultHighCutoff { 20000.0f };
     static constexpr float defaultLowCutoff{ 20.0f };
+
+    juce::AudioParameterBool* tempoSyncParam;
     
 private:
     // Gain
@@ -90,7 +92,6 @@ private:
     juce::LinearSmoothedValue<float> highCutSmoother;
 
     // Tempo sync
-    juce::AudioParameterBool* tempoSyncParam;
     juce::AudioParameterChoice* delayNoteParam;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Parameters)

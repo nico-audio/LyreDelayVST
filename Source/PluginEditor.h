@@ -14,20 +14,23 @@
 #include "RotaryKnob.h"
 #include "LookAndFeel.h"
 
-//==============================================================================
-/**
-*/
-class GDelayAudioProcessorEditor  : public juce::AudioProcessorEditor
+
+class GDelayAudioProcessorEditor  : public juce::AudioProcessorEditor,
+                                    private juce::AudioProcessorParameter::Listener
 {
 public:
     GDelayAudioProcessorEditor (GDelayAudioProcessor&);
     ~GDelayAudioProcessorEditor() override;
 
-    //==============================================================================
     void paint (juce::Graphics&) override;
     void resized() override;
 
 private:
+    void parameterValueChanged(int, float) override;
+    void parameterGestureChanged(int, bool) override {}
+
+    void updateDelayKnobs(bool tempoSyncActive);
+
     GDelayAudioProcessor& audioProcessor;
 
     RotaryKnob gainKnob { "Gain", audioProcessor.apvts, gainParamID, true };

@@ -62,9 +62,10 @@ public:
     {
         return milliseconds / 1000.0f * sampleRate;
     }
+    
+    Parameters params;
 
 private:
-    Parameters params;
 
     juce::dsp::DelayLine<float, juce::dsp::DelayLineInterpolationTypes::Linear> delayLine;
 
