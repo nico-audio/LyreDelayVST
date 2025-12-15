@@ -13,21 +13,25 @@
 #include "Parameters.h"
 #include "RotaryKnob.h"
 #include "LookAndFeel.h"
+#include "LevelMeter.h"
 
-//==============================================================================
-/**
-*/
-class GDelayAudioProcessorEditor  : public juce::AudioProcessorEditor
+
+class GDelayAudioProcessorEditor  : public juce::AudioProcessorEditor,
+                                    private juce::AudioProcessorParameter::Listener
 {
 public:
     GDelayAudioProcessorEditor (GDelayAudioProcessor&);
     ~GDelayAudioProcessorEditor() override;
 
-    //==============================================================================
     void paint (juce::Graphics&) override;
     void resized() override;
 
 private:
+    void parameterValueChanged(int, float) override;
+    void parameterGestureChanged(int, bool) override {}
+
+    void updateDelayKnobs(bool tempoSyncActive);
+
     GDelayAudioProcessor& audioProcessor;
 
     RotaryKnob gainKnob { "Gain", audioProcessor.apvts, gainParamID, true };
@@ -48,6 +52,8 @@ private:
     juce::GroupComponent grainGroup, delayGroup, outputGroup;
 
     MainLookAndFeel mainLF;
+
+    LevelMeter meter;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (GDelayAudioProcessorEditor)
 };

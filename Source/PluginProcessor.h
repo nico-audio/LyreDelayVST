@@ -11,6 +11,7 @@
 #include <JuceHeader.h>
 #include "Parameters.h"
 #include "Tempo.h"
+#include "DelayLine.h"
 
 class GDelayAudioProcessor  : public juce::AudioProcessor
 {
@@ -62,11 +63,14 @@ public:
     {
         return milliseconds / 1000.0f * sampleRate;
     }
-
-private:
+    
     Parameters params;
 
-    juce::dsp::DelayLine<float, juce::dsp::DelayLineInterpolationTypes::Linear> delayLine;
+    std::atomic<float> levelL, levelR;
+
+private:
+
+    DelayLine delayLineL, delayLineR;
 
     float feedbackL = 0.0f;
     float feedbackR = 0.0f;

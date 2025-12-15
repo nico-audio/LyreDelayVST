@@ -102,12 +102,14 @@ void GDelayAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock
     specifications.sampleRate = sampleRate;
     specifications.maximumBlockSize = juce::uint32(samplesPerBlock);
     specifications.numChannels = 2;
-    delayLine.prepare(specifications);
+
 
     double numSamples = Parameters::maxDelayTime / 1000.0 * sampleRate;
     int maxDelayInSamples = int(std::ceil(numSamples));
-    delayLine.setMaximumDelayInSamples(maxDelayInSamples);
-    delayLine.reset();
+    delayLineL.setMaximumDelayInSamples(maxDelayInSamples);
+    delayLineR.setMaximumDelayInSamples(maxDelayInSamples);
+    delayLineL.reset();
+    delayLineR.reset();;
 
     // DBG(maxDelayInSamples);
 
@@ -125,6 +127,9 @@ void GDelayAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock
     lastHighCut = -1.0f;
 
     tempo.reset();
+
+    levelL.store(0.0f);
+    levelR.store(0.0f);
 }
 
 void GDelayAudioProcessor::releaseResources()
@@ -189,13 +194,16 @@ void GDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[may
     float* outputDataL = mainOutput.getWritePointer(0);
     float* outputDataR = mainOutput.getWritePointer(isMainOutputStereo ? 1 : 0);
 
+    // Level meter local variables
+    float maxL = 0.0f;
+    float maxR = 0.0f;
+
     // Apply smoothed gain per sample
     for (int sample = 0; sample < buffer.getNumSamples(); ++sample) {
         params.smoothen();
 
         float delayTime = params.tempoSync ? syncedTime : params.delayTime;
         float delayInSamples = millisecondsToSamples(delayTime, sampleRate);
-        delayLine.setDelay(delayInSamples);
 
         // Filter set cutoff - only calls setCutoffFrequency if values are changed
         if (params.lowCut != lastLowCut) {
@@ -214,12 +222,12 @@ void GDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[may
         // convert stereo to mono -  takes the average value of both channels
         float mono = (dryL + dryR) * 0.5f;
 
-        // push mono signal into the delay line
-        delayLine.pushSample(0, mono * params.panL + feedbackR);
-        delayLine.pushSample(1, mono * params.panR + feedbackL);
+        // write mono signal into the delay line
+        delayLineL.write(mono * params.panL + feedbackR);
+        delayLineR.write(mono * params.panR + feedbackL);
 
-        float wetL = delayLine.popSample(0);
-        float wetR = delayLine.popSample(1);
+        float wetL = delayLineL.read(delayInSamples);
+        float wetR = delayLineR.read(delayInSamples);
 
         /*Multi-tap delay
         wetL += delayLine.popSample(0, delayInSamples * 2.0f, false) * 0.7f;
@@ -238,9 +246,20 @@ void GDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[may
         float mixR = dryR + wetR * params.mix;
 
         // Write pointers
-        outputDataL[sample] = mixL * params.gain;
-        outputDataR[sample] = mixR * params.gain;
+        float outL = mixL * params.gain;
+        float outR = mixR * params.gain;
+
+        outputDataL[sample] = outL;
+        outputDataR[sample] = outR;
+
+        // to lvl meter
+        maxL = std::max(maxL, std::abs(outL));
+        maxR = std::max(maxR, std::abs(outR));
     }
+
+    // Store level measurements
+    levelL.store(maxL);
+    levelR.store(maxR);
     
     // Push waveform to audio visualizer component
     waveViewer.pushBuffer(buffer);
