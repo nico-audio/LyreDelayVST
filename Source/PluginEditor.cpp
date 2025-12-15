@@ -10,7 +10,7 @@
 #include "PluginEditor.h"
 
 GDelayAudioProcessorEditor::GDelayAudioProcessorEditor (GDelayAudioProcessor& p)
-    : AudioProcessorEditor (&p), audioProcessor (p)
+    : AudioProcessorEditor (&p), audioProcessor (p), meter (p.levelL, p.levelR)
 {
     delayGroup.setText("Delay");
     delayGroup.setTextLabelPosition(juce::Justification::horizontallyCentred);
@@ -28,6 +28,7 @@ GDelayAudioProcessorEditor::GDelayAudioProcessorEditor (GDelayAudioProcessor& p)
     
     outputGroup.setText("Output");
     outputGroup.setTextLabelPosition(juce::Justification::horizontallyCentred);
+    outputGroup.addAndMakeVisible(meter);
     addAndMakeVisible(gainKnob);
     addAndMakeVisible(mixKnob);
     addAndMakeVisible(outputGroup);
@@ -119,6 +120,7 @@ void GDelayAudioProcessorEditor::resized()
 
     mixKnob.setTopLeftPosition(520, 120);
     gainKnob.setTopLeftPosition(mixKnob.getX(), mixKnob.getBottom() + 10);
+    meter.setBounds(outputGroup.getWidth() - 45, 30, 30, gainKnob.getBottom() - 30);
     
     // Audio visualizer
     audioProcessor.waveViewer.setBounds(15, 45, waveViewerWidth, waveViewerHeight);

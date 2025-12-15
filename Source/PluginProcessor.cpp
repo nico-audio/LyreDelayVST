@@ -127,6 +127,9 @@ void GDelayAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock
     lastHighCut = -1.0f;
 
     tempo.reset();
+
+    levelL.store(0.0f);
+    levelR.store(0.0f);
 }
 
 void GDelayAudioProcessor::releaseResources()
@@ -191,6 +194,10 @@ void GDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[may
     float* outputDataL = mainOutput.getWritePointer(0);
     float* outputDataR = mainOutput.getWritePointer(isMainOutputStereo ? 1 : 0);
 
+    // Level meter local variables
+    float maxL = 0.0f;
+    float maxR = 0.0f;
+
     // Apply smoothed gain per sample
     for (int sample = 0; sample < buffer.getNumSamples(); ++sample) {
         params.smoothen();
@@ -239,9 +246,20 @@ void GDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[may
         float mixR = dryR + wetR * params.mix;
 
         // Write pointers
-        outputDataL[sample] = mixL * params.gain;
-        outputDataR[sample] = mixR * params.gain;
+        float outL = mixL * params.gain;
+        float outR = mixR * params.gain;
+
+        outputDataL[sample] = outL;
+        outputDataR[sample] = outR;
+
+        // to lvl meter
+        maxL = std::max(maxL, std::abs(outL));
+        maxR = std::max(maxR, std::abs(outR));
     }
+
+    // Store level measurements
+    levelL.store(maxL);
+    levelR.store(maxR);
     
     // Push waveform to audio visualizer component
     waveViewer.pushBuffer(buffer);

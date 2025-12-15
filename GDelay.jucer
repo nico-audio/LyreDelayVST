@@ -15,6 +15,8 @@
       <FILE id="i3Pg40" name="lyre_logo_1.png" compile="0" resource="1" file="../../Graphics/Lyre/lyre_logo_1.png"/>
     </GROUP>
     <GROUP id="{F4EB2649-9D18-B53A-5C88-218FAE2EC3CD}" name="Source">
+      <FILE id="px884k" name="LevelMeter.cpp" compile="1" resource="0" file="Source/LevelMeter.cpp"/>
+      <FILE id="t9cVHY" name="LevelMeter.h" compile="0" resource="0" file="Source/LevelMeter.h"/>
       <FILE id="h4YwfJ" name="DelayLine.cpp" compile="1" resource="0" file="Source/DelayLine.cpp"/>
       <FILE id="HPN3BI" name="DelayLine.h" compile="0" resource="0" file="Source/DelayLine.h"/>
       <FILE id="mhpmtU" name="Tempo.cpp" compile="1" resource="0" file="Source/Tempo.cpp"/>

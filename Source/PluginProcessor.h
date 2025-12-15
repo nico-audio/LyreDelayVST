@@ -66,6 +66,8 @@ public:
     
     Parameters params;
 
+    std::atomic<float> levelL, levelR;
+
 private:
 
     DelayLine delayLineL, delayLineR;

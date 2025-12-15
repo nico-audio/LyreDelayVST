@@ -6,7 +6,7 @@
  * Notes:
  * - reset: resets the internal state when audio playback starts or restarts.
  * - update: This function will be called from within processBlock to inspect 
- *           the current state of the host’s audio transport using the 
+ *           the current state of the hostâ€™s audio transport using the 
  *           juce::AudioPlayHead object.
  * - getMillisecondsForNoteLength: convert a given note length into a time in 
  *                                 milliseconds.
