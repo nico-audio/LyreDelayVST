@@ -10,12 +10,40 @@
 
 #include "LookAndFeel.h"
 
+/*
 const juce::Typeface::Ptr Fonts::typeface = juce::Typeface::createSystemTypefaceFor(
     BinaryData::INTERDIM_TTF, BinaryData::INTERDIM_TTFSize);
+*/
 
+const juce::Typeface::Ptr Fonts::interdimTypeface =
+juce::Typeface::createSystemTypefaceFor(BinaryData::INTERDIM_TTF,BinaryData::INTERDIM_TTFSize);
+
+const juce::Typeface::Ptr Fonts::inductionTypeface =
+juce::Typeface::createSystemTypefaceFor(BinaryData::Induction_otf, BinaryData::Induction_otfSize);
+
+const juce::Typeface::Ptr Fonts::patopianTypeface =
+juce::Typeface::createSystemTypefaceFor(BinaryData::Patopian_1986_ttf, BinaryData::Patopian_1986_ttfSize);
+
+/*
 juce::Font Fonts::getFont(float height)
 {
     return juce::Font(typeface).withHeight(height);
+}
+*/
+
+juce::Font Fonts::getInterdim(float height)
+{
+    return juce::Font(interdimTypeface).withHeight(height);
+}
+
+juce::Font Fonts::getInduction(float height)
+{
+    return juce::Font(inductionTypeface).withHeight(height);
+}
+
+juce::Font Fonts::getPatopian(float height)
+{
+    return juce::Font(patopianTypeface).withHeight(height);
 }
 
 RotaryKnobLookAndFeel::RotaryKnobLookAndFeel()
@@ -100,7 +128,7 @@ void RotaryKnobLookAndFeel::drawRotarySlider(juce::Graphics& g, int x, int y, in
 
 juce::Font RotaryKnobLookAndFeel::getLabelFont([[maybe_unused]] juce::Label& label)
 {
-    return Fonts::getFont();
+    return Fonts::getInterdim(14.0f);
 }
 
 class RotaryKnobLabel : public juce::Label
@@ -161,7 +189,7 @@ MainLookAndFeel::MainLookAndFeel()
 }
 juce::Font MainLookAndFeel::getLabelFont([[maybe_unused]] juce::Label& label)
 {
-    return Fonts::getFont();
+    return Fonts::getInterdim(14.0f);
 }
 
 ButtonLookAndFeel::ButtonLookAndFeel()
@@ -209,6 +237,6 @@ void ButtonLookAndFeel::drawButtonText(juce::Graphics& g, juce::TextButton& butt
         g.setColour(button.findColour(juce::TextButton::textColourOffId));
     }
 
-    g.setFont(Fonts::getFont(12.0f));
+    g.setFont(Fonts::getInterdim(12.0f));
     g.drawText(button.getButtonText(), buttonRect, juce::Justification::centred);
 }

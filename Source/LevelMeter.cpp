@@ -32,7 +32,7 @@ void LevelMeter::paint (juce::Graphics& g)
     drawLevel(g, dbLevelL, 0, 7);
     drawLevel(g, dbLevelR, 9, 7);
     
-    g.setFont(Fonts::getFont(8.0f));
+    g.setFont(Fonts::getPatopian(10.0f));
 
     for (float db = maxdB; db >= mindB; db -= stepdB) {
         int y = positionForLevel(db);
@@ -48,7 +48,7 @@ void LevelMeter::paint (juce::Graphics& g)
 void LevelMeter::resized()
 {
     maxPos = 4.0f;
-    minPos = float(getHeight()) - 4.0f;
+    minPos = float(getHeight()) - 8.0f;
 }
 
 void LevelMeter::timerCallback()

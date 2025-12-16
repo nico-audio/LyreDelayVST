@@ -57,11 +57,23 @@ namespace Colors
 
 class Fonts
 {
-public:
+/*
+/public:
     Fonts() = delete;
     static juce::Font getFont(float height = 14.0f);
 private:
     static const juce::Typeface::Ptr typeface;
+*/
+public:
+    Fonts() = delete;
+
+    static juce::Font getInterdim(float height = 14.0f);
+    static juce::Font getInduction(float height = 14.0f);
+    static juce::Font getPatopian(float height = 10.0f);
+private:
+    static const juce::Typeface::Ptr interdimTypeface;
+    static const juce::Typeface::Ptr inductionTypeface;
+    static const juce::Typeface::Ptr patopianTypeface;
 };
 
 class RotaryKnobLookAndFeel : public juce::LookAndFeel_V4
