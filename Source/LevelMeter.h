@@ -25,8 +25,31 @@ public:
 private:
     void timerCallback() override;
 
+    int positionForLevel(float dbLevel) const noexcept
+    {
+        return int(std::round(juce::jmap(dbLevel, maxdB, mindB, maxPos, minPos)));
+    }
+
+    void drawLevel(juce::Graphics& g, float level, int x, int width);
+
+    // store measurements from processor
     std::atomic<float>& measurementL;
     std::atomic<float>& measurementR;
+
+    // meter limits and marks
+    static constexpr float maxdB = 6.0f;
+    static constexpr float mindB = -60.0f;
+    static constexpr float stepdB = 6.0f;
+
+    // y-coordinates for position
+    float maxPos = 0.0f;
+    float minPos = 0.0f;
+
+    static constexpr float clampdB = -120.0f;
+    static constexpr float clampLevel = 0.000001f; // -120 dB
+
+    float dbLevelL;
+    float dbLevelR;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (LevelMeter)
 };
