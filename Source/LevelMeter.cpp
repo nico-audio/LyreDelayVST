@@ -12,11 +12,53 @@
 #include "LevelMeter.h"
 #include "LookAndFeel.h"
 
+Bulb::Bulb(const juce::Colour& c) : colour(c) {}
+
+void Bulb::paint(juce::Graphics& g)
+{
+    // Choose fill colour depending on state
+    if (isOn)
+        g.setColour(colour);
+    else
+        g.setColour(juce::Colours::black);
+
+    const auto delta = 3.5f;
+    const auto bounds = getLocalBounds().toFloat().reduced(delta);
+    const auto side = juce::jmin(bounds.getWidth(), bounds.getHeight());
+
+    juce::Rectangle<float> bulbBounds = getLocalBounds().toFloat().withSizeKeepingCentre(side, side);
+
+    // Fill bulb
+    g.fillEllipse(bulbBounds);
+
+    // Outline
+    g.setColour(juce::Colours::black);
+    g.drawEllipse(bulbBounds, 1.0f);
+
+    // Glow effect if "on"
+    if (isOn)
+    {
+        g.setGradientFill(
+            juce::ColourGradient{
+                colour.withAlpha(0.3f), bulbBounds.getCentre(),
+                colour.withLightness(1.5f).withAlpha(0.0f), {}, true
+            }
+        );
+        g.fillEllipse(bulbBounds.expanded(delta));
+    }
+}
+
+void Bulb::setState(bool state)
+{
+    isOn = state;
+    repaint();
+}
+
 LevelMeter::LevelMeter(std::atomic<float>& measurementL_, std::atomic<float>& measurementR_)
                        : measurementL(measurementL_), measurementR(measurementR_), dbLevelL(clampdB), dbLevelR(clampdB)
 {
-    setOpaque(true);
-    startTimerHz(60);
+    startTimerHz(refreshRate);
+    decay = 1.0f - std::exp(-1.0f / (float(refreshRate) * timeConstant));
 }
 
 LevelMeter::~LevelMeter()
@@ -26,53 +68,110 @@ LevelMeter::~LevelMeter()
 void LevelMeter::paint (juce::Graphics& g)
 {
     const auto bounds = getLocalBounds();
-    
-    g.fillAll(Colors::LevelMeter::background);
 
-    drawLevel(g, dbLevelL, 0, 7);
-    drawLevel(g, dbLevelR, 9, 7);
-    
-    g.setFont(Fonts::getPatopian(10.0f));
+    // Map dB values into [0,1] range
+    const auto valueL = juce::jmap(dbLevelL, mindB, maxdB, 0.0f, 1.0f);
+    const auto valueR = juce::jmap(dbLevelR, mindB, maxdB, 0.0f, 1.0f);
 
-    for (float db = maxdB; db >= mindB; db -= stepdB) {
-        int y = positionForLevel(db);
-        
-        g.setColour(Colors::LevelMeter::tickLine);
-        g.fillRect(0, y, 10, 1);
-        
-        g.setColour(Colors::LevelMeter::tickLabel);
-        g.drawSingleLineText(juce::String(int(db)), bounds.getWidth(), y + 3, juce::Justification::right);
+    // Light bulbs based on normalized values
+    for (int i = 0; i < totalNumberOfBulbs; ++i)
+    {
+        bulbsL[i]->setState(valueL >= float(i + 1) / totalNumberOfBulbs);
+        bulbsR[i]->setState(valueR >= float(i + 1) / totalNumberOfBulbs);
     }
+
+    drawLabel(g);
 }
 
 void LevelMeter::resized()
 {
-    maxPos = 4.0f;
+    juce::ColourGradient gradientL{ Colors::LevelMeter::levelOK , getLocalBounds().getBottomLeft().toFloat(),
+                                    Colors::LevelMeter::levelLoud, getLocalBounds().getTopLeft().toFloat(), false };
+    gradientL.addColour(0.5, Colors::LevelMeter::levelWarning);
+
+    // Divide height into equal segments
+    const auto bulbHeight = getLocalBounds().getHeight() / totalNumberOfBulbs;
+    
+    // Split bounds into left and right halves 
+    auto fullBounds = getLocalBounds();
+    auto boundsL = fullBounds.removeFromLeft(getWidth() / 2); auto boundsR = fullBounds;
+    
+    // Value to move each channel's bulbs inwards. Increase to reduce the gap.
+    const int offset = 13; 
+    
+    bulbsL.clear();
+    bulbsR.clear();
+
+    // Left channel bulbs
+    for (int i = 0; i < totalNumberOfBulbs; ++i)
+    {
+        auto bulb = std::make_unique<Bulb>(gradientL.getColourAtPosition(double(i) / totalNumberOfBulbs));
+        addAndMakeVisible(bulb.get());
+        
+        //bulb bounds
+        auto segment = boundsL.removeFromBottom(bulbHeight);
+        bulb->setBounds(segment.translated(offset, 0).withSizeKeepingCentre(18, 18));
+        bulbsL.push_back(std::move(bulb));
+    }
+
+    // Right channel bulbs
+    for (int i = 0; i < totalNumberOfBulbs; ++i)
+    {
+        auto bulb = std::make_unique<Bulb>(gradientL.getColourAtPosition(double(i) / totalNumberOfBulbs));
+        addAndMakeVisible(bulb.get());
+
+        //bulb bounds
+        auto segment = boundsR.removeFromBottom(bulbHeight);
+        bulb->setBounds(segment.translated(-offset, 0).withSizeKeepingCentre(18, 18));
+        bulbsR.push_back(std::move(bulb));
+    }
+
+    maxPos = 12.0f;
     minPos = float(getHeight()) - 8.0f;
 }
 
 void LevelMeter::timerCallback()
 {
-    dbLevelL = juce::Decibels::gainToDecibels(measurementL.load(), clampdB);
-    dbLevelR = juce::Decibels::gainToDecibels(measurementR.load(), clampdB);
+    updateLevel(measurementL.load(), levelL, dbLevelL);
+    updateLevel(measurementR.load(), levelR, dbLevelR);
 
     repaint();
 
     //DBG("left: " << measurementL.load() << ", right: " << measurementR.load());
 }
 
-void LevelMeter::drawLevel(juce::Graphics& g, float level, int x, int width)
+
+
+void LevelMeter::drawLabel(juce::Graphics& g)
 {
-    int y = positionForLevel(level);
-    if (level > 0.0f) {
-        int y0 = positionForLevel(0.0f);
-        g.setColour(Colors::LevelMeter::tooLoud);
-        g.fillRect(x, y, width, y0 - y);
-        g.setColour(Colors::LevelMeter::levelOK);
-        g.fillRect(x, y0, width, getHeight() - y0);
+    g.setFont(Fonts::getPatopian(10.0f));
+
+    for (float db = maxdB; db >= mindB; db -= stepdB)
+    {
+        // Map dB to vertical position
+        const float proportion = (db - mindB) / (maxdB - mindB);
+        const int y = int(minPos - proportion * (minPos - maxPos));
+
+        // Tick label
+        g.setColour(Colors::LevelMeter::tickLabel);
+        g.drawSingleLineText(juce::String(int(db)), getWidth() - 10, y + 2, juce::Justification::right);
     }
-    else if (y < getHeight()) {
-        g.setColour(Colors::LevelMeter::levelOK);
-        g.fillRect(x, y, width, getHeight() - y);
+}
+
+// One pole filter smoothing
+void LevelMeter::updateLevel(float newLevel, float& smoothedLevel, float& leveldB) const
+{
+    if (newLevel > smoothedLevel) {
+        smoothedLevel = newLevel;
+        // instantaneous attack
+    }
+    else {
+        smoothedLevel += (newLevel - smoothedLevel) * decay;
+    }
+    if (smoothedLevel > clampLevel) {
+        leveldB = juce::Decibels::gainToDecibels(smoothedLevel);
+    }
+    else {
+        leveldB = clampdB;
     }
 }

@@ -8,6 +8,7 @@
 
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
+#include <melatonin_inspector/melatonin_inspector.h>
 
 GDelayAudioProcessorEditor::GDelayAudioProcessorEditor (GDelayAudioProcessor& p)
     : AudioProcessorEditor (&p), audioProcessor (p), meter (p.levelL, p.levelR)
@@ -28,7 +29,7 @@ GDelayAudioProcessorEditor::GDelayAudioProcessorEditor (GDelayAudioProcessor& p)
     
     outputGroup.setText("Output");
     outputGroup.setTextLabelPosition(juce::Justification::horizontallyCentred);
-    outputGroup.addAndMakeVisible(meter);
+    addAndMakeVisible(meter);
     addAndMakeVisible(gainKnob);
     addAndMakeVisible(mixKnob);
     addAndMakeVisible(outputGroup);
@@ -42,10 +43,14 @@ GDelayAudioProcessorEditor::GDelayAudioProcessorEditor (GDelayAudioProcessor& p)
     tempoSyncButton.setLookAndFeel(ButtonLookAndFeel::get());
     delayGroup.addAndMakeVisible(tempoSyncButton);
 
-    setSize (660, 470);
+    // Dev module
+    //inspector = std::make_unique<melatonin::Inspector>(*this);
+    //inspector->setVisible(true);
+
+    setSize (720, 470);
 
     // gain track color override
-    gainKnob.slider.setColour(juce::Slider::rotarySliderFillColourId, juce::Colour (0, 198, 204));
+    gainKnob.slider.setColour(juce::Slider::rotarySliderFillColourId, juce::Colour (42, 192, 8));
 
     setLookAndFeel(&mainLF);
 
@@ -89,11 +94,11 @@ void GDelayAudioProcessorEditor::resized()
     
     const int groupSpacing { 10 };
     const int delayGroupWidth { 150 };
-    const int outputGroupWidth { 150 };
+    const int outputGroupWidth { 170 };
     const int delayLeftEdge { 10 };
-    const int outputRightEdge { 160 };
+    const int outputRightEdge { 180 };
     const int waveViewerHeight{ 50 };
-    const int waveViewerWidth { 630 };
+    const int waveViewerWidth { 690 };
     
     int topMargin = 100;
     int height = bounds.getHeight() - 110;
@@ -118,9 +123,9 @@ void GDelayAudioProcessorEditor::resized()
     lowCutKnob.setTopLeftPosition(80, 230);
     highCutKnob.setTopLeftPosition(lowCutKnob.getRight() + 20, lowCutKnob.getY());
 
-    mixKnob.setTopLeftPosition(520, 120);
+    mixKnob.setTopLeftPosition(550, 120);
     gainKnob.setTopLeftPosition(mixKnob.getX(), mixKnob.getBottom() + 10);
-    meter.setBounds(outputGroup.getWidth() - 45, 30, 30, gainKnob.getBottom() - 30);
+    meter.setBounds(612, 135, 96, 220);
     
     // Audio visualizer
     audioProcessor.waveViewer.setBounds(15, 45, waveViewerWidth, waveViewerHeight);

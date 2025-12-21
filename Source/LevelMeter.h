@@ -12,6 +12,19 @@
 
 #include <JuceHeader.h>
 
+class Bulb : public juce::Component
+{
+public:
+    // Construct a bulb with a given colour
+    explicit Bulb(const juce::Colour& c);
+
+    void paint(juce::Graphics& g) override;
+    void setState(bool state);
+
+private:
+    bool isOn = false;
+    juce::Colour colour{};   // Base colour of bulb
+};
 
 class LevelMeter  : public juce::Component, private juce::Timer
 {
@@ -29,14 +42,16 @@ private:
     {
         return int(std::round(juce::jmap(dbLevel, maxdB, mindB, maxPos, minPos)));
     }
+    
+    void drawLabel(juce::Graphics& g);
+    void updateLevel(float newLevel, float& smoothedLevel, float& leveldB) const;
 
-    void drawLevel(juce::Graphics& g, float level, int x, int width);
-
-    // store measurements from processor
+    // Store measurements from processor
     std::atomic<float>& measurementL;
     std::atomic<float>& measurementR;
 
-    // meter limits and marks
+    // Meter limits and marks
+    const int totalNumberOfBulbs = 12;
     static constexpr float maxdB = 6.0f;
     static constexpr float mindB = -60.0f;
     static constexpr float stepdB = 6.0f;
@@ -50,6 +65,19 @@ private:
 
     float dbLevelL;
     float dbLevelR;
+
+    static constexpr int refreshRate = 60;
+
+    float decay = 0.0f;
+    float levelL = clampLevel;
+    float levelR = clampLevel;
+
+    // Smoothing time constant (seconds)
+    float timeConstant = 0.2f;
+
+    // Bulb containers
+    std::vector<std::unique_ptr<Bulb>> bulbsL;
+    std::vector<std::unique_ptr<Bulb>> bulbsR;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (LevelMeter)
 };

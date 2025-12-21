@@ -47,23 +47,15 @@ namespace Colors
     
     namespace LevelMeter
     {
-        const juce::Colour background{ 11, 2, 0 };
-        const juce::Colour tickLine{ 255, 255, 240 };
         const juce::Colour tickLabel{ 255, 255, 240 };
-        const juce::Colour tooLoud{ 226, 74, 81 };
-        const juce::Colour levelOK{ 65, 206, 88 };
+        const juce::Colour levelOK{ 0, 115, 95 };
+        const juce::Colour levelWarning{ 244, 225, 73 };
+        const juce::Colour levelLoud{ 145, 0, 18 };
     }
 }
 
 class Fonts
 {
-/*
-/public:
-    Fonts() = delete;
-    static juce::Font getFont(float height = 14.0f);
-private:
-    static const juce::Typeface::Ptr typeface;
-*/
 public:
     Fonts() = delete;
 
