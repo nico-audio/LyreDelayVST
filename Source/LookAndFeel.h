@@ -52,6 +52,12 @@ namespace Colors
         const juce::Colour levelWarning{ 244, 225, 73 };
         const juce::Colour levelLoud{ 145, 0, 18 };
     }
+
+    namespace AudioVisualizer
+    {
+        const juce::Colour visualizerBG{ 74, 54, 23 };
+        const juce::Colour visualizerWave{ 206, 148, 92 };
+    }
 }
 
 class Fonts

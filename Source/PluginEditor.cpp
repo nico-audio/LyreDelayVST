@@ -35,7 +35,7 @@ GDelayAudioProcessorEditor::GDelayAudioProcessorEditor (GDelayAudioProcessor& p)
     addAndMakeVisible(outputGroup);
 
     addAndMakeVisible(audioProcessor.waveViewer);
-    audioProcessor.waveViewer.setColours(juce::Colour (74, 54, 23), juce::Colour (206, 148, 92));
+    audioProcessor.waveViewer.setColours(Colors::AudioVisualizer::visualizerBG, Colors::AudioVisualizer::visualizerWave);
 
     tempoSyncButton.setButtonText("Sync");
     tempoSyncButton.setClickingTogglesState(true);
