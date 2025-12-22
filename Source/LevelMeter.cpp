@@ -54,7 +54,7 @@ void Bulb::setState(bool state)
     repaint();
 }
 
-LevelMeter::LevelMeter(std::atomic<float>& measurementL_, std::atomic<float>& measurementR_)
+LevelMeter::LevelMeter(Measurement& measurementL_, Measurement& measurementR_)
                        : measurementL(measurementL_), measurementR(measurementR_), dbLevelL(clampdB), dbLevelR(clampdB)
 {
     startTimerHz(refreshRate);
@@ -132,12 +132,12 @@ void LevelMeter::resized()
 
 void LevelMeter::timerCallback()
 {
-    updateLevel(measurementL.load(), levelL, dbLevelL);
-    updateLevel(measurementR.load(), levelR, dbLevelR);
+    updateLevel(measurementL.readAndReset(), levelL, dbLevelL);
+    updateLevel(measurementR.readAndReset(), levelR, dbLevelR);
 
     repaint();
 
-    //DBG("left: " << measurementL.load() << ", right: " << measurementR.load());
+    //DBG("left: " << measurementL.readAndReset() << ", right: " << measurementR.readAndReset());
 }
 
 

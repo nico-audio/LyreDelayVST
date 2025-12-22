@@ -11,6 +11,7 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "Measurement.h"
 
 class Bulb : public juce::Component
 {
@@ -29,7 +30,7 @@ private:
 class LevelMeter  : public juce::Component, private juce::Timer
 {
 public:
-    LevelMeter(std::atomic<float>& measurementL, std::atomic<float>& measurementR);
+    LevelMeter(Measurement& measurementL, Measurement& measurementR);
     ~LevelMeter() override;
 
     void paint (juce::Graphics&) override;
@@ -47,8 +48,8 @@ private:
     void updateLevel(float newLevel, float& smoothedLevel, float& leveldB) const;
 
     // Store measurements from processor
-    std::atomic<float>& measurementL;
-    std::atomic<float>& measurementR;
+    Measurement& measurementL;
+    Measurement& measurementR;
 
     // Meter limits and marks
     const int totalNumberOfBulbs = 12;

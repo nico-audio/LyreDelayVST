@@ -128,8 +128,8 @@ void GDelayAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock
 
     tempo.reset();
 
-    levelL.store(0.0f);
-    levelR.store(0.0f);
+    levelL.reset();
+    levelR.reset();
 }
 
 void GDelayAudioProcessor::releaseResources()
@@ -257,9 +257,9 @@ void GDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[may
         maxR = std::max(maxR, std::abs(outR));
     }
 
-    // Store level measurements
-    levelL.store(maxL);
-    levelR.store(maxR);
+    // Store level measurements, only write max variables into level if the current value of level is smaller.
+    levelL.updateIfGreater(maxL);
+    levelR.updateIfGreater(maxR);
     
     // Push waveform to audio visualizer component
     waveViewer.pushBuffer(buffer);
