@@ -43,6 +43,17 @@ GDelayAudioProcessorEditor::GDelayAudioProcessorEditor (GDelayAudioProcessor& p)
     tempoSyncButton.setLookAndFeel(ButtonLookAndFeel::get());
     delayGroup.addAndMakeVisible(tempoSyncButton);
 
+    auto bypassIcon = juce::ImageCache::getFromMemory(BinaryData::Bypassplaceholder_png, BinaryData::Bypassplaceholder_pngSize);
+    bypassButton.setClickingTogglesState(true);
+    bypassButton.setBounds(0, 0, 20, 20);
+    bypassButton.setImages(
+        false, true, true,
+        bypassIcon, 1.0f, juce::Colours::white,
+        bypassIcon, 1.0f, juce::Colours::white,
+        bypassIcon, 1.0f, juce::Colours::grey,
+        0.0f);
+    addAndMakeVisible(bypassButton);
+
     // Dev module
     //inspector = std::make_unique<melatonin::Inspector>(*this);
     //inspector->setVisible(true);
@@ -126,6 +137,8 @@ void GDelayAudioProcessorEditor::resized()
     mixKnob.setTopLeftPosition(550, 120);
     gainKnob.setTopLeftPosition(mixKnob.getX(), mixKnob.getBottom() + 10);
     meter.setBounds(612, 135, 96, 220);
+
+    bypassButton.setTopLeftPosition(bounds.getRight() - bypassButton.getWidth() - 10, 10);
     
     // Audio visualizer
     audioProcessor.waveViewer.setBounds(15, 45, waveViewerWidth, waveViewerHeight);

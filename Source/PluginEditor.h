@@ -50,6 +50,12 @@ private:
           audioProcessor.apvts, tempoSyncParamID.getParamID(), tempoSyncButton
     };
 
+    juce::ImageButton bypassButton;
+
+    juce::AudioProcessorValueTreeState::ButtonAttachment bypassAttachment{ 
+        audioProcessor.apvts, bypassParamID.getParamID(), bypassButton
+    };
+
     juce::GroupComponent grainGroup, delayGroup, outputGroup;
 
     MainLookAndFeel mainLF;

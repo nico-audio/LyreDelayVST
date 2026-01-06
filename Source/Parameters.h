@@ -20,6 +20,8 @@ const juce::ParameterID lowCutParamID{ "lowCut", 1 };
 const juce::ParameterID highCutParamID{ "highCut", 1 };
 const juce::ParameterID tempoSyncParamID{ "tempoSync", 1 };
 const juce::ParameterID delayNoteParamID{ "delayNote", 1 };
+const juce::ParameterID bypassParamID{ "bypass", 1 };
+
 
 class Parameters
 {
@@ -42,6 +44,7 @@ public:
     float highCut = 20000.0f;
     int delayNote = 0;
     bool tempoSync = false;
+    bool bypassed = false;
    
     static constexpr float minDelayTime { 5.0f };
     static constexpr float maxDelayTime { 5000.0f };
@@ -61,6 +64,7 @@ public:
     static constexpr float defaultLowCutoff{ 20.0f };
 
     juce::AudioParameterBool* tempoSyncParam;
+    juce::AudioParameterBool* bypassParam;
     
 private:
     // Gain

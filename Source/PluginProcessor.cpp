@@ -181,6 +181,8 @@ void GDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[may
     // Update parameters
     params.update();
 
+    //if (params.bypassed) { return; }
+
     // Get tempo from host to sync delay time
     tempo.update(getPlayHead());
 
@@ -288,6 +290,11 @@ void GDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[may
         float outL = mixL * params.gain;
         float outR = mixR * params.gain;
 
+        if (params.bypassed) {
+            outL = dryL;
+            outR = dryR;
+        }
+
         outputDataL[sample] = outL;
         outputDataR[sample] = outR;
 
@@ -339,4 +346,9 @@ void GDelayAudioProcessor::setStateInformation (const void* data, int sizeInByte
 juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
     return new GDelayAudioProcessor();
+}
+
+juce::AudioProcessorParameter* GDelayAudioProcessor::getBypassParameter() const
+{
+    return params.bypassParam;
 }
