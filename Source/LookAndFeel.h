@@ -44,15 +44,34 @@ namespace Colors
         const juce::Colour backgroundToggled{ 206, 148, 92 };
         const juce::Colour outline{ 69, 69, 69 };
     }
+    
+    namespace LevelMeter
+    {
+        const juce::Colour tickLabel{ 255, 255, 240 };
+        const juce::Colour levelOK{ 0, 115, 95 };
+        const juce::Colour levelWarning{ 244, 225, 73 };
+        const juce::Colour levelLoud{ 145, 0, 18 };
+    }
+
+    namespace AudioVisualizer
+    {
+        const juce::Colour visualizerBG{ 74, 54, 23 };
+        const juce::Colour visualizerWave{ 206, 148, 92 };
+    }
 }
 
 class Fonts
 {
 public:
     Fonts() = delete;
-    static juce::Font getFont(float height = 14.0f);
+
+    static juce::Font getInterdim(float height = 14.0f);
+    static juce::Font getInduction(float height = 14.0f);
+    static juce::Font getPatopian(float height = 10.0f);
 private:
-    static const juce::Typeface::Ptr typeface;
+    static const juce::Typeface::Ptr interdimTypeface;
+    static const juce::Typeface::Ptr inductionTypeface;
+    static const juce::Typeface::Ptr patopianTypeface;
 };
 
 class RotaryKnobLookAndFeel : public juce::LookAndFeel_V4

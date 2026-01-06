@@ -250,7 +250,7 @@ void Parameters::update() noexcept
 void Parameters::smoothen() noexcept
 {
     gain = gainSmoother.getNextValue();
-    delayTime += (targetDelayTime - delayTime) * filterCoefficient;
+    delayTime = targetDelayTime;
     mix = mixSmoother.getNextValue();
     feedback = feedbackSmoother.getNextValue();
     

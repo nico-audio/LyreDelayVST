@@ -128,8 +128,21 @@ void GDelayAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock
 
     tempo.reset();
 
-    levelL.store(0.0f);
-    levelR.store(0.0f);
+    levelL.reset();
+    levelR.reset();
+
+    // Ducking
+    delayInSamples = 0.0f;
+    targetDelay = 0.0f;
+
+    fade = 1.0f;
+    fadeTarget = 1.0f;
+
+    coefficient = 1.0f - std::exp(-1.0f / (0.05f * float(sampleRate)));
+
+    wait = 0.0f;
+    waitInc = 1.0f / (0.3f * float(sampleRate));  // 300 ms
+      
 }
 
 void GDelayAudioProcessor::releaseResources()
@@ -180,7 +193,7 @@ void GDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[may
     float sampleRate = float(getSampleRate());
 
     /* Get read and write pointers for the input and output buffers. Handles mono-to-stereo processing by using the left channel's data
-    for the right channel if the input is mono.*/ 
+    for the right channel if the input is mono.*/
 
     auto mainInput = getBusBuffer(buffer, true, 0);
     auto mainInputChannels = mainInput.getNumChannels();
@@ -203,8 +216,20 @@ void GDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[may
         params.smoothen();
 
         float delayTime = params.tempoSync ? syncedTime : params.delayTime;
-        float delayInSamples = millisecondsToSamples(delayTime, sampleRate);
+        float newTargetDelay = millisecondsToSamples(delayTime, sampleRate);
 
+        // fade if delay changes
+        if (newTargetDelay != targetDelay) {
+            targetDelay = newTargetDelay;
+            if (delayInSamples == 0.0f) {
+                delayInSamples = targetDelay;
+            }
+            else {
+                wait = waitInc;     // start ducking wait counter
+                fadeTarget = 0.0f;
+            }
+        }
+   
         // Filter set cutoff - only calls setCutoffFrequency if values are changed
         if (params.lowCut != lastLowCut) {
             lowCutFilter.setCutoffFrequency(params.lowCut);
@@ -228,6 +253,20 @@ void GDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[may
 
         float wetL = delayLineL.read(delayInSamples);
         float wetR = delayLineR.read(delayInSamples);
+
+        fade += (fadeTarget - fade) * coefficient;
+
+        wetL *= fade;
+        wetR *= fade;
+
+        if (wait > 0.0f) {
+            wait += waitInc;
+            if (wait >= 1.0f) {
+                delayInSamples = targetDelay;
+                wait = 0.0f;
+                fadeTarget = 1.0f;
+            }
+        }
 
         /*Multi-tap delay
         wetL += delayLine.popSample(0, delayInSamples * 2.0f, false) * 0.7f;
@@ -257,9 +296,9 @@ void GDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[may
         maxR = std::max(maxR, std::abs(outR));
     }
 
-    // Store level measurements
-    levelL.store(maxL);
-    levelR.store(maxR);
+    // Store level measurements, only write max variables into level if the current value of level is smaller.
+    levelL.updateIfGreater(maxL);
+    levelR.updateIfGreater(maxR);
     
     // Push waveform to audio visualizer component
     waveViewer.pushBuffer(buffer);

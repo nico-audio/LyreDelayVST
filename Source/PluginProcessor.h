@@ -12,6 +12,7 @@
 #include "Parameters.h"
 #include "Tempo.h"
 #include "DelayLine.h"
+#include "Measurement.h"
 
 class GDelayAudioProcessor  : public juce::AudioProcessor
 {
@@ -66,7 +67,7 @@ public:
     
     Parameters params;
 
-    std::atomic<float> levelL, levelR;
+    Measurement levelL, levelR;
 
 private:
 
@@ -82,6 +83,15 @@ private:
     float lastHighCut = -1.0f;
 
     Tempo tempo;
+    
+    // Ducking
+    float delayInSamples = 0.0f;
+    float targetDelay = 0.0f;
+    float fade = 0.0f;
+    float fadeTarget = 0.0f;
+    float coefficient = 0.0f;
+    float wait = 0.0f;
+    float waitInc = 0.0f;      
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (GDelayAudioProcessor)
 };

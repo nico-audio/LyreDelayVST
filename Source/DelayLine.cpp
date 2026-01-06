@@ -48,8 +48,8 @@ void DelayLine::write(float input) noexcept
 // Uses hermite interpolation to read, allowing more accurate representation of fractional values
 float DelayLine::read(float delayInSamples) const noexcept
 {
-    jassert(delayInSamples >= 1.0f);
-    jassert(delayInSamples <= bufferLength - 2.0f);
+    //jassert(delayInSamples >= 1.0f);
+    //jassert(delayInSamples <= bufferLength - 2.0f);
 
     // Convert delay time to an integer value for calculation
     int integerDelay = int(delayInSamples);

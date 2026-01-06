@@ -14,6 +14,7 @@
 #include "RotaryKnob.h"
 #include "LookAndFeel.h"
 #include "LevelMeter.h"
+#include <melatonin_inspector/melatonin_inspector.h>
 
 
 class GDelayAudioProcessorEditor  : public juce::AudioProcessorEditor,
@@ -54,6 +55,8 @@ private:
     MainLookAndFeel mainLF;
 
     LevelMeter meter;
+
+    std::unique_ptr<melatonin::Inspector> inspector;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (GDelayAudioProcessorEditor)
 };
