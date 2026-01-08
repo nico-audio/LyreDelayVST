@@ -80,16 +80,16 @@ int GDelayAudioProcessor::getCurrentProgram()
     return 0;
 }
 
-void GDelayAudioProcessor::setCurrentProgram (int index)
+void GDelayAudioProcessor::setCurrentProgram (int)
 {
 }
 
-const juce::String GDelayAudioProcessor::getProgramName (int index)
+const juce::String GDelayAudioProcessor::getProgramName (int)
 {
     return {};
 }
 
-void GDelayAudioProcessor::changeProgramName (int index, const juce::String& newName)
+void GDelayAudioProcessor::changeProgramName (int index, const juce::String&)
 {
 }
 

@@ -39,9 +39,9 @@ private:
     RotaryKnob mixKnob{ "Mix", audioProcessor.apvts, mixParamID };
     RotaryKnob delayTimeKnob{ "Time", audioProcessor.apvts, delayTimeParamID };
     RotaryKnob feedbackKnob{ "Feedback", audioProcessor.apvts, feedbackParamID, true };
-    RotaryKnob stereoKnob{ "Stereo", audioProcessor.apvts, stereoParamID, true, { 0, 0, 65, 76 } };
-    RotaryKnob lowCutKnob{ "Low Cut", audioProcessor.apvts, lowCutParamID };
-    RotaryKnob highCutKnob{ "High Cut", audioProcessor.apvts, highCutParamID };
+    RotaryKnob stereoKnob{ "Stereo", audioProcessor.apvts, stereoParamID, true, { 0, 0, 68, 76 } };
+    RotaryKnob lowCutKnob{ "Low Cut", audioProcessor.apvts, lowCutParamID, true, { 0, 0, 68, 76 } };
+    RotaryKnob highCutKnob{ "High Cut", audioProcessor.apvts, highCutParamID, true, { 0, 0, 68, 76 } };
     RotaryKnob delayNoteKnob{ "Note", audioProcessor.apvts, delayNoteParamID };
     
     juce::TextButton tempoSyncButton;
