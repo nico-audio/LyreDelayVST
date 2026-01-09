@@ -93,6 +93,7 @@ Parameters::Parameters(juce::AudioProcessorValueTreeState& apvts)
     castParameter(apvts, tempoSyncParamID, tempoSyncParam);
     castParameter(apvts, delayNoteParamID, delayNoteParam);
     castParameter(apvts, bypassParamID, bypassParam);
+    castParameter(apvts, granularToggleParamID, granularToggleParam);
 }
 
 // Plugin parameters
@@ -185,6 +186,8 @@ Parameters::createParameterLayout()
     
     layout.add(std::make_unique<juce::AudioParameterBool>(bypassParamID, "Bypass", false));
 
+    layout.add(std::make_unique<juce::AudioParameterBool>(granularToggleParamID, "Granular", false));
+
     return layout;
 }
 
@@ -250,6 +253,8 @@ void Parameters::update() noexcept
     tempoSync = tempoSyncParam->get();
 
     bypassed = bypassParam->get();
+
+    granularisActive = granularToggleParam->get();
 }
 
 void Parameters::smoothen() noexcept

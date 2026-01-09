@@ -21,6 +21,7 @@ const juce::ParameterID highCutParamID{ "highCut", 1 };
 const juce::ParameterID tempoSyncParamID{ "tempoSync", 1 };
 const juce::ParameterID delayNoteParamID{ "delayNote", 1 };
 const juce::ParameterID bypassParamID{ "bypass", 1 };
+const juce::ParameterID granularToggleParamID{ "granularToggle", 1 };
 
 
 class Parameters
@@ -45,6 +46,7 @@ public:
     int delayNote = 0;
     bool tempoSync = false;
     bool bypassed = false;
+    bool granularisActive = false;
    
     static constexpr float minDelayTime { 5.0f };
     static constexpr float maxDelayTime { 5000.0f };
@@ -65,6 +67,7 @@ public:
 
     juce::AudioParameterBool* tempoSyncParam;
     juce::AudioParameterBool* bypassParam;
+    juce::AudioParameterBool* granularToggleParam;
     
 private:
     // Gain

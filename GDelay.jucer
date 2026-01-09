@@ -20,6 +20,7 @@
             file="../../../GameDevProjects/Fonts/patopian_1986/Patopian 1986.ttf"/>
     </GROUP>
     <GROUP id="{F4EB2649-9D18-B53A-5C88-218FAE2EC3CD}" name="Source">
+      <FILE id="S2hMMr" name="Grain.h" compile="0" resource="0" file="Source/Grain.h"/>
       <FILE id="wJXJgg" name="Measurement.h" compile="0" resource="0" file="Source/Measurement.h"/>
       <FILE id="px884k" name="LevelMeter.cpp" compile="1" resource="0" file="Source/LevelMeter.cpp"/>
       <FILE id="t9cVHY" name="LevelMeter.h" compile="0" resource="0" file="Source/LevelMeter.h"/>

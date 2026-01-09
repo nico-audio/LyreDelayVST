@@ -56,6 +56,12 @@ private:
         audioProcessor.apvts, bypassParamID.getParamID(), bypassButton
     };
 
+    juce::TextButton granularToggleButton;
+
+    juce::AudioProcessorValueTreeState::ButtonAttachment granularToggleAttachment{
+        audioProcessor.apvts, granularToggleParamID.getParamID(), granularToggleButton
+    };
+
     juce::GroupComponent grainGroup, delayGroup, outputGroup;
 
     MainLookAndFeel mainLF;

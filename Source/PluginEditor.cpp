@@ -25,10 +25,11 @@ GDelayAudioProcessorEditor::GDelayAudioProcessorEditor (GDelayAudioProcessor& p)
 
     grainGroup.setText("Granular");
     grainGroup.setTextLabelPosition(juce::Justification::horizontallyCentred);
-    //grainGroup.addAndMakeVisible(feedbackKnob);
-    //grainGroup.addAndMakeVisible(stereoKnob);
-    //grainGroup.addAndMakeVisible(lowCutKnob);
-    //grainGroup.addAndMakeVisible(highCutKnob);
+    granularToggleButton.setButtonText("granular");
+    granularToggleButton.setClickingTogglesState(true);
+    granularToggleButton.setBounds(0, 0, 100, 27);
+    granularToggleButton.setLookAndFeel(ButtonLookAndFeel::get());
+    grainGroup.addAndMakeVisible(granularToggleButton);
     addAndMakeVisible(grainGroup);
     
     outputGroup.setText("Output");
@@ -137,6 +138,8 @@ void GDelayAudioProcessorEditor::resized()
 
     lowCutKnob.setTopLeftPosition(stereoKnob.getRight() + 20, 260);
     highCutKnob.setTopLeftPosition(lowCutKnob.getRight() + 20, lowCutKnob.getY());
+
+    granularToggleButton.setTopLeftPosition(60, 30);
 
     mixKnob.setTopLeftPosition(550, 120);
     gainKnob.setTopLeftPosition(mixKnob.getX(), mixKnob.getBottom() + 10);
