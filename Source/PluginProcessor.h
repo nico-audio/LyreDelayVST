@@ -13,6 +13,7 @@
 #include "Tempo.h"
 #include "DelayLine.h"
 #include "Measurement.h"
+#include "Grain.h"
 
 class GDelayAudioProcessor  : public juce::AudioProcessor
 {
@@ -94,6 +95,8 @@ private:
     float coefficient = 0.0f;
     float wait = 0.0f;
     float waitInc = 0.0f;      
+
+    Grain grain;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (GDelayAudioProcessor)
 };

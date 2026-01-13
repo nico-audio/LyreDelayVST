@@ -12,8 +12,9 @@
 
 struct Grain
 {
+    float startIndex = 0.0f;
     float grainIndexPosition = 0.0f;          // Play head position
-    float stepSize = 1.0f;          // Playback rate (pitch)
+    float stepSize = 1.0f;                    // Playback rate (pitch)
     int grainDuration = 0;
     int samplesPlayed = 0;
     bool isActive = false;
