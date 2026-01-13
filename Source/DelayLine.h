@@ -26,6 +26,13 @@ public:
         return bufferLength;
     }
 
+    int getWriteIndex() const noexcept
+    {
+        return writeIndex;
+    }
+
+    float readAtIndex(int index) const noexcept; // used for granular mode
+
 private:
     std::unique_ptr<float[]> buffer;
     int bufferLength = 0;

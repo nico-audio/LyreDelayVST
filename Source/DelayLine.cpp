@@ -96,3 +96,9 @@ float DelayLine::read(float delayInSamples) const noexcept
     float stage2 = stage1 * fraction + slope0;
     return stage2 * fraction + sampleB;
 }
+
+float DelayLine::readAtIndex(int index) const noexcept
+{
+    jassert(index >= 0 && index < bufferLength);
+    return buffer[index];
+}

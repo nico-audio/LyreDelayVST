@@ -6,6 +6,8 @@
               pluginManufacturerCode="Nico" pluginCode="Lyre" cppLanguageStandard="20">
   <MAINGROUP id="qi5Naz" name="Lyre">
     <GROUP id="{B5B72528-351F-738B-7D8D-B58043B449C8}" name="Assets">
+      <FILE id="PS82kT" name="Bypass-placeholder.png" compile="0" resource="1"
+            file="../../Graphics/Lyre/Bypass-placeholder.png"/>
       <FILE id="wqoicw" name="GDelay_logo.png" compile="0" resource="1" file="../../Graphics/GDelay_logo.png"/>
       <FILE id="PfMOTl" name="Induction.otf" compile="0" resource="1" file="../../../GameDevProjects/Fonts/induction/Induction.otf"/>
       <FILE id="inzFxx" name="INTERDIM.TTF" compile="0" resource="1" file="../../../GameDevProjects/Fonts/interdimensional/INTERDIM.TTF"/>
@@ -18,6 +20,7 @@
             file="../../../GameDevProjects/Fonts/patopian_1986/Patopian 1986.ttf"/>
     </GROUP>
     <GROUP id="{F4EB2649-9D18-B53A-5C88-218FAE2EC3CD}" name="Source">
+      <FILE id="S2hMMr" name="Grain.h" compile="0" resource="0" file="Source/Grain.h"/>
       <FILE id="wJXJgg" name="Measurement.h" compile="0" resource="0" file="Source/Measurement.h"/>
       <FILE id="px884k" name="LevelMeter.cpp" compile="1" resource="0" file="Source/LevelMeter.cpp"/>
       <FILE id="t9cVHY" name="LevelMeter.h" compile="0" resource="0" file="Source/LevelMeter.h"/>

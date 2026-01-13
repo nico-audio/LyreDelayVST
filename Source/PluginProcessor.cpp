@@ -9,7 +9,50 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 #include "ProtectYourEars.h"
+#include "Grain.h"
 
+static void spawnGrain(Grain& grain, int delayWriteIndex, int delayBufferSize) {
+    grain.isActive = true;
+    grain.samplesPlayed = 0;
+    grain.grainDuration = 2000;
+
+    grain.startIndex = delayWriteIndex - 4000; // 4000 sample
+    
+    // wrapping
+    if (grain.startIndex < 0)
+        grain.startIndex += delayBufferSize;
+
+    grain.grainIndexPosition = grain.startIndex;
+}
+
+static float processGrain(Grain& grain, DelayLine& delayLine) {
+        
+    if (!grain.isActive) {
+        return 0.0f;
+    }
+    
+    int bufferSize = delayLine.getBufferLength();
+    int readIndex = static_cast<int>(grain.grainIndexPosition);
+
+    if (readIndex < 0) {
+        readIndex += bufferSize;
+    }
+
+    else if (readIndex >= bufferSize) {
+        readIndex -= bufferSize;
+    }
+
+    float sample = delayLine.readAtIndex(readIndex);
+
+    grain.grainIndexPosition += grain.stepSize;
+    grain.samplesPlayed++;
+
+    if (grain.samplesPlayed >= grain.grainDuration) {
+        grain.isActive = false;
+    }
+
+    return sample;
+}
 
 GDelayAudioProcessor::GDelayAudioProcessor():
     AudioProcessor(
@@ -80,16 +123,16 @@ int GDelayAudioProcessor::getCurrentProgram()
     return 0;
 }
 
-void GDelayAudioProcessor::setCurrentProgram (int index)
+void GDelayAudioProcessor::setCurrentProgram (int)
 {
 }
 
-const juce::String GDelayAudioProcessor::getProgramName (int index)
+const juce::String GDelayAudioProcessor::getProgramName (int)
 {
     return {};
 }
 
-void GDelayAudioProcessor::changeProgramName (int index, const juce::String& newName)
+void GDelayAudioProcessor::changeProgramName (int index, const juce::String&)
 {
 }
 
@@ -142,6 +185,9 @@ void GDelayAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock
 
     wait = 0.0f;
     waitInc = 1.0f / (0.3f * float(sampleRate));  // 300 ms
+
+    grain.isActive = false;
+    grain.samplesPlayed = 0;
       
 }
 
@@ -180,6 +226,8 @@ void GDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[may
     
     // Update parameters
     params.update();
+
+    //if (params.bypassed) { return; }
 
     // Get tempo from host to sync delay time
     tempo.update(getPlayHead());
@@ -281,12 +329,31 @@ void GDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[may
         feedbackR = lowCutFilter.processSample(1, feedbackR);
         feedbackR = highCutFilter.processSample(1, feedbackR);
 
+        // Start granular logic
+        if (!grain.isActive) {
+            spawnGrain(grain, delayLineL.getWriteIndex(), delayLineL.getBufferLength());
+        }
+
+        float grainL = processGrain(grain, delayLineL);
+        float grainR = processGrain(grain, delayLineR);
+
+        if (params.granularisActive) {
+            wetL = grainL;
+            wetR = grainR;
+        }
+
         float mixL = dryL + wetL * params.mix;
         float mixR = dryR + wetR * params.mix;
+
 
         // Write pointers
         float outL = mixL * params.gain;
         float outR = mixR * params.gain;
+
+        if (params.bypassed) {
+            outL = dryL;
+            outR = dryR;
+        }
 
         outputDataL[sample] = outL;
         outputDataR[sample] = outR;
@@ -339,4 +406,9 @@ void GDelayAudioProcessor::setStateInformation (const void* data, int sizeInByte
 juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
     return new GDelayAudioProcessor();
+}
+
+juce::AudioProcessorParameter* GDelayAudioProcessor::getBypassParameter() const
+{
+    return params.bypassParam;
 }
