@@ -94,6 +94,7 @@ Parameters::Parameters(juce::AudioProcessorValueTreeState& apvts)
     castParameter(apvts, delayNoteParamID, delayNoteParam);
     castParameter(apvts, bypassParamID, bypassParam);
     castParameter(apvts, granularToggleParamID, granularToggleParam);
+    castParameter(apvts, grainSizeParamID, sizeParam);
 }
 
 // Plugin parameters
@@ -161,6 +162,15 @@ Parameters::createParameterLayout()
                                              .withValueFromStringFunction(hzFromString)
     ));
 
+    layout.add(std::make_unique<juce::AudioParameterFloat>(
+        grainSizeParamID,
+        "Size",
+        juce::NormalisableRange<float> { minGrainSize, maxGrainSize, grainStepSize },
+        defaultSize,
+        juce::AudioParameterFloatAttributes().withStringFromValueFunction(stringFromMilliseconds)
+        .withValueFromStringFunction(millisecondsFromString)
+    ));
+
     layout.add(std::make_unique<juce::AudioParameterBool>(tempoSyncParamID, "Tempo Sync", false));
 
     juce::StringArray noteLengths = {
@@ -207,6 +217,8 @@ void Parameters::prepareToPlay(double sampleRate) noexcept
 
     lowCutSmoother.reset(sampleRate, duration);
     highCutSmoother.reset(sampleRate, duration);
+
+    sizeSmoother.reset(sampleRate, duration);
 }
 
 void Parameters::reset() noexcept
@@ -232,6 +244,9 @@ void Parameters::reset() noexcept
 
     highCut = 20000.0f;
     highCutSmoother.setCurrentAndTargetValue(highCutParam->get());
+
+    grainSize = 1.0f;
+    sizeSmoother.setCurrentAndTargetValue(sizeParam->get() * 0.01f);
 }
 
 void Parameters::update() noexcept
@@ -248,6 +263,8 @@ void Parameters::update() noexcept
 
     lowCutSmoother.setTargetValue(lowCutParam->get());
     highCutSmoother.setTargetValue(highCutParam->get());
+
+    sizeSmoother.setTargetValue(sizeParam->get());
 
     delayNote = delayNoteParam->getIndex();
     tempoSync = tempoSyncParam->get();
@@ -268,4 +285,6 @@ void Parameters::smoothen() noexcept
 
     lowCut = lowCutSmoother.getNextValue();
     highCut = highCutSmoother.getNextValue();
+
+    grainSize = sizeSmoother.getNextValue();
 }

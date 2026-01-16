@@ -22,6 +22,7 @@ const juce::ParameterID tempoSyncParamID{ "tempoSync", 1 };
 const juce::ParameterID delayNoteParamID{ "delayNote", 1 };
 const juce::ParameterID bypassParamID{ "bypass", 1 };
 const juce::ParameterID granularToggleParamID{ "granularToggle", 1 };
+const juce::ParameterID grainSizeParamID{ "grainSize", 1 };
 
 
 class Parameters
@@ -43,6 +44,7 @@ public:
     float panR = 1.0f;
     float lowCut = 20.0f;
     float highCut = 20000.0f;
+    float grainSize = 1.0f;
     int delayNote = 0;
     bool tempoSync = false;
     bool bypassed = false;
@@ -64,6 +66,11 @@ public:
     static constexpr float filterSkewFactor { 0.3f };
     static constexpr float defaultHighCutoff { 20000.0f };
     static constexpr float defaultLowCutoff{ 20.0f };
+    
+    static constexpr float minGrainSize{ 1.0f };
+    static constexpr float maxGrainSize{ 100.0f };
+    static constexpr float grainStepSize{ 1.0f };
+    static constexpr float defaultSize{ 1.0f };
 
     juce::AudioParameterBool* tempoSyncParam;
     juce::AudioParameterBool* bypassParam;
@@ -100,6 +107,10 @@ private:
 
     // Tempo sync
     juce::AudioParameterChoice* delayNoteParam;
+
+    // Grain size
+    juce::AudioParameterFloat* sizeParam;
+    juce::LinearSmoothedValue<float> sizeSmoother;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Parameters)
 };

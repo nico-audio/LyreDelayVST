@@ -11,12 +11,12 @@
 #include "ProtectYourEars.h"
 #include "Grain.h"
 
-static void spawnGrain(Grain& grain, int delayWriteIndex, int delayBufferSize) {
+static void spawnGrain(Grain& grain, int delayWriteIndex, int delayBufferSize, int grainDurationSamples) {
     grain.isActive = true;
     grain.samplesPlayed = 0;
-    grain.grainDuration = 2000;
+    grain.grainDuration = grainDurationSamples;
 
-    grain.startIndex = delayWriteIndex - 4000; // 4000 sample
+    grain.startIndex = delayWriteIndex - grainDurationSamples;
     
     // wrapping
     if (grain.startIndex < 0)
@@ -329,18 +329,35 @@ void GDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[may
         feedbackR = lowCutFilter.processSample(1, feedbackR);
         feedbackR = highCutFilter.processSample(1, feedbackR);
 
+        float grainSizeMs = params.grainSize;
+        float grainSizeSamples = millisecondsToSamples(grainSizeMs, sampleRate);
+        
         // Start granular logic
         if (!grain.isActive) {
-            spawnGrain(grain, delayLineL.getWriteIndex(), delayLineL.getBufferLength());
+            spawnGrain(grain, delayLineL.getWriteIndex(), delayLineL.getBufferLength(), grainSizeSamples);
         }
 
-        float grainL = processGrain(grain, delayLineL);
-        float grainR = processGrain(grain, delayLineR);
+        // float grainL = processGrain(grain, delayLineL);
+        // float grainR = processGrain(grain, delayLineR);
+
+        float grainSample = processGrain(grain, delayLineL);
+
+        float grainL = grainSample;
+        float grainR = grainSample;
 
         if (params.granularisActive) {
             wetL = grainL;
             wetR = grainR;
         }
+        /*
+        //float grainSample = processGrain(grain, delayLineL);
+        
+        //float grainL = grainSample;
+        //float grainR = grainSample;
+
+        }
+        */
+       
 
         float mixL = dryL + wetL * params.mix;
         float mixR = dryR + wetR * params.mix;
