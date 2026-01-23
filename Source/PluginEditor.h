@@ -44,6 +44,7 @@ private:
     RotaryKnob highCutKnob{ "High Cut", audioProcessor.apvts, highCutParamID, true, { 0, 0, 68, 76 } };
     RotaryKnob delayNoteKnob{ "Note", audioProcessor.apvts, delayNoteParamID };
     RotaryKnob grainSize{ "Size", audioProcessor.apvts, grainSizeParamID };
+    RotaryKnob grainPitch{ "pitch", audioProcessor.apvts, grainPitchParamID };
     
     juce::TextButton tempoSyncButton;
 

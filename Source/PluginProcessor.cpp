@@ -333,12 +333,9 @@ void GDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[may
         float grainSizeSamples = millisecondsToSamples(grainSizeMs, sampleRate);
         
         // Start granular logic
-        if (!grain.isActive) {
+        if (params.granularisActive && !grain.isActive) {
             spawnGrain(grain, delayLineL.getWriteIndex(), delayLineL.getBufferLength(), grainSizeSamples);
         }
-
-        // float grainL = processGrain(grain, delayLineL);
-        // float grainR = processGrain(grain, delayLineR);
 
         float grainSample = processGrain(grain, delayLineL);
 
@@ -349,16 +346,7 @@ void GDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[may
             wetL = grainL;
             wetR = grainR;
         }
-        /*
-        //float grainSample = processGrain(grain, delayLineL);
-        
-        //float grainL = grainSample;
-        //float grainR = grainSample;
-
-        }
-        */
        
-
         float mixL = dryL + wetL * params.mix;
         float mixR = dryR + wetR * params.mix;
 

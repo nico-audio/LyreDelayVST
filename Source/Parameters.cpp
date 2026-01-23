@@ -71,6 +71,11 @@ static juce::String stringFromHz(float value, int)
     }
 }
 
+static juce::String stringFromSemitone(float value, int)
+{
+    return juce::String(int(value)) + " st";
+}
+
 static float hzFromString(const juce::String& str)
 {
     float value = str.getFloatValue();
@@ -95,6 +100,7 @@ Parameters::Parameters(juce::AudioProcessorValueTreeState& apvts)
     castParameter(apvts, bypassParamID, bypassParam);
     castParameter(apvts, granularToggleParamID, granularToggleParam);
     castParameter(apvts, grainSizeParamID, sizeParam);
+    castParameter(apvts, grainPitchParamID, pitchParam);
 }
 
 // Plugin parameters
@@ -168,8 +174,18 @@ Parameters::createParameterLayout()
         juce::NormalisableRange<float> { minGrainSize, maxGrainSize, grainStepSize },
         defaultSize,
         juce::AudioParameterFloatAttributes().withStringFromValueFunction(stringFromMilliseconds)
-        .withValueFromStringFunction(millisecondsFromString)
+                                             .withValueFromStringFunction(millisecondsFromString)
     ));
+
+    
+    layout.add(std::make_unique<juce::AudioParameterFloat>(
+        grainPitchParamID,
+        "Pitch",
+        juce::NormalisableRange<float> { minPitch , maxPitch , pitchStepSize },
+        defaultPitch,
+        juce::AudioParameterFloatAttributes().withStringFromValueFunction(stringFromSemitone)
+    ));
+    
 
     layout.add(std::make_unique<juce::AudioParameterBool>(tempoSyncParamID, "Tempo Sync", false));
 
@@ -219,6 +235,8 @@ void Parameters::prepareToPlay(double sampleRate) noexcept
     highCutSmoother.reset(sampleRate, duration);
 
     sizeSmoother.reset(sampleRate, duration);
+
+    pitchSmoother.reset(sampleRate, duration);
 }
 
 void Parameters::reset() noexcept
@@ -247,6 +265,9 @@ void Parameters::reset() noexcept
 
     grainSize = 1.0f;
     sizeSmoother.setCurrentAndTargetValue(sizeParam->get() * 0.01f);
+
+    pitch = 0.0f;
+    pitchSmoother.setCurrentAndTargetValue(pitchParam->get() * 0.01f);
 }
 
 void Parameters::update() noexcept
@@ -265,6 +286,8 @@ void Parameters::update() noexcept
     highCutSmoother.setTargetValue(highCutParam->get());
 
     sizeSmoother.setTargetValue(sizeParam->get());
+
+    pitchSmoother.setTargetValue(pitchParam->get());
 
     delayNote = delayNoteParam->getIndex();
     tempoSync = tempoSyncParam->get();
@@ -287,4 +310,5 @@ void Parameters::smoothen() noexcept
     highCut = highCutSmoother.getNextValue();
 
     grainSize = sizeSmoother.getNextValue();
+    pitch = pitchSmoother.getNextValue();
 }

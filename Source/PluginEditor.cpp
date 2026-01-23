@@ -31,6 +31,7 @@ GDelayAudioProcessorEditor::GDelayAudioProcessorEditor (GDelayAudioProcessor& p)
     granularToggleButton.setLookAndFeel(ButtonLookAndFeel::get());
     grainGroup.addAndMakeVisible(granularToggleButton);
     grainGroup.addAndMakeVisible(grainSize);
+    grainGroup.addAndMakeVisible(grainPitch);
     addAndMakeVisible(grainGroup);
     
     outputGroup.setText("Output");
@@ -141,8 +142,8 @@ void GDelayAudioProcessorEditor::resized()
     highCutKnob.setTopLeftPosition(lowCutKnob.getRight() + 20, lowCutKnob.getY());
 
     granularToggleButton.setTopLeftPosition(60, 30);
-
-    grainSize.setTopLeftPosition(60, 100);
+    grainSize.setTopLeftPosition(60, 75);
+    grainPitch.setTopLeftPosition(60, 200);
 
     mixKnob.setTopLeftPosition(550, 120);
     gainKnob.setTopLeftPosition(mixKnob.getX(), mixKnob.getBottom() + 10);
