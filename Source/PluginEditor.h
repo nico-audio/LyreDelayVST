@@ -14,6 +14,7 @@
 #include "RotaryKnob.h"
 #include "LookAndFeel.h"
 #include "LevelMeter.h"
+#include "LabeledButton.h"
 #include <melatonin_inspector/melatonin_inspector.h>
 
 
@@ -45,28 +46,20 @@ private:
     RotaryKnob delayNoteKnob{ "Note", audioProcessor.apvts, delayNoteParamID };
     RotaryKnob grainSize{ "Size", audioProcessor.apvts, grainSizeParamID };
     RotaryKnob grainPitch{ "pitch", audioProcessor.apvts, grainPitchParamID };
+
+    LabeledButton tempoSyncButton{ "Sync", "", audioProcessor.apvts, tempoSyncParamID };
+    LabeledButton granularToggleButton{ "granular", "", audioProcessor.apvts, granularToggleParamID, { 0, 0, 115, 40 } };
     
-    juce::TextButton tempoSyncButton;
-
-    juce::AudioProcessorValueTreeState::ButtonAttachment tempoSyncAttachment{ 
-          audioProcessor.apvts, tempoSyncParamID.getParamID(), tempoSyncButton
-    };
-
     juce::ImageButton bypassButton;
 
     juce::AudioProcessorValueTreeState::ButtonAttachment bypassAttachment{ 
         audioProcessor.apvts, bypassParamID.getParamID(), bypassButton
     };
 
-    juce::TextButton granularToggleButton;
-
-    juce::AudioProcessorValueTreeState::ButtonAttachment granularToggleAttachment{
-        audioProcessor.apvts, granularToggleParamID.getParamID(), granularToggleButton
-    };
-
     juce::GroupComponent grainGroup, delayGroup, outputGroup;
 
     MainLookAndFeel mainLF;
+    ButtonLookAndFeel buttonLF;
 
     LevelMeter meter;
 
