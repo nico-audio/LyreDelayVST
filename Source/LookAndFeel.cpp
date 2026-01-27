@@ -200,6 +200,11 @@ ButtonLookAndFeel::ButtonLookAndFeel()
     setColour(juce::TextButton::buttonOnColourId, Colors::Button::backgroundToggled);
 }
 
+juce::Font ButtonLookAndFeel::getLabelFont([[maybe_unused]] juce::Label& label)
+{
+    return Fonts::getInterdim(12.0f);
+}
+
 void ButtonLookAndFeel::drawButtonBackground(juce::Graphics& g, juce::Button& button, const juce::Colour& backgroundColour, 
                                              [[maybe_unused]] bool shouldDrawButtonAsHighlighted,
                                              bool shouldDrawButtonAsDown)
@@ -238,5 +243,5 @@ void ButtonLookAndFeel::drawButtonText(juce::Graphics& g, juce::TextButton& butt
     }
 
     g.setFont(Fonts::getInterdim(12.0f));
-    g.drawText(button.getButtonText(), buttonRect, juce::Justification::centred);
+    g.drawText(button.getButtonText(), buttonRect, juce::Justification::centred, false);
 }

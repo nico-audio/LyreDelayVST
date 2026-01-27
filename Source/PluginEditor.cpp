@@ -21,15 +21,15 @@ GDelayAudioProcessorEditor::GDelayAudioProcessorEditor (GDelayAudioProcessor& p)
     delayGroup.addAndMakeVisible(stereoKnob);
     delayGroup.addAndMakeVisible(lowCutKnob);
     delayGroup.addAndMakeVisible(highCutKnob);
+    delayGroup.addAndMakeVisible(tempoSyncButton);
     addAndMakeVisible(delayGroup);
 
     grainGroup.setText("Granular");
     grainGroup.setTextLabelPosition(juce::Justification::horizontallyCentred);
-    granularToggleButton.setButtonText("granular");
-    granularToggleButton.setClickingTogglesState(true);
-    granularToggleButton.setBounds(0, 0, 100, 27);
-    granularToggleButton.setLookAndFeel(ButtonLookAndFeel::get());
     grainGroup.addAndMakeVisible(granularToggleButton);
+    granularToggleButton.label.setBounds(0, 0, 115, 20);
+    grainGroup.addAndMakeVisible(grainSize);
+    grainGroup.addAndMakeVisible(grainPitch);
     addAndMakeVisible(grainGroup);
     
     outputGroup.setText("Output");
@@ -41,12 +41,6 @@ GDelayAudioProcessorEditor::GDelayAudioProcessorEditor (GDelayAudioProcessor& p)
 
     addAndMakeVisible(audioProcessor.waveViewer);
     audioProcessor.waveViewer.setColours(Colors::AudioVisualizer::visualizerBG, Colors::AudioVisualizer::visualizerWave);
-
-    tempoSyncButton.setButtonText("Sync");
-    tempoSyncButton.setClickingTogglesState(true);
-    tempoSyncButton.setBounds(0, 0, 70, 27);
-    tempoSyncButton.setLookAndFeel(ButtonLookAndFeel::get());
-    delayGroup.addAndMakeVisible(tempoSyncButton);
 
     auto bypassIcon = juce::ImageCache::getFromMemory(BinaryData::Bypassplaceholder_png, BinaryData::Bypassplaceholder_pngSize);
     bypassButton.setClickingTogglesState(true);
@@ -60,8 +54,8 @@ GDelayAudioProcessorEditor::GDelayAudioProcessorEditor (GDelayAudioProcessor& p)
     addAndMakeVisible(bypassButton);
 
     // Dev module
-    //inspector = std::make_unique<melatonin::Inspector>(*this);
-    //inspector->setVisible(true);
+    inspector = std::make_unique<melatonin::Inspector>(*this);
+    inspector->setVisible(true);
 
     setSize (720, 490);
 
@@ -69,6 +63,7 @@ GDelayAudioProcessorEditor::GDelayAudioProcessorEditor (GDelayAudioProcessor& p)
     gainKnob.slider.setColour(juce::Slider::rotarySliderFillColourId, juce::Colour (42, 192, 8));
 
     setLookAndFeel(&mainLF);
+    setLookAndFeel(&buttonLF);
 
     updateDelayKnobs(audioProcessor.params.tempoSyncParam->get());
     audioProcessor.params.tempoSyncParam->addListener(this);
@@ -140,6 +135,8 @@ void GDelayAudioProcessorEditor::resized()
     highCutKnob.setTopLeftPosition(lowCutKnob.getRight() + 20, lowCutKnob.getY());
 
     granularToggleButton.setTopLeftPosition(60, 30);
+    grainSize.setTopLeftPosition(60, 75);
+    grainPitch.setTopLeftPosition(60, 200);
 
     mixKnob.setTopLeftPosition(550, 120);
     gainKnob.setTopLeftPosition(mixKnob.getX(), mixKnob.getBottom() + 10);

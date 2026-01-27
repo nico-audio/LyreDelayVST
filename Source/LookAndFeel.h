@@ -120,6 +120,8 @@ public:
         return &instance;
     }
 
+    juce::Font getLabelFont(juce::Label&) override;
+
     void drawButtonBackground(juce::Graphics & g, juce::Button & button,
                               const juce::Colour & backgroundColour,
                               bool shouldDrawButtonAsHighlighted,

@@ -71,6 +71,11 @@ static juce::String stringFromHz(float value, int)
     }
 }
 
+static juce::String stringFromSemitone(float value, int)
+{
+    return juce::String(int(value)) + " st";
+}
+
 static float hzFromString(const juce::String& str)
 {
     float value = str.getFloatValue();
@@ -94,6 +99,8 @@ Parameters::Parameters(juce::AudioProcessorValueTreeState& apvts)
     castParameter(apvts, delayNoteParamID, delayNoteParam);
     castParameter(apvts, bypassParamID, bypassParam);
     castParameter(apvts, granularToggleParamID, granularToggleParam);
+    castParameter(apvts, grainSizeParamID, sizeParam);
+    castParameter(apvts, grainPitchParamID, pitchParam);
 }
 
 // Plugin parameters
@@ -161,6 +168,25 @@ Parameters::createParameterLayout()
                                              .withValueFromStringFunction(hzFromString)
     ));
 
+    layout.add(std::make_unique<juce::AudioParameterFloat>(
+        grainSizeParamID,
+        "Size",
+        juce::NormalisableRange<float> { minGrainSize, maxGrainSize, grainStepSize },
+        defaultSize,
+        juce::AudioParameterFloatAttributes().withStringFromValueFunction(stringFromMilliseconds)
+                                             .withValueFromStringFunction(millisecondsFromString)
+    ));
+
+    
+    layout.add(std::make_unique<juce::AudioParameterFloat>(
+        grainPitchParamID,
+        "Pitch",
+        juce::NormalisableRange<float> { minPitch , maxPitch , pitchStepSize },
+        defaultPitch,
+        juce::AudioParameterFloatAttributes().withStringFromValueFunction(stringFromSemitone)
+    ));
+    
+
     layout.add(std::make_unique<juce::AudioParameterBool>(tempoSyncParamID, "Tempo Sync", false));
 
     juce::StringArray noteLengths = {
@@ -207,6 +233,10 @@ void Parameters::prepareToPlay(double sampleRate) noexcept
 
     lowCutSmoother.reset(sampleRate, duration);
     highCutSmoother.reset(sampleRate, duration);
+
+    sizeSmoother.reset(sampleRate, duration);
+
+    pitchSmoother.reset(sampleRate, duration);
 }
 
 void Parameters::reset() noexcept
@@ -232,6 +262,12 @@ void Parameters::reset() noexcept
 
     highCut = 20000.0f;
     highCutSmoother.setCurrentAndTargetValue(highCutParam->get());
+
+    grainSize = 1.0f;
+    sizeSmoother.setCurrentAndTargetValue(sizeParam->get() * 0.01f);
+
+    pitch = 0.0f;
+    pitchSmoother.setCurrentAndTargetValue(pitchParam->get() * 0.01f);
 }
 
 void Parameters::update() noexcept
@@ -248,6 +284,10 @@ void Parameters::update() noexcept
 
     lowCutSmoother.setTargetValue(lowCutParam->get());
     highCutSmoother.setTargetValue(highCutParam->get());
+
+    sizeSmoother.setTargetValue(sizeParam->get());
+
+    pitchSmoother.setTargetValue(pitchParam->get());
 
     delayNote = delayNoteParam->getIndex();
     tempoSync = tempoSyncParam->get();
@@ -268,4 +308,7 @@ void Parameters::smoothen() noexcept
 
     lowCut = lowCutSmoother.getNextValue();
     highCut = highCutSmoother.getNextValue();
+
+    grainSize = sizeSmoother.getNextValue();
+    pitch = pitchSmoother.getNextValue();
 }
