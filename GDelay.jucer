@@ -20,6 +20,7 @@
             file="../../../GameDevProjects/Fonts/patopian_1986/Patopian 1986.ttf"/>
     </GROUP>
     <GROUP id="{F4EB2649-9D18-B53A-5C88-218FAE2EC3CD}" name="Source">
+      <FILE id="jH0kLS" name="LayoutHelper.h" compile="0" resource="0" file="Source/LayoutHelper.h"/>
       <FILE id="bcrYOi" name="LabeledButton.cpp" compile="1" resource="0"
             file="Source/LabeledButton.cpp"/>
       <FILE id="fltpKz" name="LabeledButton.h" compile="0" resource="0" file="Source/LabeledButton.h"/>

@@ -14,8 +14,10 @@
 class LabeledButton : public juce::Component
 {
 public:
+    enum class ButtonSize{ Small, Medium, Large };
+    
     LabeledButton(const juce::String& labelText, const juce::String& buttonText, juce::AudioProcessorValueTreeState& apvts,
-        const juce::ParameterID& parameterID, juce::Rectangle<int> buttonBounds = { 0, 0, 80, 40 });
+        const juce::ParameterID& parameterID, ButtonSize size = ButtonSize::Small);
     ~LabeledButton() override;
 
     void setClickingTogglesState(bool shouldToggle);
@@ -23,14 +25,16 @@ public:
     bool getToggleState() const;
     
     juce::TextButton& getButton() { return button; }
-
+    void setButtonSize(ButtonSize size);
     void resized() override;
 
     juce::Label label;
     juce::TextButton button;
-    
+
     juce::AudioProcessorValueTreeState::ButtonAttachment attachment;
 
 private:
+    ButtonSize buttonSize = ButtonSize::Medium;
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(LabeledButton)
 };

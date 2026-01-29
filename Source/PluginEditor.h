@@ -48,7 +48,7 @@ private:
     RotaryKnob grainPitch{ "pitch", audioProcessor.apvts, grainPitchParamID };
 
     LabeledButton tempoSyncButton{ "Sync", "", audioProcessor.apvts, tempoSyncParamID };
-    LabeledButton granularToggleButton{ "granular", "", audioProcessor.apvts, granularToggleParamID, { 0, 0, 115, 40 } };
+    LabeledButton granularToggleButton{ "granular", "", audioProcessor.apvts, granularToggleParamID, LabeledButton::ButtonSize::Medium };
     
     juce::ImageButton bypassButton;
 
