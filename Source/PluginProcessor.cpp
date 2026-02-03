@@ -43,6 +43,15 @@ static float processGrain(Grain& grain, DelayLine& delayLine) {
     }
 
     float sample = delayLine.readAtIndex(readIndex);
+    
+    float phase = static_cast<float>(grain.samplesPlayed) /
+        static_cast<float>(grain.grainDuration - 1);
+
+    float window = 0.5f * (1.0f - std::cos(juce::MathConstants<float>::twoPi * phase));
+    sample *= window;
+
+    //int windowSize = 1024;
+    //juce::dsp::WindowingFunction<float> window(windowSize, juce::dsp::WindowingFunction<float>::hann);
 
     grain.grainIndexPosition += grain.stepSize;
     grain.samplesPlayed++;
