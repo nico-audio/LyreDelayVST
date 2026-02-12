@@ -8,6 +8,7 @@
 
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
+#include "LayoutHelper.h"
 #include <melatonin_inspector/melatonin_inspector.h>
 
 GDelayAudioProcessorEditor::GDelayAudioProcessorEditor (GDelayAudioProcessor& p)
@@ -27,7 +28,6 @@ GDelayAudioProcessorEditor::GDelayAudioProcessorEditor (GDelayAudioProcessor& p)
     grainGroup.setText("Granular");
     grainGroup.setTextLabelPosition(juce::Justification::horizontallyCentred);
     grainGroup.addAndMakeVisible(granularToggleButton);
-    granularToggleButton.label.setBounds(0, 0, 115, 20);
     grainGroup.addAndMakeVisible(grainSize);
     grainGroup.addAndMakeVisible(grainPitch);
     addAndMakeVisible(grainGroup);
@@ -54,8 +54,8 @@ GDelayAudioProcessorEditor::GDelayAudioProcessorEditor (GDelayAudioProcessor& p)
     addAndMakeVisible(bypassButton);
 
     // Dev module
-    inspector = std::make_unique<melatonin::Inspector>(*this);
-    inspector->setVisible(true);
+    //inspector = std::make_unique<melatonin::Inspector>(*this);
+    //inspector->setVisible(true);
 
     setSize (720, 490);
 
@@ -134,9 +134,9 @@ void GDelayAudioProcessorEditor::resized()
     lowCutKnob.setTopLeftPosition(stereoKnob.getRight() + 20, 260);
     highCutKnob.setTopLeftPosition(lowCutKnob.getRight() + 20, lowCutKnob.getY());
 
-    granularToggleButton.setTopLeftPosition(60, 30);
-    grainSize.setTopLeftPosition(60, 75);
-    grainPitch.setTopLeftPosition(60, 200);
+    granularToggleButton.setTopLeftPosition(20, 20);
+    grainSize.setTopLeftPosition(20, 75);
+    grainPitch.setTopLeftPosition(20, 200);
 
     mixKnob.setTopLeftPosition(550, 120);
     gainKnob.setTopLeftPosition(mixKnob.getX(), mixKnob.getBottom() + 10);

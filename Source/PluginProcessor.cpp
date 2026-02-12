@@ -6,17 +6,30 @@
   ==============================================================================
 */
 
+#include <cmath>
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 #include "ProtectYourEars.h"
 #include "Grain.h"
 
-static void spawnGrain(Grain& grain, int delayWriteIndex, int delayBufferSize, int grainDurationSamples) {
+Grain* GDelayAudioProcessor::findAvailableGrain(std::array<Grain, maxGrains>& pool)
+{
+    for (auto& grain : pool)
+    {
+        if (!grain.isActive)
+            return &grain;
+    }
+    return nullptr;
+}
+
+static void spawnGrain(Grain& grain, int delayWriteIndex, int delayBufferSize, int grainDurationSamples, float pitchRatio) {
     grain.isActive = true;
     grain.samplesPlayed = 0;
     grain.grainDuration = grainDurationSamples;
 
     grain.startIndex = delayWriteIndex - grainDurationSamples;
+
+    grain.stepSize = pitchRatio;
     
     // wrapping
     if (grain.startIndex < 0)
@@ -43,6 +56,15 @@ static float processGrain(Grain& grain, DelayLine& delayLine) {
     }
 
     float sample = delayLine.readAtIndex(readIndex);
+    
+    float phase = static_cast<float>(grain.samplesPlayed) /
+        static_cast<float>(grain.grainDuration - 1);
+
+    float window = 0.5f * (1.0f - std::cos(juce::MathConstants<float>::twoPi * phase));
+    sample *= window;
+
+    //int windowSize = 1024;
+    //juce::dsp::WindowingFunction<float> window(windowSize, juce::dsp::WindowingFunction<float>::hann);
 
     grain.grainIndexPosition += grain.stepSize;
     grain.samplesPlayed++;
@@ -186,8 +208,10 @@ void GDelayAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock
     wait = 0.0f;
     waitInc = 1.0f / (0.3f * float(sampleRate));  // 300 ms
 
-    grain.isActive = false;
-    grain.samplesPlayed = 0;
+    for (auto& grain : grainPool)
+    {
+        grain.reset();
+    }
       
 }
 
@@ -329,18 +353,42 @@ void GDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[may
         feedbackR = lowCutFilter.processSample(1, feedbackR);
         feedbackR = highCutFilter.processSample(1, feedbackR);
 
+        // Start granular logic
         float grainSizeMs = params.grainSize;
         float grainSizeSamples = millisecondsToSamples(grainSizeMs, sampleRate);
+        float pitchSemitones = params.pitch;
+        float pitchRatio = std::pow(2.0f, pitchSemitones / 12.0f);
         
-        // Start granular logic
-        if (params.granularisActive && !grain.isActive) {
-            spawnGrain(grain, delayLineL.getWriteIndex(), delayLineL.getBufferLength(), grainSizeSamples);
+        if (params.granularisActive) {
+            //spawnGrain(grain, delayLineL.getWriteIndex(), delayLineL.getBufferLength(), grainSizeSamples, pitchRatio);
+            Grain* availableGrain = findAvailableGrain(grainPool);
+
+            if (availableGrain != nullptr) {
+                spawnGrain(*availableGrain, delayLineL.getWriteIndex(), delayLineL.getBufferLength(), grainSizeSamples, pitchRatio);
+            }
         }
 
-        float grainSample = processGrain(grain, delayLineL);
+        //float grainSample = processGrain(grain, delayLineL);
 
-        float grainL = grainSample;
-        float grainR = grainSample;
+        float grainSumL = 0.0f;
+        float grainSumR = 0.0f;
+
+        for (auto& grain : grainPool)
+        {
+            if (grain.isActive)
+            {
+                grainSumL += processGrain(grain, delayLineL);
+                grainSumR += processGrain(grain, delayLineR);
+            }
+        }
+
+        // Normalize
+        grainSumL *= 1.0f / maxGrains;
+        grainSumR *= 1.0f / maxGrains;
+
+        // Output
+        float grainL = grainSumL;
+        float grainR = grainSumR;
 
         if (params.granularisActive) {
             wetL = grainL;
@@ -349,7 +397,6 @@ void GDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[may
        
         float mixL = dryL + wetL * params.mix;
         float mixR = dryR + wetR * params.mix;
-
 
         // Write pointers
         float outL = mixL * params.gain;

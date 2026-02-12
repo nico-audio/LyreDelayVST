@@ -18,4 +18,11 @@ struct Grain
     int grainDuration = 0;
     int samplesPlayed = 0;
     bool isActive = false;
+
+    void reset()
+    {
+        isActive = false;
+        samplesPlayed = 0;
+        grainIndexPosition = 0.0f;
+    }
 };

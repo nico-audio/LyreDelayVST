@@ -10,9 +10,10 @@
 
 #include "LabeledButton.h"
 #include "LookAndFeel.h"
+#include "LayoutHelper.h"
 
 LabeledButton::LabeledButton(const juce::String& labelText, const juce::String& buttonText, juce::AudioProcessorValueTreeState& apvts,
-    const juce::ParameterID& parameterID, juce::Rectangle<int> buttonBounds) : attachment(apvts, parameterID.getParamID(), button)
+    const juce::ParameterID& parameterID, ButtonSize size) : attachment(apvts, parameterID.getParamID(), button), buttonSize(size)
 {
     label.setText(labelText, juce::dontSendNotification);
     label.setJustificationType(juce::Justification::centred);
@@ -23,8 +24,18 @@ LabeledButton::LabeledButton(const juce::String& labelText, const juce::String& 
     button.setClickingTogglesState(true);
     addAndMakeVisible(button);
 
-    // component size
-    setSize(buttonBounds.getWidth(), buttonBounds.getHeight() + 24);
+    // adjust component size based on button size
+    int w = 0;
+    int h = 0;
+
+    switch (buttonSize)
+    {
+        case ButtonSize::Small:  w = 65; h = 45; break;
+        case ButtonSize::Medium: w = 110; h = 55; break;
+        case ButtonSize::Large:  w = 200; h = 70; break;
+    }
+
+    setSize(w, h);
 
     jassert(apvts.getParameter(parameterID.getParamID()) != nullptr);
 
@@ -50,26 +61,33 @@ bool LabeledButton::getToggleState() const
     return button.getToggleState();
 }
 
+
 void LabeledButton::resized()
 {
-    //label.setBounds(0, 0, 75, 20);
+    switch (buttonSize)
+    {
+        case ButtonSize::Small:
+            label.setBounds(0, 0, 60, 20);
+            button.setBounds(0, 25, 40, 20);
+            centreBelow(label, button, 0);
+            break;
 
-    //button.setBounds(label.getX() + 25, label.getY() + 20, 40, 20);
+        case ButtonSize::Medium:
+            label.setBounds(0, 0, 110, 20);
+            button.setBounds(0, 0, 50, 25);
+            centreBelow(label, button, 0);
+            break;
 
-    label.setSize(75, 20);
-    button.setSize(40, 20);
-    
-    auto labelBounds = label.getBounds();
-    auto buttonBounds = button.getBounds();
+        case ButtonSize::Large:
+            label.setBounds(0, 0, 200, 20);
+            button.setBounds(0, 0, 100, 30);
+            centreBelow(label, button, 0);
+            break;
+    }
+}
 
-    // Compute the centre point for button
-    juce::Point<int> newCentre(
-        labelBounds.getCentreX(),     // same horizontal centre as A
-        labelBounds.getBottom() + buttonBounds.getHeight() / 2   // below A
-    );
-
-    // Move button's rectangle so its centre matches newCentre
-    auto newBounds = buttonBounds.withCentre(newCentre);
-
-    button.setBounds(newBounds);
+void LabeledButton::setButtonSize(ButtonSize size) 
+{ 
+    buttonSize = size; 
+    resized(); 
 }
