@@ -67,13 +67,12 @@ public:
     {
         return milliseconds / 1000.0f * sampleRate;
     }
-    
+
     Parameters params;
 
     Measurement levelL, levelR;
 
 private:
-
     DelayLine delayLineL, delayLineR;
 
     float feedbackL = 0.0f;
@@ -96,7 +95,9 @@ private:
     float wait = 0.0f;
     float waitInc = 0.0f;      
 
-    Grain grain;
+    static constexpr int maxGrains = 8;
+    std::array<Grain, maxGrains> grainPool;
+    static Grain* findAvailableGrain(std::array<Grain, maxGrains>& pool);
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (GDelayAudioProcessor)
 };

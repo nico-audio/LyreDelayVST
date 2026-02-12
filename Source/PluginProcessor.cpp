@@ -12,6 +12,16 @@
 #include "ProtectYourEars.h"
 #include "Grain.h"
 
+Grain* GDelayAudioProcessor::findAvailableGrain(std::array<Grain, maxGrains>& pool)
+{
+    for (auto& grain : pool)
+    {
+        if (!grain.isActive)
+            return &grain;
+    }
+    return nullptr;
+}
+
 static void spawnGrain(Grain& grain, int delayWriteIndex, int delayBufferSize, int grainDurationSamples, float pitchRatio) {
     grain.isActive = true;
     grain.samplesPlayed = 0;
@@ -198,8 +208,10 @@ void GDelayAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock
     wait = 0.0f;
     waitInc = 1.0f / (0.3f * float(sampleRate));  // 300 ms
 
-    grain.isActive = false;
-    grain.samplesPlayed = 0;
+    for (auto& grain : grainPool)
+    {
+        grain.reset();
+    }
       
 }
 
@@ -347,14 +359,36 @@ void GDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[may
         float pitchSemitones = params.pitch;
         float pitchRatio = std::pow(2.0f, pitchSemitones / 12.0f);
         
-        if (params.granularisActive && !grain.isActive) {
-            spawnGrain(grain, delayLineL.getWriteIndex(), delayLineL.getBufferLength(), grainSizeSamples, pitchRatio);
+        if (params.granularisActive) {
+            //spawnGrain(grain, delayLineL.getWriteIndex(), delayLineL.getBufferLength(), grainSizeSamples, pitchRatio);
+            Grain* availableGrain = findAvailableGrain(grainPool);
+
+            if (availableGrain != nullptr) {
+                spawnGrain(*availableGrain, delayLineL.getWriteIndex(), delayLineL.getBufferLength(), grainSizeSamples, pitchRatio);
+            }
         }
 
-        float grainSample = processGrain(grain, delayLineL);
+        //float grainSample = processGrain(grain, delayLineL);
 
-        float grainL = grainSample;
-        float grainR = grainSample;
+        float grainSumL = 0.0f;
+        float grainSumR = 0.0f;
+
+        for (auto& grain : grainPool)
+        {
+            if (grain.isActive)
+            {
+                grainSumL += processGrain(grain, delayLineL);
+                grainSumR += processGrain(grain, delayLineR);
+            }
+        }
+
+        // Normalize
+        grainSumL *= 1.0f / maxGrains;
+        grainSumR *= 1.0f / maxGrains;
+
+        // Output
+        float grainL = grainSumL;
+        float grainR = grainSumR;
 
         if (params.granularisActive) {
             wetL = grainL;
