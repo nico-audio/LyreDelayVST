@@ -8,7 +8,7 @@
 
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
-#include "LayoutHelper.h"
+#include "GUI/LayoutHelper.h"
 #include <melatonin_inspector/melatonin_inspector.h>
 
 GDelayAudioProcessorEditor::GDelayAudioProcessorEditor (GDelayAudioProcessor& p)

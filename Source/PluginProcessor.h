@@ -9,11 +9,11 @@
 #pragma once
 
 #include <JuceHeader.h>
-#include "Parameters.h"
-#include "Tempo.h"
-#include "DelayLine.h"
+#include "DSP/Parameters.h"
+#include "DSP/Tempo.h"
+#include "DSP/DelayLine.h"
 #include "Measurement.h"
-#include "Grain.h"
+#include "DSP/Grain.h"
 
 class GDelayAudioProcessor  : public juce::AudioProcessor
 {

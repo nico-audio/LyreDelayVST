@@ -10,7 +10,7 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 #include "ProtectYourEars.h"
-#include "Grain.h"
+#include "DSP/Grain.h"
 
 Grain* GDelayAudioProcessor::findAvailableGrain(std::array<Grain, maxGrains>& pool)
 {

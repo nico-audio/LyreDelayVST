@@ -5,40 +5,47 @@
               version="0.0.1" pluginManufacturer="Nico" bundleIdentifier="NicoLyre"
               pluginManufacturerCode="Nico" pluginCode="Lyre" cppLanguageStandard="20">
   <MAINGROUP id="qi5Naz" name="Lyre">
-    <GROUP id="{B5B72528-351F-738B-7D8D-B58043B449C8}" name="Assets">
+    <GROUP id="{CB2CAC95-A9C6-6993-A8E1-A8462E4AC6AE}" name="Assets">
+      <FILE id="xgfCID" name="lyre_logo_1.png" compile="0" resource="1" file="Assets/lyre_logo_1.png"/>
+    </GROUP>
+    <GROUP id="{B5B72528-351F-738B-7D8D-B58043B449C8}" name="Assets1">
       <FILE id="PS82kT" name="Bypass-placeholder.png" compile="0" resource="1"
             file="../../Graphics/Lyre/Bypass-placeholder.png"/>
-      <FILE id="wqoicw" name="GDelay_logo.png" compile="0" resource="1" file="../../Graphics/GDelay_logo.png"/>
       <FILE id="PfMOTl" name="Induction.otf" compile="0" resource="1" file="../../../GameDevProjects/Fonts/induction/Induction.otf"/>
       <FILE id="inzFxx" name="INTERDIM.TTF" compile="0" resource="1" file="../../../GameDevProjects/Fonts/interdimensional/INTERDIM.TTF"/>
       <FILE id="gOEGHm" name="Lyre_BG_Texture_brushed_2.png" compile="0"
             resource="1" file="../../Graphics/Lyre/Lyre_BG_Texture_brushed_2.png"/>
       <FILE id="Wpv9ra" name="Lyre_BG_Texture_brushed_metal.png" compile="0"
             resource="1" file="../../Graphics/Lyre/Lyre_BG_Texture_brushed_metal.png"/>
-      <FILE id="i3Pg40" name="lyre_logo_1.png" compile="0" resource="1" file="../../Graphics/Lyre/lyre_logo_1.png"/>
       <FILE id="fJDbuu" name="Patopian 1986.ttf" compile="0" resource="1"
             file="../../../GameDevProjects/Fonts/patopian_1986/Patopian 1986.ttf"/>
     </GROUP>
     <GROUP id="{F4EB2649-9D18-B53A-5C88-218FAE2EC3CD}" name="Source">
-      <FILE id="jH0kLS" name="LayoutHelper.h" compile="0" resource="0" file="Source/LayoutHelper.h"/>
-      <FILE id="bcrYOi" name="LabeledButton.cpp" compile="1" resource="0"
-            file="Source/LabeledButton.cpp"/>
-      <FILE id="fltpKz" name="LabeledButton.h" compile="0" resource="0" file="Source/LabeledButton.h"/>
-      <FILE id="S2hMMr" name="Grain.h" compile="0" resource="0" file="Source/Grain.h"/>
+      <GROUP id="{AC75722F-10BE-4030-4BFD-F0528D4988BA}" name="DSP">
+        <FILE id="C8aJcA" name="DelayLine.cpp" compile="1" resource="0" file="Source/DSP/DelayLine.cpp"/>
+        <FILE id="kVDqU2" name="DelayLine.h" compile="0" resource="0" file="Source/DSP/DelayLine.h"/>
+        <FILE id="c1ICxt" name="Grain.h" compile="0" resource="0" file="Source/DSP/Grain.h"/>
+        <FILE id="vupY2c" name="Parameters.cpp" compile="1" resource="0" file="Source/DSP/Parameters.cpp"/>
+        <FILE id="Wdtiwi" name="Parameters.h" compile="0" resource="0" file="Source/DSP/Parameters.h"/>
+        <FILE id="aRanvN" name="Tempo.cpp" compile="1" resource="0" file="Source/DSP/Tempo.cpp"/>
+        <FILE id="PT1Blc" name="Tempo.h" compile="0" resource="0" file="Source/DSP/Tempo.h"/>
+      </GROUP>
+      <GROUP id="{622D3DBD-57B7-3657-FBE0-177A9F238056}" name="GUI">
+        <FILE id="NF1P3X" name="LabeledButton.cpp" compile="1" resource="0"
+              file="Source/GUI/LabeledButton.cpp"/>
+        <FILE id="pcalOu" name="LabeledButton.h" compile="0" resource="0" file="Source/GUI/LabeledButton.h"/>
+        <FILE id="zFZvHT" name="LayoutHelper.h" compile="0" resource="0" file="Source/GUI/LayoutHelper.h"/>
+        <FILE id="nid7Up" name="LevelMeter.cpp" compile="1" resource="0" file="Source/GUI/LevelMeter.cpp"/>
+        <FILE id="AXhnCp" name="LevelMeter.h" compile="0" resource="0" file="Source/GUI/LevelMeter.h"/>
+        <FILE id="ph6H7O" name="LookAndFeel.cpp" compile="1" resource="0" file="Source/GUI/LookAndFeel.cpp"/>
+        <FILE id="E1I8Kq" name="LookAndFeel.h" compile="0" resource="0" file="Source/GUI/LookAndFeel.h"/>
+        <FILE id="NDMvHD" name="RotaryKnob.cpp" compile="1" resource="0" file="Source/GUI/RotaryKnob.cpp"/>
+        <FILE id="QkJ6bC" name="RotaryKnob.h" compile="0" resource="0" file="Source/GUI/RotaryKnob.h"/>
+      </GROUP>
       <FILE id="wJXJgg" name="Measurement.h" compile="0" resource="0" file="Source/Measurement.h"/>
-      <FILE id="px884k" name="LevelMeter.cpp" compile="1" resource="0" file="Source/LevelMeter.cpp"/>
-      <FILE id="t9cVHY" name="LevelMeter.h" compile="0" resource="0" file="Source/LevelMeter.h"/>
-      <FILE id="h4YwfJ" name="DelayLine.cpp" compile="1" resource="0" file="Source/DelayLine.cpp"/>
-      <FILE id="HPN3BI" name="DelayLine.h" compile="0" resource="0" file="Source/DelayLine.h"/>
-      <FILE id="mhpmtU" name="Tempo.cpp" compile="1" resource="0" file="Source/Tempo.cpp"/>
-      <FILE id="QIAAG3" name="Tempo.h" compile="0" resource="0" file="Source/Tempo.h"/>
       <FILE id="bX0Cws" name="DSP.h" compile="0" resource="0" file="Source/DSP.h"/>
       <FILE id="OhDzH0" name="ProtectYourEars.h" compile="0" resource="0"
             file="Source/ProtectYourEars.h"/>
-      <FILE id="hsz7Z9" name="LookAndFeel.h" compile="0" resource="0" file="Source/LookAndFeel.h"/>
-      <FILE id="SzWa9K" name="LookAndFeel.cpp" compile="1" resource="0" file="Source/LookAndFeel.cpp"/>
-      <FILE id="g587kI" name="Parameters.cpp" compile="1" resource="0" file="Source/Parameters.cpp"/>
-      <FILE id="RQIP8K" name="Parameters.h" compile="0" resource="0" file="Source/Parameters.h"/>
       <FILE id="O0X0YE" name="PluginEditor.cpp" compile="1" resource="0"
             file="Source/PluginEditor.cpp"/>
       <FILE id="Rjhjvz" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
@@ -46,8 +53,6 @@
             file="Source/PluginProcessor.cpp"/>
       <FILE id="zxJqMS" name="PluginProcessor.h" compile="0" resource="0"
             file="Source/PluginProcessor.h"/>
-      <FILE id="r4ohaA" name="RotaryKnob.cpp" compile="1" resource="0" file="Source/RotaryKnob.cpp"/>
-      <FILE id="usj6wa" name="RotaryKnob.h" compile="0" resource="0" file="Source/RotaryKnob.h"/>
     </GROUP>
   </MAINGROUP>
   <MODULES>
