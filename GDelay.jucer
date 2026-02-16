@@ -11,7 +11,6 @@
     <GROUP id="{B5B72528-351F-738B-7D8D-B58043B449C8}" name="Assets1">
       <FILE id="PS82kT" name="Bypass-placeholder.png" compile="0" resource="1"
             file="../../Graphics/Lyre/Bypass-placeholder.png"/>
-      <FILE id="wqoicw" name="GDelay_logo.png" compile="0" resource="1" file="../../Graphics/GDelay_logo.png"/>
       <FILE id="PfMOTl" name="Induction.otf" compile="0" resource="1" file="../../../GameDevProjects/Fonts/induction/Induction.otf"/>
       <FILE id="inzFxx" name="INTERDIM.TTF" compile="0" resource="1" file="../../../GameDevProjects/Fonts/interdimensional/INTERDIM.TTF"/>
       <FILE id="gOEGHm" name="Lyre_BG_Texture_brushed_2.png" compile="0"
