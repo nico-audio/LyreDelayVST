@@ -9,7 +9,7 @@
 */
 
 #include "Parameters.h"
-#include "DSP.h"
+#include "../DSP.h"
 
 template<typename T>
 static void castParameter(juce::AudioProcessorValueTreeState& apvts,

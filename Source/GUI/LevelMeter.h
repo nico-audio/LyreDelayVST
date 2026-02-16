@@ -11,7 +11,7 @@
 #pragma once
 
 #include <JuceHeader.h>
-#include "Measurement.h"
+#include "../Measurement.h"
 
 class Bulb : public juce::Component
 {

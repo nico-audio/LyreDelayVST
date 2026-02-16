@@ -10,11 +10,11 @@
 
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
-#include "Parameters.h"
-#include "RotaryKnob.h"
-#include "LookAndFeel.h"
-#include "LevelMeter.h"
-#include "LabeledButton.h"
+#include "DSP/Parameters.h"
+#include "GUI/RotaryKnob.h"
+#include "GUI/LookAndFeel.h"
+#include "GUI/LevelMeter.h"
+#include "GUI/LabeledButton.h"
 #include <melatonin_inspector/melatonin_inspector.h>
 
 
