@@ -101,6 +101,7 @@ Parameters::Parameters(juce::AudioProcessorValueTreeState& apvts)
     castParameter(apvts, granularToggleParamID, granularToggleParam);
     castParameter(apvts, grainSizeParamID, sizeParam);
     castParameter(apvts, grainPitchParamID, pitchParam);
+    castParameter(apvts, grainDensityParamID, densityParam);
 }
 
 // Plugin parameters
@@ -186,6 +187,14 @@ Parameters::createParameterLayout()
         juce::AudioParameterFloatAttributes().withStringFromValueFunction(stringFromSemitone)
     ));
     
+    layout.add(std::make_unique<juce::AudioParameterFloat>(
+        grainDensityParamID,
+        "Density",
+        juce::NormalisableRange<float> { minDensity, maxDensity, densityStepSize },
+        defaultDensity,
+        juce::AudioParameterFloatAttributes().withStringFromValueFunction(stringFromHz)
+                                             .withValueFromStringFunction(hzFromString)
+    ));
 
     layout.add(std::make_unique<juce::AudioParameterBool>(tempoSyncParamID, "Tempo Sync", false));
 
@@ -237,6 +246,8 @@ void Parameters::prepareToPlay(double sampleRate) noexcept
     sizeSmoother.reset(sampleRate, duration);
 
     pitchSmoother.reset(sampleRate, duration);
+
+    densitySmoother.reset(sampleRate, duration);
 }
 
 void Parameters::reset() noexcept
@@ -268,6 +279,9 @@ void Parameters::reset() noexcept
 
     pitch = 0.0f;
     pitchSmoother.setCurrentAndTargetValue(pitchParam->get() * 0.01f);
+
+    density = 0.0f;
+    densitySmoother.setCurrentAndTargetValue(densityParam->get() * 0.01f);
 }
 
 void Parameters::update() noexcept
@@ -288,6 +302,8 @@ void Parameters::update() noexcept
     sizeSmoother.setTargetValue(sizeParam->get());
 
     pitchSmoother.setTargetValue(pitchParam->get());
+
+    densitySmoother.setTargetValue(densityParam->get());
 
     delayNote = delayNoteParam->getIndex();
     tempoSync = tempoSyncParam->get();
@@ -311,4 +327,5 @@ void Parameters::smoothen() noexcept
 
     grainSize = sizeSmoother.getNextValue();
     pitch = pitchSmoother.getNextValue();
+    density = densitySmoother.getNextValue();
 }

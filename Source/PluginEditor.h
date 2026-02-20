@@ -46,6 +46,7 @@ private:
     RotaryKnob delayNoteKnob{ "Note", audioProcessor.apvts, delayNoteParamID };
     RotaryKnob grainSize{ "Size", audioProcessor.apvts, grainSizeParamID };
     RotaryKnob grainPitch{ "pitch", audioProcessor.apvts, grainPitchParamID };
+    RotaryKnob grainDensity{ "Density", audioProcessor.apvts, grainDensityParamID };
 
     LabeledButton tempoSyncButton{ "Sync", "", audioProcessor.apvts, tempoSyncParamID };
     LabeledButton granularToggleButton{ "granular", "", audioProcessor.apvts, granularToggleParamID, LabeledButton::ButtonSize::Medium };
