@@ -88,21 +88,21 @@ static float hzFromString(const juce::String& str)
 // Constructor
 Parameters::Parameters(juce::AudioProcessorValueTreeState& apvts)
 {
-    castParameter(apvts, gainParamID, gainParam);
-    castParameter(apvts, delayTimeParamID, delayTimeParam);
-    castParameter(apvts, mixParamID, mixParam);
-    castParameter(apvts, feedbackParamID, feedbackParam);
-    castParameter(apvts, stereoParamID, stereoParam);
-    castParameter(apvts, lowCutParamID, lowCutParam);
-    castParameter(apvts, highCutParamID, highCutParam);
-    castParameter(apvts, tempoSyncParamID, tempoSyncParam);
-    castParameter(apvts, delayNoteParamID, delayNoteParam);
-    castParameter(apvts, bypassParamID, bypassParam);
-    castParameter(apvts, granularToggleParamID, granularToggleParam);
-    castParameter(apvts, grainSizeParamID, sizeParam);
-    castParameter(apvts, grainPitchParamID, pitchParam);
-    castParameter(apvts, grainDensityParamID, densityParam);
-}
+    castParameter(apvts, Params::gainParamID, gainParam);
+    castParameter(apvts, Params::delayTimeParamID, delayTimeParam);
+    castParameter(apvts, Params::mixParamID, mixParam);
+    castParameter(apvts, Params::feedbackParamID, feedbackParam);
+    castParameter(apvts, Params::stereoParamID, stereoParam);
+    castParameter(apvts, Params::lowCutParamID, lowCutParam);
+    castParameter(apvts, Params::highCutParamID, highCutParam);
+    castParameter(apvts, Params::tempoSyncParamID, tempoSyncParam);
+    castParameter(apvts, Params::delayNoteParamID, delayNoteParam);
+    castParameter(apvts, Params::bypassParamID, bypassParam);
+    castParameter(apvts, Params::granularToggleParamID, granularToggleParam);
+    castParameter(apvts, Params::grainSizeParamID, sizeParam);
+    castParameter(apvts, Params::grainPitchParamID, pitchParam);
+    castParameter(apvts, Params::grainDensityParamID, densityParam);
+}                        
 
 // Plugin parameters
 juce::AudioProcessorValueTreeState::ParameterLayout
@@ -111,16 +111,16 @@ Parameters::createParameterLayout()
     juce::AudioProcessorValueTreeState::ParameterLayout layout;
 
     layout.add(std::make_unique<juce::AudioParameterFloat>(
-        gainParamID,
-        "Output gain",
+        Params::gainParamID,
+        Params::ParameterNames::gain,
         juce::NormalisableRange<float> { -12.0f, 12.0f },
         0.0f,
         juce::AudioParameterFloatAttributes().withStringFromValueFunction(stringFromDecibels)
     ));
 
     layout.add(std::make_unique<juce::AudioParameterFloat>(
-        delayTimeParamID,
-        "Delay time",
+        Params::delayTimeParamID,
+        Params::ParameterNames::delaytime,
         juce::NormalisableRange<float> { minDelayTime, maxDelayTime, delayTimeStepSize, delayTimeSkew },
         100.0f,
         juce::AudioParameterFloatAttributes().withStringFromValueFunction(stringFromMilliseconds)
@@ -128,32 +128,32 @@ Parameters::createParameterLayout()
     ));
 
     layout.add(std::make_unique<juce::AudioParameterFloat>(
-        mixParamID,
-        "Dry/Wet",
+        Params::mixParamID,
+        Params::ParameterNames::mix,
         juce::NormalisableRange<float> { minMix, maxMix, mixStepSize },
         defaultMix,
         juce::AudioParameterFloatAttributes().withStringFromValueFunction(stringFromPercent)
     ));
 
     layout.add(std::make_unique<juce::AudioParameterFloat>(
-        feedbackParamID,
-        "Feedback",
+        Params::feedbackParamID,
+        Params::ParameterNames::feedback,
         juce::NormalisableRange<float>(-100.0f, 100.0f, 1.0f),
         0.0f,
         juce::AudioParameterFloatAttributes().withStringFromValueFunction(stringFromPercent)
     ));
 
     layout.add(std::make_unique<juce::AudioParameterFloat>(
-        stereoParamID,
-        "Stereo Width",
+        Params::stereoParamID,
+        Params::ParameterNames::stereo,
         juce::NormalisableRange<float>(-100.0f, 100.0f, 1.0f),
         0.0f,
         juce::AudioParameterFloatAttributes().withStringFromValueFunction(stringFromPercent)
     ));
 
     layout.add(std::make_unique<juce::AudioParameterFloat>(
-        lowCutParamID,
-        "Low Cut",
+        Params::lowCutParamID,
+        Params::ParameterNames::lowCut,
         juce::NormalisableRange<float> { minFilterCutoff, maxFilterCutoff, filterStepSize, filterSkewFactor },
         defaultLowCutoff,
         juce::AudioParameterFloatAttributes().withStringFromValueFunction(stringFromHz)
@@ -161,8 +161,8 @@ Parameters::createParameterLayout()
     ));
 
     layout.add(std::make_unique<juce::AudioParameterFloat>(
-        highCutParamID,
-        "High Cut",
+        Params::highCutParamID,
+        Params::ParameterNames::highCut,
         juce::NormalisableRange<float> { minFilterCutoff, maxFilterCutoff, filterStepSize, filterSkewFactor },
         defaultHighCutoff,
         juce::AudioParameterFloatAttributes().withStringFromValueFunction(stringFromHz)
@@ -170,8 +170,8 @@ Parameters::createParameterLayout()
     ));
 
     layout.add(std::make_unique<juce::AudioParameterFloat>(
-        grainSizeParamID,
-        "Size",
+        Params::grainSizeParamID,
+        Params::ParameterNames::size,
         juce::NormalisableRange<float> { minGrainSize, maxGrainSize, grainStepSize },
         defaultSize,
         juce::AudioParameterFloatAttributes().withStringFromValueFunction(stringFromMilliseconds)
@@ -180,23 +180,23 @@ Parameters::createParameterLayout()
 
     
     layout.add(std::make_unique<juce::AudioParameterFloat>(
-        grainPitchParamID,
-        "Pitch",
+        Params::grainPitchParamID,
+        Params::ParameterNames::pitch,
         juce::NormalisableRange<float> { minPitch , maxPitch , pitchStepSize },
         defaultPitch,
         juce::AudioParameterFloatAttributes().withStringFromValueFunction(stringFromSemitone)
     ));
     
     layout.add(std::make_unique<juce::AudioParameterFloat>(
-        grainDensityParamID,
-        "Density",
+        Params::grainDensityParamID,
+        Params::ParameterNames::density,
         juce::NormalisableRange<float> { minDensity, maxDensity, densityStepSize },
         defaultDensity,
         juce::AudioParameterFloatAttributes().withStringFromValueFunction(stringFromHz)
                                              .withValueFromStringFunction(hzFromString)
     ));
 
-    layout.add(std::make_unique<juce::AudioParameterBool>(tempoSyncParamID, "Tempo Sync", false));
+    layout.add(std::make_unique<juce::AudioParameterBool>(Params::tempoSyncParamID, Params::ParameterNames::tempoSync, false));
 
     juce::StringArray noteLengths = {
         "1/32",
@@ -217,11 +217,11 @@ Parameters::createParameterLayout()
         "1/1",
     };
 
-    layout.add(std::make_unique<juce::AudioParameterChoice>(delayNoteParamID, "Delay Note", noteLengths, 9));
+    layout.add(std::make_unique<juce::AudioParameterChoice>(Params::delayNoteParamID, Params::ParameterNames::delayNote, noteLengths, 9));
     
-    layout.add(std::make_unique<juce::AudioParameterBool>(bypassParamID, "Bypass", false));
+    layout.add(std::make_unique<juce::AudioParameterBool>(Params::bypassParamID, Params::ParameterNames::bypass, false));
 
-    layout.add(std::make_unique<juce::AudioParameterBool>(granularToggleParamID, "Granular", false));
+    layout.add(std::make_unique<juce::AudioParameterBool>(Params::granularToggleParamID, Params::ParameterNames::granular, false));
 
     return layout;
 }

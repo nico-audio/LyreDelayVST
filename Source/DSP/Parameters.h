@@ -10,22 +10,7 @@
 
 #pragma once
 #include <JuceHeader.h>
-
-const juce::ParameterID gainParamID{ "gain", 1 };
-const juce::ParameterID delayTimeParamID{ "delayTime", 1 };
-const juce::ParameterID mixParamID{ "mix", 1 };
-const juce::ParameterID feedbackParamID{ "feedback", 1 };
-const juce::ParameterID stereoParamID{ "stereoWidth", 1 };
-const juce::ParameterID lowCutParamID{ "lowCut", 1 };
-const juce::ParameterID highCutParamID{ "highCut", 1 };
-const juce::ParameterID tempoSyncParamID{ "tempoSync", 1 };
-const juce::ParameterID delayNoteParamID{ "delayNote", 1 };
-const juce::ParameterID bypassParamID{ "bypass", 1 };
-const juce::ParameterID granularToggleParamID{ "granularToggle", 1 };
-const juce::ParameterID grainSizeParamID{ "grainSize", 1 };
-const juce::ParameterID grainPitchParamID{ "grainPitch", 1 };
-const juce::ParameterID grainDensityParamID{ "grainDensity", 1 };
-
+#include "ParameterHelper.h"
 
 class Parameters
 {

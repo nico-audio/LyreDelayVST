@@ -25,6 +25,8 @@
         <FILE id="C8aJcA" name="DelayLine.cpp" compile="1" resource="0" file="Source/DSP/DelayLine.cpp"/>
         <FILE id="kVDqU2" name="DelayLine.h" compile="0" resource="0" file="Source/DSP/DelayLine.h"/>
         <FILE id="c1ICxt" name="Grain.h" compile="0" resource="0" file="Source/DSP/Grain.h"/>
+        <FILE id="YqZUa3" name="ParameterHelper.h" compile="0" resource="0"
+              file="Source/DSP/ParameterHelper.h"/>
         <FILE id="vupY2c" name="Parameters.cpp" compile="1" resource="0" file="Source/DSP/Parameters.cpp"/>
         <FILE id="Wdtiwi" name="Parameters.h" compile="0" resource="0" file="Source/DSP/Parameters.h"/>
         <FILE id="aRanvN" name="Tempo.cpp" compile="1" resource="0" file="Source/DSP/Tempo.cpp"/>

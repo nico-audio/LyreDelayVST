@@ -10,7 +10,7 @@
 
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
-#include "DSP/Parameters.h"
+#include "DSP/ParameterHelper.h"
 #include "GUI/RotaryKnob.h"
 #include "GUI/LookAndFeel.h"
 #include "GUI/LevelMeter.h"
@@ -36,25 +36,25 @@ private:
 
     GDelayAudioProcessor& audioProcessor;
 
-    RotaryKnob gainKnob { "Gain", audioProcessor.apvts, gainParamID, true };
-    RotaryKnob mixKnob{ "Mix", audioProcessor.apvts, mixParamID };
-    RotaryKnob delayTimeKnob{ "Time", audioProcessor.apvts, delayTimeParamID };
-    RotaryKnob feedbackKnob{ "Feedback", audioProcessor.apvts, feedbackParamID, true };
-    RotaryKnob stereoKnob{ "Stereo", audioProcessor.apvts, stereoParamID, true, { 0, 0, 68, 76 } };
-    RotaryKnob lowCutKnob{ "Low Cut", audioProcessor.apvts, lowCutParamID, true, { 0, 0, 68, 76 } };
-    RotaryKnob highCutKnob{ "High Cut", audioProcessor.apvts, highCutParamID, true, { 0, 0, 68, 76 } };
-    RotaryKnob delayNoteKnob{ "Note", audioProcessor.apvts, delayNoteParamID };
-    RotaryKnob grainSize{ "Size", audioProcessor.apvts, grainSizeParamID };
-    RotaryKnob grainPitch{ "pitch", audioProcessor.apvts, grainPitchParamID };
-    RotaryKnob grainDensity{ "Density", audioProcessor.apvts, grainDensityParamID };
+    RotaryKnob gainKnob { "Gain", audioProcessor.apvts, Params::gainParamID, true };
+    RotaryKnob mixKnob{ "Mix", audioProcessor.apvts, Params::mixParamID };
+    RotaryKnob delayTimeKnob{ "Time", audioProcessor.apvts, Params::delayTimeParamID };
+    RotaryKnob feedbackKnob{ "Feedback", audioProcessor.apvts, Params::feedbackParamID, true };
+    RotaryKnob stereoKnob{ "Stereo", audioProcessor.apvts, Params::stereoParamID, true, { 0, 0, 68, 76 } };
+    RotaryKnob lowCutKnob{ "Low Cut", audioProcessor.apvts, Params::lowCutParamID, true, { 0, 0, 68, 76 } };
+    RotaryKnob highCutKnob{ "High Cut", audioProcessor.apvts, Params::highCutParamID, true, { 0, 0, 68, 76 } };
+    RotaryKnob delayNoteKnob{ "Note", audioProcessor.apvts, Params::delayNoteParamID };
+    RotaryKnob grainSize{ "Size", audioProcessor.apvts, Params::grainSizeParamID };
+    RotaryKnob grainPitch{ "pitch", audioProcessor.apvts, Params::grainPitchParamID };
+    RotaryKnob grainDensity{ "Density", audioProcessor.apvts, Params::grainDensityParamID };
 
-    LabeledButton tempoSyncButton{ "Sync", "", audioProcessor.apvts, tempoSyncParamID };
-    LabeledButton granularToggleButton{ "granular", "", audioProcessor.apvts, granularToggleParamID, LabeledButton::ButtonSize::Medium };
+    LabeledButton tempoSyncButton{ "Sync", "", audioProcessor.apvts, Params::tempoSyncParamID };
+    LabeledButton granularToggleButton{ "granular", "", audioProcessor.apvts, Params::granularToggleParamID, LabeledButton::ButtonSize::Medium };
     
     juce::ImageButton bypassButton;
 
-    juce::AudioProcessorValueTreeState::ButtonAttachment bypassAttachment{ 
-        audioProcessor.apvts, bypassParamID.getParamID(), bypassButton
+    juce::AudioProcessorValueTreeState::ButtonAttachment bypassAttachment{
+        audioProcessor.apvts, Params::bypassParamID.getParamID(), bypassButton
     };
 
     juce::GroupComponent grainGroup, delayGroup, outputGroup;
