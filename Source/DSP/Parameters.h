@@ -10,21 +10,7 @@
 
 #pragma once
 #include <JuceHeader.h>
-
-const juce::ParameterID gainParamID{ "gain", 1 };
-const juce::ParameterID delayTimeParamID{ "delayTime", 1 };
-const juce::ParameterID mixParamID{ "mix", 1 };
-const juce::ParameterID feedbackParamID{ "feedback", 1 };
-const juce::ParameterID stereoParamID{ "stereoWidth", 1 };
-const juce::ParameterID lowCutParamID{ "lowCut", 1 };
-const juce::ParameterID highCutParamID{ "highCut", 1 };
-const juce::ParameterID tempoSyncParamID{ "tempoSync", 1 };
-const juce::ParameterID delayNoteParamID{ "delayNote", 1 };
-const juce::ParameterID bypassParamID{ "bypass", 1 };
-const juce::ParameterID granularToggleParamID{ "granularToggle", 1 };
-const juce::ParameterID grainSizeParamID{ "grainSize", 1 };
-const juce::ParameterID grainPitchParamID{ "grainPitch", 1 };
-
+#include "ParameterHelper.h"
 
 class Parameters
 {
@@ -47,37 +33,45 @@ public:
     float highCut = 20000.0f;
     float grainSize = 1.0f;
     float pitch = 0.0f;
+    float density = 0.0f;
     int delayNote = 0;
     bool tempoSync = false;
     bool bypassed = false;
     bool granularisActive = false;
    
+    /*
     static constexpr float minDelayTime { 5.0f };
     static constexpr float maxDelayTime { 5000.0f };
     static constexpr float delayTimeStepSize { 0.001f };
     static constexpr float delayTimeSkew { 0.25f };
 
-    static constexpr float minMix{ 0.0f };
-    static constexpr float maxMix{ 100.0f };
-    static constexpr float mixStepSize{ 1.0f };
-    static constexpr float defaultMix{ 100.0f };
+    static constexpr float minMix { 0.0f };
+    static constexpr float maxMix { 100.0f };
+    static constexpr float mixStepSize { 1.0f };
+    static constexpr float defaultMix { 100.0f };
 
     static constexpr float minFilterCutoff { 20.0f };
     static constexpr float maxFilterCutoff { 20000.0f };
     static constexpr float filterStepSize { 1.0f };
     static constexpr float filterSkewFactor { 0.3f };
     static constexpr float defaultHighCutoff { 20000.0f };
-    static constexpr float defaultLowCutoff{ 20.0f };
+    static constexpr float defaultLowCutoff { 20.0f };
     
-    static constexpr float minGrainSize{ 1.0f };
-    static constexpr float maxGrainSize{ 100.0f };
-    static constexpr float grainStepSize{ 1.0f };
-    static constexpr float defaultSize{ 1.0f };
+    static constexpr float minGrainSize { 1.0f };
+    static constexpr float maxGrainSize { 100.0f };
+    static constexpr float grainStepSize { 1.0f };
+    static constexpr float defaultSize { 1.0f };
 
-    static constexpr float minPitch{ -24.0f };
-    static constexpr float maxPitch{ 24.0f };
-    static constexpr float pitchStepSize{ 0.01f };
-    static constexpr float defaultPitch{ 0.0f };
+    static constexpr float minPitch { -24.0f };
+    static constexpr float maxPitch { 24.0f };
+    static constexpr float pitchStepSize { 0.01f };
+    static constexpr float defaultPitch { 0.0f };
+
+    static constexpr float minDensity { 0.0f };
+    static constexpr float maxDensity { 100.0f };
+    static constexpr float densityStepSize { 1.0f };
+    static constexpr float defaultDensity { 0.0f };
+    */
 
     juce::AudioParameterBool* tempoSyncParam;
     juce::AudioParameterBool* bypassParam;
@@ -122,6 +116,10 @@ private:
     // Grain pitch
     juce::AudioParameterFloat* pitchParam;
     juce::LinearSmoothedValue<float> pitchSmoother;
+
+    // Grain density
+    juce::AudioParameterFloat* densityParam;
+    juce::LinearSmoothedValue<float> densitySmoother;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Parameters)
 };
