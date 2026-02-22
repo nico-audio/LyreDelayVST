@@ -39,6 +39,7 @@ public:
     bool bypassed = false;
     bool granularisActive = false;
    
+    /*
     static constexpr float minDelayTime { 5.0f };
     static constexpr float maxDelayTime { 5000.0f };
     static constexpr float delayTimeStepSize { 0.001f };
@@ -70,6 +71,7 @@ public:
     static constexpr float maxDensity { 100.0f };
     static constexpr float densityStepSize { 1.0f };
     static constexpr float defaultDensity { 0.0f };
+    */
 
     juce::AudioParameterBool* tempoSyncParam;
     juce::AudioParameterBool* bypassParam;

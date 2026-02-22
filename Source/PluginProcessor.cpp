@@ -169,7 +169,7 @@ void GDelayAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock
     specifications.numChannels = 2;
 
 
-    double numSamples = Parameters::maxDelayTime / 1000.0 * sampleRate;
+    double numSamples = Params::Range::maxDelayTime / 1000.0 * sampleRate;
     int maxDelayInSamples = int(std::ceil(numSamples));
     delayLineL.setMaximumDelayInSamples(maxDelayInSamples);
     delayLineR.setMaximumDelayInSamples(maxDelayInSamples);
@@ -257,8 +257,8 @@ void GDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[may
     tempo.update(getPlayHead());
 
     float syncedTime = float(tempo.getMillisecondsForNoteLength(params.delayNote));
-    if (syncedTime > Parameters::maxDelayTime) {
-        syncedTime = Parameters::maxDelayTime;
+    if (syncedTime > Params::Range::maxDelayTime) {
+        syncedTime = Params::Range::maxDelayTime;
     }
 
     // Get sample rate
