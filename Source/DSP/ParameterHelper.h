@@ -110,4 +110,159 @@ namespace Params
         static constexpr float defaultPitch{ 0.0f };
         static constexpr float defaultDensity{ 0.0f };
     }
+
+    // Parameter Units conversion
+
+    static juce::String stringFromDecibels(float value, int)
+    {
+        return juce::String(value, 1) + " dB";
+    }
+
+    static juce::String stringFromMilliseconds(float value, int)
+    {
+        if (value < 10.0f) {
+            return juce::String(value, 2) + " ms";
+        }
+        else if (value < 100.0f) {
+            return juce::String(value, 1) + " ms";
+        }
+        else if (value < 1000.0f) {
+            return juce::String(int(value)) + " ms";
+        }
+        else {
+            return juce::String(value * 0.001f, 2) + " s";
+        }
+    }
+
+    static float millisecondsFromString(const juce::String& text)
+    {
+        float value = text.getFloatValue();
+
+        if (!text.endsWithIgnoreCase("ms")) {
+            if (text.endsWithIgnoreCase("s") || value < Range::minDelayTime) {
+                return value * 1000.0f;
+            }
+        }
+        return value;
+    }
+
+    static juce::String stringFromPercent(float value, int)
+    {
+        return juce::String(int(value)) + " %";
+    }
+
+    static juce::String stringFromHz(float value, int)
+    {
+        if (value < 1000.0f) {
+            return juce::String(int(value)) + " Hz";
+        }
+        else if (value < 10000.0f) {
+            return juce::String(value / 1000.0f, 2) + " k";
+        }
+        else {
+            return juce::String(value / 1000.0f, 1) + " k";
+        }
+    }
+
+    static juce::String stringFromSemitone(float value, int)
+    {
+        return juce::String(int(value)) + " st";
+    }
+
+    static float hzFromString(const juce::String& str)
+    {
+        float value = str.getFloatValue();
+        if (value < 20.0f) {
+            return value * 1000.0f;
+        }
+        return value;
+    }
+
+    // Make parameter functions
+
+    inline auto makeGainParam() 
+    {
+        return std::make_unique<juce::AudioParameterFloat>(
+            gainParamID, ParameterNames::gain, Range::gainRange, Defaults::defaultGain,
+            juce::AudioParameterFloatAttributes().withStringFromValueFunction(stringFromDecibels)
+        );
+    }
+
+    inline auto makeDelayTimeParam()
+    {
+        return std::make_unique<juce::AudioParameterFloat>(
+            delayTimeParamID, ParameterNames::delaytime , Range::delayTimeRange, Defaults::defaultDelayTime,
+            juce::AudioParameterFloatAttributes().withStringFromValueFunction(stringFromMilliseconds)
+                                                 .withValueFromStringFunction(millisecondsFromString)
+        );
+    }
+
+    inline auto makeMixParam()
+    {
+        return std::make_unique<juce::AudioParameterFloat>(
+            mixParamID, ParameterNames::mix, Range::mixRange, Defaults::defaultMix,
+            juce::AudioParameterFloatAttributes().withStringFromValueFunction(stringFromPercent)
+        );
+    }
+
+    inline auto makeFeedbackParam()
+    {
+        return std::make_unique<juce::AudioParameterFloat>(
+            feedbackParamID, ParameterNames::feedback, Range::feedbackRange, Defaults::defaultFeedback,
+            juce::AudioParameterFloatAttributes().withStringFromValueFunction(stringFromPercent)
+        );
+    }
+
+    inline auto makeStereoParam()
+    {
+        return std::make_unique<juce::AudioParameterFloat>(
+            stereoParamID, ParameterNames::stereo, Range::stereoRange, Defaults::defaultStereo,
+            juce::AudioParameterFloatAttributes().withStringFromValueFunction(stringFromPercent)
+        );
+    }
+
+    inline auto makeLowCutParam()
+    {
+        return std::make_unique<juce::AudioParameterFloat>(
+            lowCutParamID, ParameterNames::lowCut, Range::lowCutRange, Defaults::defaultLowCutoff,
+            juce::AudioParameterFloatAttributes().withStringFromValueFunction(stringFromHz)
+                                                 .withValueFromStringFunction(hzFromString)
+        );
+    }
+
+    inline auto makeHighCutParam()
+    {
+        return std::make_unique<juce::AudioParameterFloat>(
+            highCutParamID, ParameterNames::highCut, Range::highCutRange, Defaults::defaultHighCutoff,
+            juce::AudioParameterFloatAttributes().withStringFromValueFunction(stringFromHz)
+                                                 .withValueFromStringFunction(hzFromString)
+        );
+    }
+
+    inline auto makeSizeParam()
+    {
+        return std::make_unique<juce::AudioParameterFloat>(
+            grainSizeParamID, ParameterNames::size, Range::grainSizeRange, Defaults::defaultSize,
+            juce::AudioParameterFloatAttributes().withStringFromValueFunction(stringFromMilliseconds)
+                                                 .withValueFromStringFunction(millisecondsFromString)
+        );
+    }
+
+    inline auto makePitchParam()
+    {
+        return std::make_unique<juce::AudioParameterFloat>(
+            grainPitchParamID, ParameterNames::pitch, Range::pitchRange, Defaults::defaultPitch,
+            juce::AudioParameterFloatAttributes().withStringFromValueFunction(stringFromSemitone)
+        );
+    }
+
+    inline auto makeDensityParam()
+    {
+        return std::make_unique<juce::AudioParameterFloat>(
+            grainDensityParamID, ParameterNames::density, Range::densityRange, Defaults::defaultDensity,
+            juce::AudioParameterFloatAttributes().withStringFromValueFunction(stringFromHz)
+                                                 .withValueFromStringFunction(hzFromString)
+        );
+    }
 }
+

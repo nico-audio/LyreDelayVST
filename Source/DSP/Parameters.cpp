@@ -20,71 +20,6 @@ static void castParameter(juce::AudioProcessorValueTreeState& apvts,
     // parameter does not exist or wrong type
 }
 
-static juce::String stringFromDecibels(float value, int)
-{
-    return juce::String(value, 1) + " dB";
-}
-
-static juce::String stringFromMilliseconds(float value, int)
-{
-    if (value < 10.0f) {
-        return juce::String(value, 2) + " ms";
-    }
-    else if (value < 100.0f) {
-        return juce::String(value, 1) + " ms";
-    }
-    else if (value < 1000.0f) {
-        return juce::String(int(value)) + " ms";
-    }
-    else {
-        return juce::String(value * 0.001f, 2) + " s";
-    }
-}
-
-static float millisecondsFromString(const juce::String& text)
-{
-    float value = text.getFloatValue();
-
-    if (!text.endsWithIgnoreCase("ms")) {
-        if (text.endsWithIgnoreCase("s") || value < Params::Range::minDelayTime) {
-            return value * 1000.0f;
-        }
-    }
-    return value;
-}
-
-static juce::String stringFromPercent(float value, int)
-{
-    return juce::String(int(value)) + " %";
-}
-
-static juce::String stringFromHz(float value, int)
-{
-    if (value < 1000.0f) {
-        return juce::String(int(value)) + " Hz";
-    }
-    else if (value < 10000.0f) {
-        return juce::String(value / 1000.0f, 2) + " k";
-    }
-    else {
-        return juce::String(value / 1000.0f, 1) + " k";
-    }
-}
-
-static juce::String stringFromSemitone(float value, int)
-{
-    return juce::String(int(value)) + " st";
-}
-
-static float hzFromString(const juce::String& str)
-{
-    float value = str.getFloatValue();
-    if (value < 20.0f) {
-        return value * 1000.0f;
-    }
-    return value;
-}
-
 // Constructor
 Parameters::Parameters(juce::AudioProcessorValueTreeState& apvts)
 {
@@ -110,91 +45,16 @@ Parameters::createParameterLayout()
 {
     juce::AudioProcessorValueTreeState::ParameterLayout layout;
 
-    layout.add(std::make_unique<juce::AudioParameterFloat>(
-        Params::gainParamID,
-        Params::ParameterNames::gain,
-        Params::Range::gainRange,
-        Params::Defaults::defaultGain,
-        juce::AudioParameterFloatAttributes().withStringFromValueFunction(stringFromDecibels)
-    ));
-
-    layout.add(std::make_unique<juce::AudioParameterFloat>(
-        Params::delayTimeParamID,
-        Params::ParameterNames::delaytime,
-        Params::Range::delayTimeRange,
-        Params::Defaults::defaultDelayTime,
-        juce::AudioParameterFloatAttributes().withStringFromValueFunction(stringFromMilliseconds)
-                                             .withValueFromStringFunction(millisecondsFromString)
-    ));
-
-    layout.add(std::make_unique<juce::AudioParameterFloat>(
-        Params::mixParamID,
-        Params::ParameterNames::mix,
-        Params::Range::mixRange,
-        Params::Defaults::defaultMix,
-        juce::AudioParameterFloatAttributes().withStringFromValueFunction(stringFromPercent)
-    ));
-
-    layout.add(std::make_unique<juce::AudioParameterFloat>(
-        Params::feedbackParamID,
-        Params::ParameterNames::feedback,
-        Params::Range::feedbackRange,
-        Params::Defaults::defaultFeedback,
-        juce::AudioParameterFloatAttributes().withStringFromValueFunction(stringFromPercent)
-    ));
-
-    layout.add(std::make_unique<juce::AudioParameterFloat>(
-        Params::stereoParamID,
-        Params::ParameterNames::stereo,
-        Params::Range::stereoRange ,
-        Params::Defaults::defaultStereo,
-        juce::AudioParameterFloatAttributes().withStringFromValueFunction(stringFromPercent)
-    ));
-
-    layout.add(std::make_unique<juce::AudioParameterFloat>(
-        Params::lowCutParamID,
-        Params::ParameterNames::lowCut,
-        Params::Range::lowCutRange,
-        Params::Defaults::defaultLowCutoff,
-        juce::AudioParameterFloatAttributes().withStringFromValueFunction(stringFromHz)
-                                             .withValueFromStringFunction(hzFromString)
-    ));
-
-    layout.add(std::make_unique<juce::AudioParameterFloat>(
-        Params::highCutParamID,
-        Params::ParameterNames::highCut,
-        Params::Range::highCutRange,
-        Params::Defaults::defaultHighCutoff,
-        juce::AudioParameterFloatAttributes().withStringFromValueFunction(stringFromHz)
-                                             .withValueFromStringFunction(hzFromString)
-    ));
-
-    layout.add(std::make_unique<juce::AudioParameterFloat>(
-        Params::grainSizeParamID,
-        Params::ParameterNames::size,
-        Params::Range::grainSizeRange,
-        Params::Defaults::defaultSize,
-        juce::AudioParameterFloatAttributes().withStringFromValueFunction(stringFromMilliseconds)
-                                             .withValueFromStringFunction(millisecondsFromString)
-    ));
-
-    
-    layout.add(std::make_unique<juce::AudioParameterFloat>(
-        Params::grainPitchParamID,
-        Params::ParameterNames::pitch,
-        Params::Range::pitchRange,
-        Params::Defaults::defaultPitch,
-        juce::AudioParameterFloatAttributes().withStringFromValueFunction(stringFromSemitone)
-    ));
-    
-    layout.add(std::make_unique<juce::AudioParameterFloat>(
-        Params::grainDensityParamID,
-        Params::ParameterNames::density,
-        Params::Range::densityRange,
-        Params::Defaults::defaultDensity,
-        juce::AudioParameterFloatAttributes().withStringFromValueFunction(stringFromHz)
-                                             .withValueFromStringFunction(hzFromString)
-    ));
+    layout.add(Params::makeGainParam());
+    layout.add(Params::makeDelayTimeParam());
+    layout.add(Params::makeMixParam());
+    layout.add(Params::makeFeedbackParam());
+    layout.add(Params::makeStereoParam());
+    layout.add(Params::makeLowCutParam());
+    layout.add(Params::makeHighCutParam());
+    layout.add(Params::makeSizeParam());
+    layout.add(Params::makePitchParam());
+    layout.add(Params::makeDensityParam());
 
     layout.add(std::make_unique<juce::AudioParameterBool>(Params::tempoSyncParamID, Params::ParameterNames::tempoSync, false));
 
