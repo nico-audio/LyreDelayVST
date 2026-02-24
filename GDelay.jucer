@@ -6,17 +6,17 @@
               pluginManufacturerCode="Nico" pluginCode="Lyre" cppLanguageStandard="20">
   <MAINGROUP id="qi5Naz" name="Lyre">
     <GROUP id="{CB2CAC95-A9C6-6993-A8E1-A8462E4AC6AE}" name="Assets">
+      <GROUP id="{155CCA96-9466-5A41-34C5-1D0A61CC58EE}" name="Fonts">
+        <FILE id="dG2Iom" name="Induction.otf" compile="0" resource="1" file="Assets/Fonts/Induction.otf"/>
+        <FILE id="QTx8TS" name="INTERDIM.TTF" compile="0" resource="1" file="Assets/Fonts/INTERDIM.TTF"/>
+        <FILE id="IK5WUs" name="Patopian 1986.ttf" compile="0" resource="1"
+              file="Assets/Fonts/Patopian 1986.ttf"/>
+      </GROUP>
+      <FILE id="NHEBEo" name="Bypass-placeholder.png" compile="0" resource="1"
+            file="Assets/Bypass-placeholder.png"/>
       <FILE id="gAWYdl" name="Lyre_BG_Texture_brushed_metal.png" compile="0"
             resource="1" file="Assets/Lyre_BG_Texture_brushed_metal.png"/>
       <FILE id="xgfCID" name="lyre_logo_1.png" compile="0" resource="1" file="Assets/lyre_logo_1.png"/>
-    </GROUP>
-    <GROUP id="{B5B72528-351F-738B-7D8D-B58043B449C8}" name="Assets1">
-      <FILE id="PS82kT" name="Bypass-placeholder.png" compile="0" resource="1"
-            file="../../Graphics/Lyre/Bypass-placeholder.png"/>
-      <FILE id="PfMOTl" name="Induction.otf" compile="0" resource="1" file="../../../GameDevProjects/Fonts/induction/Induction.otf"/>
-      <FILE id="inzFxx" name="INTERDIM.TTF" compile="0" resource="1" file="../../../GameDevProjects/Fonts/interdimensional/INTERDIM.TTF"/>
-      <FILE id="fJDbuu" name="Patopian 1986.ttf" compile="0" resource="1"
-            file="../../../GameDevProjects/Fonts/patopian_1986/Patopian 1986.ttf"/>
     </GROUP>
     <GROUP id="{F4EB2649-9D18-B53A-5C88-218FAE2EC3CD}" name="Source">
       <GROUP id="{AC75722F-10BE-4030-4BFD-F0528D4988BA}" name="DSP">
