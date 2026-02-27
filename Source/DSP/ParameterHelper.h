@@ -74,7 +74,7 @@ namespace Params
         static constexpr float filterSkewFactor{ 0.3f };
 
         static constexpr float minGrainSize{ 1.0f };
-        static constexpr float maxGrainSize{ 100.0f };
+        static constexpr float maxGrainSize{ 500.0f };
         static constexpr float grainStepSize{ 1.0f };
 
         static constexpr float minPitch{ -24.0f };
@@ -82,7 +82,7 @@ namespace Params
         static constexpr float pitchStepSize{ 0.01f };
 
         static constexpr float minDensity{ 0.0f };
-        static constexpr float maxDensity{ 100.0f };
+        static constexpr float maxDensity{ 200.0f };
         static constexpr float densityStepSize{ 1.0f };
 
         static const juce::NormalisableRange<float> gainRange{ minGain, maxGain };
@@ -101,7 +101,7 @@ namespace Params
     {
         static constexpr float defaultGain{ 0.0f };
         static constexpr float defaultDelayTime{ 100.0f };
-        static constexpr float defaultMix{ 100.0f };
+        static constexpr float defaultMix{ 50.0f };
         static constexpr float defaultFeedback{ 0.0f };
         static constexpr float defaultStereo{ 0.0f };
         static constexpr float defaultHighCutoff{ 20000.0f };
