@@ -83,7 +83,7 @@ void RotaryKnobLookAndFeel::drawRotarySlider(juce::Graphics& g, int x, int y, in
     // draw track
     auto center = bounds.getCentre();
     auto radius = bounds.getWidth() / 2.0f;
-    auto lineWidth = 3.0f;
+    auto lineWidth = 2.0f;
     auto arcRadius = radius - lineWidth / 2.0f;
     
     juce::Path backgroundArc;

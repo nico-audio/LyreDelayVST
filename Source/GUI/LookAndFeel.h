@@ -20,11 +20,11 @@ namespace Colors
     {
         const juce::Colour trackBackground{ 205, 200, 195 };
         const juce::Colour trackActive{ 229, 168, 106 };
-        const juce::Colour outline{ 30, 31, 32 };
+        const juce::Colour outline{ 9, 5, 4 };
         const juce::Colour gradientTop{ 110, 112, 113 };
-        const juce::Colour gradientBottom{ 156, 157, 158 };
-        const juce::Colour dial{ 100, 100, 100 };
-        const juce::Colour dropShadow{ 82, 68, 109 };
+        const juce::Colour gradientBottom{ 202, 176, 170 };
+        const juce::Colour dial{ 251, 212, 63 };
+        const juce::Colour dropShadow{ 229, 168, 106 };
         const juce::Colour label{ 255, 255, 240 };
         const juce::Colour textBoxBackground{ 80, 80, 80 };
         const juce::Colour value{ 240, 240, 240 };
@@ -35,7 +35,6 @@ namespace Colors
         const juce::Colour label{ 255, 255, 240 };
         const juce::Colour outline{ 122, 84, 50 };
     }
-
     namespace Button
     {
         const juce::Colour text{ 255, 255, 240 };

@@ -413,7 +413,6 @@ void GDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[may
             grainSumR *= norm;
         }
         
-
         // Output
         float grainL = grainSumL;
         float grainR = grainSumR;
