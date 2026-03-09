@@ -61,6 +61,7 @@ static float processGrain(Grain& grain, DelayLine& delayLine) {
         static_cast<float>(grain.grainDuration - 1);
 
     float window = 0.5f * (1.0f - std::cos(juce::MathConstants<float>::twoPi * phase));
+    window *= juce::Decibels::decibelsToGain(2.0f); // Normalize Hann to unity RMS
     sample *= window;
 
     //int windowSize = 1024;
@@ -174,7 +175,7 @@ void GDelayAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock
     delayLineL.setMaximumDelayInSamples(maxDelayInSamples);
     delayLineR.setMaximumDelayInSamples(maxDelayInSamples);
     delayLineL.reset();
-    delayLineR.reset();;
+    delayLineR.reset();
 
     // DBG(maxDelayInSamples);
 
@@ -212,7 +213,8 @@ void GDelayAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock
     {
         grain.reset();
     }
-      
+
+    samplesUntilNextGrain = 0;
 }
 
 void GDelayAudioProcessor::releaseResources()
@@ -283,6 +285,19 @@ void GDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[may
     float maxL = 0.0f;
     float maxR = 0.0f;
 
+    // Granular density
+    float density = params.density;
+    //DBG("Density param value: " << density);
+
+    // Granular scheduler counter
+    if (density > 0.0f){
+        samplesBetweenGrains = (int)(sampleRate / density);
+        samplesBetweenGrains = std::max(1, samplesBetweenGrains);
+    }
+    else{
+        samplesBetweenGrains = -1;
+    }
+    
     // Apply smoothed gain per sample
     for (int sample = 0; sample < buffer.getNumSamples(); ++sample) {
         params.smoothen();
@@ -359,19 +374,25 @@ void GDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[may
         float pitchSemitones = params.pitch;
         float pitchRatio = std::pow(2.0f, pitchSemitones / 12.0f);
         
-        if (params.granularisActive) {
-            //spawnGrain(grain, delayLineL.getWriteIndex(), delayLineL.getBufferLength(), grainSizeSamples, pitchRatio);
-            Grain* availableGrain = findAvailableGrain(grainPool);
+        if (params.granularisActive && samplesBetweenGrains > 0) {
+            samplesUntilNextGrain--;
+        
+            if (samplesUntilNextGrain <= 0) {
+                Grain* availableGrain = findAvailableGrain(grainPool);
 
-            if (availableGrain != nullptr) {
-                spawnGrain(*availableGrain, delayLineL.getWriteIndex(), delayLineL.getBufferLength(), grainSizeSamples, pitchRatio);
+                if (availableGrain != nullptr) {
+                    spawnGrain(*availableGrain, delayLineL.getWriteIndex(), delayLineL.getBufferLength(), grainSizeSamples, pitchRatio);
+                    DBG("spawn grain!");
+                    DBG("Grain spawned at density " << params.density);
+                }
+
+                samplesUntilNextGrain = samplesBetweenGrains;
             }
         }
 
-        //float grainSample = processGrain(grain, delayLineL);
-
         float grainSumL = 0.0f;
         float grainSumR = 0.0f;
+        int activeGrains = 0;
 
         for (auto& grain : grainPool)
         {
@@ -379,13 +400,19 @@ void GDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[may
             {
                 grainSumL += processGrain(grain, delayLineL);
                 grainSumR += processGrain(grain, delayLineR);
+
+                activeGrains++;
             }
         }
 
         // Normalize
-        grainSumL *= 1.0f / maxGrains;
-        grainSumR *= 1.0f / maxGrains;
-
+        if (activeGrains > 0)
+        {
+            float norm = 1.0f / activeGrains;
+            grainSumL *= norm;
+            grainSumR *= norm;
+        }
+        
         // Output
         float grainL = grainSumL;
         float grainR = grainSumR;
@@ -395,8 +422,11 @@ void GDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[may
             wetR = grainR;
         }
        
-        float mixL = dryL + wetL * params.mix;
-        float mixR = dryR + wetR * params.mix;
+        //float mixL = dryL + wetL * params.mix;
+        //float mixR = dryR + wetR * params.mix;
+
+        float mixL = dryL * (1.0f - params.mix) + wetL * params.mix;
+        float mixR = dryR * (1.0f - params.mix) + wetR * params.mix;
 
         // Write pointers
         float outL = mixL * params.gain;

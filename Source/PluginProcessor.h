@@ -93,9 +93,13 @@ private:
     float fadeTarget = 0.0f;
     float coefficient = 0.0f;
     float wait = 0.0f;
-    float waitInc = 0.0f;      
+    float waitInc = 0.0f;
 
-    static constexpr int maxGrains = 8;
+    //Scheduler
+    int samplesUntilNextGrain = 0;
+    int samplesBetweenGrains = 0;
+
+    static constexpr int maxGrains = 20;
     std::array<Grain, maxGrains> grainPool;
     static Grain* findAvailableGrain(std::array<Grain, maxGrains>& pool);
 

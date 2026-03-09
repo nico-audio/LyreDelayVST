@@ -39,40 +39,6 @@ public:
     bool bypassed = false;
     bool granularisActive = false;
    
-    /*
-    static constexpr float minDelayTime { 5.0f };
-    static constexpr float maxDelayTime { 5000.0f };
-    static constexpr float delayTimeStepSize { 0.001f };
-    static constexpr float delayTimeSkew { 0.25f };
-
-    static constexpr float minMix { 0.0f };
-    static constexpr float maxMix { 100.0f };
-    static constexpr float mixStepSize { 1.0f };
-    static constexpr float defaultMix { 100.0f };
-
-    static constexpr float minFilterCutoff { 20.0f };
-    static constexpr float maxFilterCutoff { 20000.0f };
-    static constexpr float filterStepSize { 1.0f };
-    static constexpr float filterSkewFactor { 0.3f };
-    static constexpr float defaultHighCutoff { 20000.0f };
-    static constexpr float defaultLowCutoff { 20.0f };
-    
-    static constexpr float minGrainSize { 1.0f };
-    static constexpr float maxGrainSize { 100.0f };
-    static constexpr float grainStepSize { 1.0f };
-    static constexpr float defaultSize { 1.0f };
-
-    static constexpr float minPitch { -24.0f };
-    static constexpr float maxPitch { 24.0f };
-    static constexpr float pitchStepSize { 0.01f };
-    static constexpr float defaultPitch { 0.0f };
-
-    static constexpr float minDensity { 0.0f };
-    static constexpr float maxDensity { 100.0f };
-    static constexpr float densityStepSize { 1.0f };
-    static constexpr float defaultDensity { 0.0f };
-    */
-
     juce::AudioParameterBool* tempoSyncParam;
     juce::AudioParameterBool* bypassParam;
     juce::AudioParameterBool* granularToggleParam;
