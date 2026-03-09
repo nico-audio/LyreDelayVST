@@ -95,6 +95,7 @@ void RotaryKnobLookAndFeel::drawRotarySlider(juce::Graphics& g, int x, int y, in
     g.setColour(Colors::Knob::trackBackground);
     g.strokePath(backgroundArc, strokeType);
 
+
     // draw dial - calculate angles
     auto dialRadius = innerRect.getHeight() / 2.0f - lineWidth;
     auto toAngle = rotaryStartAngle + sliderPos * (rotaryEndAngle - rotaryStartAngle);
@@ -104,9 +105,17 @@ void RotaryKnobLookAndFeel::drawRotarySlider(juce::Graphics& g, int x, int y, in
 
     // dial path
     juce::Path dialPath;
-    
+   
     dialPath.startNewSubPath(dialStart);
     dialPath.lineTo(dialEnd);
+
+    // dial glow path
+    juce::Path glowPath;
+    juce::PathStrokeType glowStroke(6.0f); // thickness of glow
+    glowStroke.createStrokedPath(glowPath, dialPath);
+    dialShadow.drawForPath(g, glowPath);
+
+    // draw dial
     g.setColour(Colors::Knob::dial);
     g.strokePath(dialPath, strokeType);
 

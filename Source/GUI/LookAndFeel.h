@@ -94,6 +94,7 @@ public:
     
 private:
     juce::DropShadow dropShadow{ Colors::Knob::dropShadow, 6, { 0, 3 } };
+    juce::DropShadow dialShadow{ Colors::Knob::dropShadow, 10, {} };
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(RotaryKnobLookAndFeel)
 };
