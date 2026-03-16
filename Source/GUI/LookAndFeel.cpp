@@ -89,7 +89,7 @@ void RotaryKnobLookAndFeel::drawRotarySlider(juce::Graphics& g, int x, int y, in
     g.saveState();
     juce::AffineTransform rotation = juce::AffineTransform::rotation(knobValueRadians, innerRect.getCentreX(), innerRect.getCentreY());
     g.addTransform(rotation);
-    //g.drawImage(knobGrad, innerRect.toFloat(), juce::RectanglePlacement::stretchToFit);
+    g.drawImage(knobGrad, innerRect.toFloat(), juce::RectanglePlacement::stretchToFit);
     g.restoreState();
    
     /*
