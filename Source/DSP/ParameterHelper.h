@@ -27,6 +27,7 @@ namespace Params
     static const juce::ParameterID grainSizeParamID{ "grainSize", 1 };
     static const juce::ParameterID grainPitchParamID{ "grainPitch", 1 };
     static const juce::ParameterID grainDensityParamID{ "grainDensity", 1 };
+    static const juce::ParameterID textureParamID{ "texture", 1 };
 
     namespace ParameterNames
     {
@@ -44,6 +45,7 @@ namespace Params
         static constexpr auto delayNote = "Delay Note";
         static constexpr auto bypass = "Bypass";
         static constexpr auto granular = "Granular";
+        static constexpr auto texture = "Texture";
     }
 
     namespace Range
@@ -81,9 +83,13 @@ namespace Params
         static constexpr float maxPitch{ 24.0f };
         static constexpr float pitchStepSize{ 0.01f };
 
-        static constexpr float minDensity{ 0.0f };
+        static constexpr float minDensity{ 1.0f };
         static constexpr float maxDensity{ 200.0f };
         static constexpr float densityStepSize{ 1.0f };
+
+        static constexpr float minTexture{ 0.0f };
+        static constexpr float maxTexture{ 1.0f };
+        static constexpr float textureStepSize{ 0.01f };
 
         static const juce::NormalisableRange<float> gainRange{ minGain, maxGain };
         static const juce::NormalisableRange<float> delayTimeRange{ minDelayTime, maxDelayTime, delayTimeStepSize, delayTimeSkew };
@@ -95,6 +101,7 @@ namespace Params
         static const juce::NormalisableRange<float> grainSizeRange { minGrainSize, maxGrainSize, grainStepSize };
         static const juce::NormalisableRange<float> pitchRange { minPitch, maxPitch, pitchStepSize };
         static const juce::NormalisableRange<float> densityRange{ minDensity, maxDensity, densityStepSize };
+        static const juce::NormalisableRange<float> textureRange{ minTexture, maxTexture, textureStepSize };
     }
 
     namespace Defaults 
@@ -109,6 +116,7 @@ namespace Params
         static constexpr float defaultSize{ 1.0f };
         static constexpr float defaultPitch{ 0.0f };
         static constexpr float defaultDensity{ 0.0f };
+        static constexpr float defaultTexture{ 0.5f };
     }
 
     // Parameter Units conversion
@@ -169,6 +177,16 @@ namespace Params
         return juce::String(int(value)) + " st";
     }
 
+    static juce::String stringFromTexture(float value, int)
+    {
+        if (value < 0.2f) return juce::String("Tight");
+        if (value < 0.4f) return juce::String("Soft");
+        if (value < 0.6f) return juce::String("Smooth");
+        if (value < 0.8f) return juce::String("Diffuse");
+        
+        return juce::String("Cloudy");
+    }
+
     static float hzFromString(const juce::String& str)
     {
         float value = str.getFloatValue();
@@ -176,6 +194,16 @@ namespace Params
             return value * 1000.0f;
         }
         return value;
+    }
+
+    static float textureFromString(const juce::String& str)
+    {
+        if (str == "Tight") return 0.1f;
+        if (str == "Soft") return 0.3f;
+        if (str == "Smooth") return 0.5f;
+        if (str == "Diffuse") return 0.7f;
+        
+        return 0.9f;
     }
 
     // Make parameter functions
@@ -262,6 +290,15 @@ namespace Params
             grainDensityParamID, ParameterNames::density, Range::densityRange, Defaults::defaultDensity,
             juce::AudioParameterFloatAttributes().withStringFromValueFunction(stringFromHz)
                                                  .withValueFromStringFunction(hzFromString)
+        );
+    }
+
+    inline auto makeTextureParam()
+    {
+        return std::make_unique<juce::AudioParameterFloat>(
+            textureParamID, ParameterNames::texture, Range::textureRange, Defaults::defaultTexture,
+            juce::AudioParameterFloatAttributes().withStringFromValueFunction(stringFromTexture)
+                                                 .withValueFromStringFunction(textureFromString)
         );
     }
 }

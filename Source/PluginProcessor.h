@@ -99,7 +99,7 @@ private:
     int samplesUntilNextGrain = 0;
     int samplesBetweenGrains = 0;
 
-    static constexpr int maxGrains = 20;
+    static constexpr int maxGrains = 60;
     std::array<Grain, maxGrains> grainPool;
     static Grain* findAvailableGrain(std::array<Grain, maxGrains>& pool);
 
