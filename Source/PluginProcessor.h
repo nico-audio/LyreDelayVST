@@ -103,5 +103,8 @@ private:
     std::array<Grain, maxGrains> grainPool;
     static Grain* findAvailableGrain(std::array<Grain, maxGrains>& pool);
 
+    //Texture
+    juce::Random textureRange;
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (GDelayAudioProcessor)
 };
