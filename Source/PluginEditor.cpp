@@ -31,6 +31,7 @@ GDelayAudioProcessorEditor::GDelayAudioProcessorEditor (GDelayAudioProcessor& p)
     grainGroup.addAndMakeVisible(grainSize);
     grainGroup.addAndMakeVisible(grainPitch);
     grainGroup.addAndMakeVisible(grainDensity);
+    grainGroup.addAndMakeVisible(textureKnob);
     addAndMakeVisible(grainGroup);
     
     outputGroup.setText("Output");
@@ -139,6 +140,7 @@ void GDelayAudioProcessorEditor::resized()
     grainSize.setTopLeftPosition(20, 75);
     grainPitch.setTopLeftPosition(20, 200);
     grainDensity.setTopLeftPosition(110, 75);
+    textureKnob.setTopLeftPosition(110, 200);
 
     mixKnob.setTopLeftPosition(550, 120);
     gainKnob.setTopLeftPosition(mixKnob.getX(), mixKnob.getBottom() + 10);

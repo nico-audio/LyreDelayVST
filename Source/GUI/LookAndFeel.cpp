@@ -71,14 +71,33 @@ void RotaryKnobLookAndFeel::drawRotarySlider(juce::Graphics& g, int x, int y, in
     
     // knob color
     g.setColour(Colors::Knob::outline);
-    g.fillEllipse(knobRect);
+    //g.fillEllipse(knobRect);
+    g.drawEllipse(knobRect, 2.0f);
 
-    // gradient
+    // knob gradient
     auto innerRect = knobRect.reduced(2.0f, 2.0f);
+
+    auto knobGrad = juce::ImageCache::getFromMemory(BinaryData::knob_conical_gradient_png, BinaryData::knob_conical_gradient_pngSize);
+    g.setImageResamplingQuality(juce::Graphics::highResamplingQuality);
+    g.setOpacity(1.0f);
+    g.drawImage(knobGrad, innerRect.toFloat(), juce::RectanglePlacement::stretchToFit);
+    
+
+    // rotate knob image
+    float knobValueRadians = rotaryStartAngle + sliderPos * (rotaryEndAngle - rotaryStartAngle);
+
+    g.saveState();
+    juce::AffineTransform rotation = juce::AffineTransform::rotation(knobValueRadians, innerRect.getCentreX(), innerRect.getCentreY());
+    g.addTransform(rotation);
+    g.drawImage(knobGrad, innerRect.toFloat(), juce::RectanglePlacement::stretchToFit);
+    g.restoreState();
+   
+    /*
     auto gradient = juce::ColourGradient(Colors::Knob::gradientTop, 0.0f, innerRect.getY(),
                                          Colors::Knob::gradientBottom, 0.0f, innerRect.getBottom(), false);
     g.setGradientFill(gradient);
     g.fillEllipse(innerRect);
+    */
 
     // draw track
     auto center = bounds.getCentre();

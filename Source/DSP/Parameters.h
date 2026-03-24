@@ -34,6 +34,7 @@ public:
     float grainSize = 1.0f;
     float pitch = 0.0f;
     float density = 0.0f;
+    float texture = 0.0f;
     int delayNote = 0;
     bool tempoSync = false;
     bool bypassed = false;
@@ -86,6 +87,10 @@ private:
     // Grain density
     juce::AudioParameterFloat* densityParam;
     juce::LinearSmoothedValue<float> densitySmoother;
+
+    // Texture
+    juce::AudioParameterFloat* textureParam;
+    juce::LinearSmoothedValue<float> textureSmoother;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Parameters)
 };

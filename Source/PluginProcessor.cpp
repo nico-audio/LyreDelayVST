@@ -23,6 +23,8 @@ Grain* GDelayAudioProcessor::findAvailableGrain(std::array<Grain, maxGrains>& po
 }
 
 static void spawnGrain(Grain& grain, int delayWriteIndex, int delayBufferSize, int grainDurationSamples, float pitchRatio) {
+    jassert(grainDurationSamples > 0);
+
     grain.isActive = true;
     grain.samplesPlayed = 0;
     grain.grainDuration = grainDurationSamples;
@@ -34,6 +36,9 @@ static void spawnGrain(Grain& grain, int delayWriteIndex, int delayBufferSize, i
     // wrapping
     if (grain.startIndex < 0)
         grain.startIndex += delayBufferSize;
+
+    // Safety: ensure startIndex is in range after wrapping
+    jassert(grain.startIndex >= 0 && grain.startIndex < delayBufferSize);
 
     grain.grainIndexPosition = grain.startIndex;
 }
@@ -54,6 +59,9 @@ static float processGrain(Grain& grain, DelayLine& delayLine) {
     else if (readIndex >= bufferSize) {
         readIndex -= bufferSize;
     }
+
+    // Safety: after wrapping, readIndex must be valid
+    jassert(readIndex >= 0 && readIndex < bufferSize);
 
     float sample = delayLine.readAtIndex(readIndex);
     
@@ -297,6 +305,10 @@ void GDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[may
     else{
         samplesBetweenGrains = -1;
     }
+
+    // Granular texture macro
+    float texture = params.texture;
+    texture = juce::jlimit(0.0f, 1.0f, texture);
     
     // Apply smoothed gain per sample
     for (int sample = 0; sample < buffer.getNumSamples(); ++sample) {
@@ -381,12 +393,60 @@ void GDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[may
                 Grain* availableGrain = findAvailableGrain(grainPool);
 
                 if (availableGrain != nullptr) {
-                    spawnGrain(*availableGrain, delayLineL.getWriteIndex(), delayLineL.getBufferLength(), grainSizeSamples, pitchRatio);
+                    // Texture - density jitter
+                    int jitteredInterval = samplesBetweenGrains;
+
+                    if (texture > 0.0f) {
+                        const float randomSigned = textureRange.nextFloat() * 2.0f - 1.0f;
+                        const float maxDensityJitter = 0.5f;
+                        const float densityJitterAmount = texture * maxDensityJitter;
+
+                        const float factor = 1.0f + randomSigned * densityJitterAmount;
+                        jitteredInterval = juce::jmax(1, (int)std::round(samplesBetweenGrains * factor));
+
+                        DBG("Texture density jitter: base=" << samplesBetweenGrains
+                            << " factor=" << factor
+                            << " jittered=" << jitteredInterval);
+                    }
+
+                    // Texture - grain size jitter
+                    int jitteredGrainSizeSamples = grainSizeSamples;
+
+                    if (texture > 0.0f) {
+                        const float randomSigned2 = textureRange.nextFloat() * 2.0f - 1.0f;
+                        const float maxGrainJitter = 1.0f;
+                        const float grainJitterAmount = texture * maxGrainJitter;
+
+                        const float factor2 = 1.0f + randomSigned2 * grainJitterAmount;
+
+                        jitteredGrainSizeSamples = juce::jmax(1, (int)std::round(grainSizeSamples * factor2));
+
+                        DBG("Texture grain size jitter: base=" << grainSizeSamples
+                            << " factor=" << factor2
+                            << " jittered=" << jitteredGrainSizeSamples);
+                    }
+
+                    spawnGrain(*availableGrain, delayLineL.getWriteIndex(), delayLineL.getBufferLength(), jitteredGrainSizeSamples, pitchRatio);
                     DBG("spawn grain!");
                     DBG("Grain spawned at density " << params.density);
                 }
 
-                samplesUntilNextGrain = samplesBetweenGrains;
+                if (texture > 0.0f) {
+                    int nextInterval = samplesBetweenGrains;
+
+                    if (nextInterval > 0) {
+                        const float r = textureRange.nextFloat() * 2.0f - 1.0f;
+                        const float maxDensityJitter = 0.5f;
+                        const float densityJitterAmount = texture * maxDensityJitter;
+                        const float factor = 1.0f + r * densityJitterAmount;
+
+                        nextInterval = juce::jmax(1, (int)std::round(samplesBetweenGrains * factor));
+                    }
+                    samplesUntilNextGrain = nextInterval;
+                }
+                else {
+                    samplesUntilNextGrain = samplesBetweenGrains;
+                }
             }
         }
 
@@ -396,8 +456,7 @@ void GDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[may
 
         for (auto& grain : grainPool)
         {
-            if (grain.isActive)
-            {
+            if (grain.isActive) {
                 grainSumL += processGrain(grain, delayLineL);
                 grainSumR += processGrain(grain, delayLineR);
 
@@ -406,8 +465,7 @@ void GDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[may
         }
 
         // Normalize
-        if (activeGrains > 0)
-        {
+        if (activeGrains > 0) {
             float norm = 1.0f / activeGrains;
             grainSumL *= norm;
             grainSumR *= norm;

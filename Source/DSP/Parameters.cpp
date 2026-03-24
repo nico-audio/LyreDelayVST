@@ -37,6 +37,7 @@ Parameters::Parameters(juce::AudioProcessorValueTreeState& apvts)
     castParameter(apvts, Params::grainSizeParamID, sizeParam);
     castParameter(apvts, Params::grainPitchParamID, pitchParam);
     castParameter(apvts, Params::grainDensityParamID, densityParam);
+    castParameter(apvts, Params::textureParamID, textureParam);
 }                        
 
 // Plugin parameters
@@ -55,6 +56,7 @@ Parameters::createParameterLayout()
     layout.add(Params::makeSizeParam());
     layout.add(Params::makePitchParam());
     layout.add(Params::makeDensityParam());
+    layout.add(Params::makeTextureParam());
 
     layout.add(std::make_unique<juce::AudioParameterBool>(Params::tempoSyncParamID, Params::ParameterNames::tempoSync, false));
 
@@ -108,6 +110,8 @@ void Parameters::prepareToPlay(double sampleRate) noexcept
     pitchSmoother.reset(sampleRate, duration);
 
     densitySmoother.reset(sampleRate, duration);
+
+    textureSmoother.reset(sampleRate, duration);
 }
 
 void Parameters::reset() noexcept
@@ -142,6 +146,9 @@ void Parameters::reset() noexcept
 
     density = 0.0f;
     densitySmoother.setCurrentAndTargetValue(densityParam->get() * 0.01f);
+
+    texture = 0.0f;
+    textureSmoother.setCurrentAndTargetValue(densityParam->get() * 0.01f);
 }
 
 void Parameters::update() noexcept
@@ -164,6 +171,8 @@ void Parameters::update() noexcept
     pitchSmoother.setTargetValue(pitchParam->get());
 
     densitySmoother.setTargetValue(densityParam->get());
+
+    textureSmoother.setTargetValue(textureParam->get());
 
     delayNote = delayNoteParam->getIndex();
     tempoSync = tempoSyncParam->get();
@@ -188,4 +197,5 @@ void Parameters::smoothen() noexcept
     grainSize = sizeSmoother.getNextValue();
     pitch = pitchSmoother.getNextValue();
     density = densitySmoother.getNextValue();
+    texture = textureSmoother.getNextValue();
 }

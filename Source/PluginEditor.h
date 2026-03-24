@@ -47,6 +47,8 @@ private:
     RotaryKnob grainSize{ "Size", audioProcessor.apvts, Params::grainSizeParamID };
     RotaryKnob grainPitch{ "pitch", audioProcessor.apvts, Params::grainPitchParamID };
     RotaryKnob grainDensity{ "Density", audioProcessor.apvts, Params::grainDensityParamID };
+    RotaryKnob textureKnob{ "Texture", audioProcessor.apvts, Params::textureParamID };
+
 
     LabeledButton tempoSyncButton{ "Sync", "", audioProcessor.apvts, Params::tempoSyncParamID };
     LabeledButton granularToggleButton{ "granular", "", audioProcessor.apvts, Params::granularToggleParamID, LabeledButton::ButtonSize::Medium };

@@ -99,9 +99,12 @@ private:
     int samplesUntilNextGrain = 0;
     int samplesBetweenGrains = 0;
 
-    static constexpr int maxGrains = 20;
+    static constexpr int maxGrains = 60;
     std::array<Grain, maxGrains> grainPool;
     static Grain* findAvailableGrain(std::array<Grain, maxGrains>& pool);
+
+    //Texture
+    juce::Random textureRange;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (GDelayAudioProcessor)
 };
