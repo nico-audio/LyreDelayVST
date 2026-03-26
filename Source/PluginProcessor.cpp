@@ -426,7 +426,29 @@ void GDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[may
                             << " jittered=" << jitteredGrainSizeSamples);
                     }
 
-                    spawnGrain(*availableGrain, delayLineL.getWriteIndex(), delayLineL.getBufferLength(), jitteredGrainSizeSamples, pitchRatio);
+                    // Texture - position jitter
+                    int positionJitterSamples = 0;
+
+                    if (texture > 0.0f)
+                    {
+                        const float random = textureRange.nextFloat() * 2.0f - 1.0f;
+                        const float maxPositionJitter = 0.5f;
+                        const float jitterAmount = texture * maxPositionJitter;
+
+                        const float factor = random * jitterAmount;
+
+                        positionJitterSamples = (int)std::round(jitteredGrainSizeSamples * factor);
+
+                        DBG("Texture position jitter: " << positionJitterSamples << " samples");
+                    }
+                    
+                    int startIndex = delayLineL.getWriteIndex() - jitteredGrainSizeSamples + positionJitterSamples;
+                    const int bufferSize = delayLineL.getBufferLength();
+                    startIndex = (startIndex % bufferSize + bufferSize) % bufferSize;
+                    
+                    spawnGrain(*availableGrain, startIndex, bufferSize, jitteredGrainSizeSamples, pitchRatio);
+                   
+                    //spawnGrain(*availableGrain, delayLineL.getWriteIndex(), delayLineL.getBufferLength(), jitteredGrainSizeSamples, pitchRatio);
                     DBG("spawn grain!");
                     DBG("Grain spawned at density " << params.density);
                 }
