@@ -116,7 +116,7 @@ namespace Params
         static constexpr float defaultSize{ 1.0f };
         static constexpr float defaultPitch{ 0.0f };
         static constexpr float defaultDensity{ 0.0f };
-        static constexpr float defaultTexture{ 0.5f };
+        static constexpr float defaultTexture{ 0.0f };
     }
 
     // Parameter Units conversion

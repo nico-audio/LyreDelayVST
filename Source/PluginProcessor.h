@@ -14,6 +14,7 @@
 #include "DSP/DelayLine.h"
 #include "Measurement.h"
 #include "DSP/Grain.h"
+#include "DSP/GranularEngine.h"
 
 class GDelayAudioProcessor  : public juce::AudioProcessor
 {
@@ -95,16 +96,7 @@ private:
     float wait = 0.0f;
     float waitInc = 0.0f;
 
-    //Scheduler
-    int samplesUntilNextGrain = 0;
-    int samplesBetweenGrains = 0;
-
-    static constexpr int maxGrains = 60;
-    std::array<Grain, maxGrains> grainPool;
-    static Grain* findAvailableGrain(std::array<Grain, maxGrains>& pool);
-
-    //Texture
-    juce::Random textureRange;
-
+    GranularEngine grEngine;
+    
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (GDelayAudioProcessor)
 };
