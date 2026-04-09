@@ -40,9 +40,9 @@ private:
     RotaryKnob mixKnob{ "Mix", audioProcessor.apvts, Params::mixParamID };
     RotaryKnob delayTimeKnob{ "Time", audioProcessor.apvts, Params::delayTimeParamID };
     RotaryKnob feedbackKnob{ "Feedback", audioProcessor.apvts, Params::feedbackParamID, true };
-    RotaryKnob stereoKnob{ "Stereo", audioProcessor.apvts, Params::stereoParamID, true, { 0, 0, 68, 76 } };
-    RotaryKnob lowCutKnob{ "Low Cut", audioProcessor.apvts, Params::lowCutParamID, true, { 0, 0, 68, 76 } };
-    RotaryKnob highCutKnob{ "High Cut", audioProcessor.apvts, Params::highCutParamID, true, { 0, 0, 68, 76 } };
+    RotaryKnob stereoKnob{ "Stereo", audioProcessor.apvts, Params::stereoParamID, true, RotaryKnob::KnobSize::Small };
+    RotaryKnob lowCutKnob{ "Low Cut", audioProcessor.apvts, Params::lowCutParamID, true, RotaryKnob::KnobSize::Small };
+    RotaryKnob highCutKnob{ "High Cut", audioProcessor.apvts, Params::highCutParamID, true, RotaryKnob::KnobSize::Small };
     RotaryKnob delayNoteKnob{ "Note", audioProcessor.apvts, Params::delayNoteParamID };
     RotaryKnob grainSize{ "Size", audioProcessor.apvts, Params::grainSizeParamID };
     RotaryKnob grainPitch{ "pitch", audioProcessor.apvts, Params::grainPitchParamID };
