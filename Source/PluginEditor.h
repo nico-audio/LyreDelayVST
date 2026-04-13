@@ -50,13 +50,18 @@ private:
     RotaryKnob textureKnob{ "Texture", audioProcessor.apvts, Params::textureParamID };
 
 
-    LabeledButton tempoSyncButton{ "Sync", "", audioProcessor.apvts, Params::tempoSyncParamID };
-    LabeledButton granularToggleButton{ "granular", "", audioProcessor.apvts, Params::granularToggleParamID, LabeledButton::ButtonSize::Medium };
+    LabeledButton tempoSyncButton{ "Sync", "", audioProcessor.apvts, Params::tempoSyncParamID, LabeledButton::ButtonSize::Medium };
+    LabeledButton granularToggleButton{ "granular", "", audioProcessor.apvts, Params::granularToggleParamID, LabeledButton::ButtonSize::Large };
     
     juce::ImageButton bypassButton;
+    juce::ImageButton randomizerButton;
 
     juce::AudioProcessorValueTreeState::ButtonAttachment bypassAttachment{
         audioProcessor.apvts, Params::bypassParamID.getParamID(), bypassButton
+    };
+
+    juce::AudioProcessorValueTreeState::ButtonAttachment randomizerAttachment{
+        audioProcessor.apvts, Params::randomPushParamID.getParamID(), randomizerButton
     };
 
     juce::GroupComponent grainGroup, delayGroup, outputGroup;

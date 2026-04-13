@@ -28,6 +28,7 @@ namespace Params
     static const juce::ParameterID grainPitchParamID{ "grainPitch", 1 };
     static const juce::ParameterID grainDensityParamID{ "grainDensity", 1 };
     static const juce::ParameterID textureParamID{ "texture", 1 };
+    static const juce::ParameterID randomPushParamID{ "randomPush", 1 };
 
     namespace ParameterNames
     {
@@ -46,6 +47,7 @@ namespace Params
         static constexpr auto bypass = "Bypass";
         static constexpr auto granular = "Granular";
         static constexpr auto texture = "Texture";
+        static constexpr auto randomize = "Randomize";
     }
 
     namespace Range
