@@ -184,7 +184,7 @@ void Parameters::update() noexcept
 
     granularisActive = granularToggleParam->get();
 
-    randomIsActive = randomToggleParam->get();
+    randomIsActive = randomPushParam->get();
 }
 
 void Parameters::smoothen() noexcept
