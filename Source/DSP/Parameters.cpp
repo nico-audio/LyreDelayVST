@@ -38,6 +38,7 @@ Parameters::Parameters(juce::AudioProcessorValueTreeState& apvts)
     castParameter(apvts, Params::grainPitchParamID, pitchParam);
     castParameter(apvts, Params::grainDensityParamID, densityParam);
     castParameter(apvts, Params::textureParamID, textureParam);
+    castParameter(apvts, Params::randomPushParamID, randomPushParam);
 }                        
 
 // Plugin parameters
@@ -84,6 +85,8 @@ Parameters::createParameterLayout()
     layout.add(std::make_unique<juce::AudioParameterBool>(Params::bypassParamID, Params::ParameterNames::bypass, false));
 
     layout.add(std::make_unique<juce::AudioParameterBool>(Params::granularToggleParamID, Params::ParameterNames::granular, false));
+    
+    layout.add(std::make_unique<juce::AudioParameterBool>(Params::randomPushParamID, Params::ParameterNames::randomize, false));
 
     return layout;
 }
@@ -180,6 +183,8 @@ void Parameters::update() noexcept
     bypassed = bypassParam->get();
 
     granularisActive = granularToggleParam->get();
+
+    randomIsActive = randomPushParam->get();
 }
 
 void Parameters::smoothen() noexcept

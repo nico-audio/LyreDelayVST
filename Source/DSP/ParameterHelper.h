@@ -28,6 +28,7 @@ namespace Params
     static const juce::ParameterID grainPitchParamID{ "grainPitch", 1 };
     static const juce::ParameterID grainDensityParamID{ "grainDensity", 1 };
     static const juce::ParameterID textureParamID{ "texture", 1 };
+    static const juce::ParameterID randomPushParamID{ "randomPush", 1 };
 
     namespace ParameterNames
     {
@@ -46,6 +47,7 @@ namespace Params
         static constexpr auto bypass = "Bypass";
         static constexpr auto granular = "Granular";
         static constexpr auto texture = "Texture";
+        static constexpr auto randomize = "Randomize";
     }
 
     namespace Range
@@ -86,6 +88,7 @@ namespace Params
         static constexpr float minDensity{ 1.0f };
         static constexpr float maxDensity{ 200.0f };
         static constexpr float densityStepSize{ 1.0f };
+        static constexpr float densitySkewFactor{ 1.0f };
 
         static constexpr float minTexture{ 0.0f };
         static constexpr float maxTexture{ 1.0f };
@@ -100,7 +103,7 @@ namespace Params
         static const juce::NormalisableRange<float> highCutRange{ minFilterCutoff, maxFilterCutoff, filterStepSize, filterSkewFactor };
         static const juce::NormalisableRange<float> grainSizeRange { minGrainSize, maxGrainSize, grainStepSize };
         static const juce::NormalisableRange<float> pitchRange { minPitch, maxPitch, pitchStepSize };
-        static const juce::NormalisableRange<float> densityRange{ minDensity, maxDensity, densityStepSize };
+        static const juce::NormalisableRange<float> densityRange{ minDensity, maxDensity, densityStepSize, densitySkewFactor };
         static const juce::NormalisableRange<float> textureRange{ minTexture, maxTexture, textureStepSize };
     }
 

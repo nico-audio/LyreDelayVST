@@ -14,25 +14,18 @@
 
 
 RotaryKnob::RotaryKnob(const juce::String& text, juce::AudioProcessorValueTreeState& apvts, 
-                       const juce::ParameterID& parameterID, bool drawFromMiddle,
-                       juce::Rectangle<int> sliderBounds)
-    : attachment(apvts, parameterID.getParamID(), slider)
+                       const juce::ParameterID& parameterID, bool drawFromMiddle, KnobSize size)
+    : attachment(apvts, parameterID.getParamID(), slider), knobSize(size)
 {
     // slider
     slider.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
-    slider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, sliderBounds.getWidth(), 16);
-    slider.setBounds(sliderBounds);
     addAndMakeVisible(slider);
 
     // label
     label.setText(text, juce::NotificationType::dontSendNotification);;
     label.setJustificationType(juce::Justification::horizontallyCentred);
     label.setBorderSize(juce::BorderSize<int>(0));
-    label.attachToComponent(&slider, false);
     addAndMakeVisible(label);
-
-    // component size
-    setSize(sliderBounds.getWidth(), sliderBounds.getHeight() + 24);
 
     setLookAndFeel(RotaryKnobLookAndFeel::get());
 
@@ -42,6 +35,8 @@ RotaryKnob::RotaryKnob(const juce::String& text, juce::AudioProcessorValueTreeSt
 
     // draw track - draw from middle
     slider.getProperties().set("drawFromMiddle", drawFromMiddle);
+
+    resized();
 }
 
 RotaryKnob::~RotaryKnob()
@@ -50,6 +45,40 @@ RotaryKnob::~RotaryKnob()
 
 void RotaryKnob::resized()
 {
-    slider.setTopLeftPosition(0, 24);
-    //DBG("Label bounds: " << getBounds().toString());
+    int labelHeight = 20;
+    int textBoxHeight = 16;
+    int sliderDiameter = 0;
+
+    switch (knobSize)
+    {
+        case KnobSize::Small:
+            sliderDiameter = 67;
+            break;
+        case KnobSize::Medium:
+            sliderDiameter = 80;
+            break;
+        case KnobSize::Large:
+            sliderDiameter = 100;
+            break;
+    }
+
+    int totalWidth = sliderDiameter;
+    int totalHeight = labelHeight + sliderDiameter + textBoxHeight;
+
+    // Component size
+    setSize(totalWidth, totalHeight);
+
+    // Position the label
+    label.setBounds(0, 0, totalWidth, labelHeight);
+
+    // Position the slider and text box
+    slider.setBounds(0, labelHeight, totalWidth, sliderDiameter + textBoxHeight);
+    slider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, totalWidth, textBoxHeight);
+
+}
+
+void RotaryKnob::setKnobSize(KnobSize size)
+{
+    knobSize = size;
+    resized();
 }

@@ -30,9 +30,9 @@ LabeledButton::LabeledButton(const juce::String& labelText, const juce::String& 
 
     switch (buttonSize)
     {
-        case ButtonSize::Small:  w = 65; h = 45; break;
-        case ButtonSize::Medium: w = 110; h = 55; break;
-        case ButtonSize::Large:  w = 200; h = 70; break;
+        case ButtonSize::Small:  w = 55; h = 55; break;
+        case ButtonSize::Medium: w = 65; h = 45; break;
+        case ButtonSize::Large:  w = 110; h = 55; break;
     }
 
     setSize(w, h);
@@ -68,19 +68,19 @@ void LabeledButton::resized()
     {
         case ButtonSize::Small:
             label.setBounds(0, 0, 60, 20);
-            button.setBounds(0, 25, 40, 20);
+            button.setBounds(0, 25, 25, 25);
             centreBelow(label, button, 0);
             break;
 
         case ButtonSize::Medium:
-            label.setBounds(0, 0, 110, 20);
-            button.setBounds(0, 0, 50, 25);
+            label.setBounds(0, 0, 60, 20);
+            button.setBounds(0, 25, 40, 20);
             centreBelow(label, button, 0);
             break;
 
         case ButtonSize::Large:
-            label.setBounds(0, 0, 200, 20);
-            button.setBounds(0, 0, 100, 30);
+            label.setBounds(0, 0, 110, 20);
+            button.setBounds(0, 0, 50, 25);
             centreBelow(label, button, 0);
             break;
     }

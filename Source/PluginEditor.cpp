@@ -32,6 +32,7 @@ GDelayAudioProcessorEditor::GDelayAudioProcessorEditor (GDelayAudioProcessor& p)
     grainGroup.addAndMakeVisible(grainPitch);
     grainGroup.addAndMakeVisible(grainDensity);
     grainGroup.addAndMakeVisible(textureKnob);
+    grainGroup.addAndMakeVisible(randomizerButton);
     addAndMakeVisible(grainGroup);
     
     outputGroup.setText("Output");
@@ -54,6 +55,16 @@ GDelayAudioProcessorEditor::GDelayAudioProcessorEditor (GDelayAudioProcessor& p)
         bypassIcon, 1.0f, juce::Colours::grey,
         0.0f);
     addAndMakeVisible(bypassButton);
+
+    auto randomizerIcon = juce::ImageCache::getFromMemory(BinaryData::randomizer_dice_png, BinaryData::randomizer_dice_pngSize);
+    randomizerButton.setClickingTogglesState(false);
+    randomizerButton.setBounds(0, 0, 35, 35);
+    randomizerButton.setImages(
+        false, true, true,
+        randomizerIcon, 1.0f, juce::Colours::white,
+        randomizerIcon, 1.0f, juce::Colours::white,
+        randomizerIcon, 1.0f, juce::Colour(206, 148, 92),
+        0.0f);
 
     // Dev module
     //inspector = std::make_unique<melatonin::Inspector>(*this);
@@ -141,12 +152,14 @@ void GDelayAudioProcessorEditor::resized()
     grainPitch.setTopLeftPosition(20, 200);
     grainDensity.setTopLeftPosition(110, 75);
     textureKnob.setTopLeftPosition(110, 200);
+    randomizerButton.setTopLeftPosition(90, 330);
 
     mixKnob.setTopLeftPosition(550, 120);
     gainKnob.setTopLeftPosition(mixKnob.getX(), mixKnob.getBottom() + 10);
     meter.setBounds(612, 135, 96, 220);
 
     bypassButton.setTopLeftPosition(bounds.getRight() - bypassButton.getWidth() - 10, 10);
+
     
     // Audio visualizer
     audioProcessor.waveViewer.setBounds(15, 45, waveViewerWidth, waveViewerHeight);

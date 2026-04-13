@@ -39,10 +39,12 @@ public:
     bool tempoSync = false;
     bool bypassed = false;
     bool granularisActive = false;
+    bool randomIsActive = false;
    
     juce::AudioParameterBool* tempoSyncParam;
     juce::AudioParameterBool* bypassParam;
     juce::AudioParameterBool* granularToggleParam;
+    juce::AudioParameterBool* randomPushParam;
     
 private:
     // Gain
