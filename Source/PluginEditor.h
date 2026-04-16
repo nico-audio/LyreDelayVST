@@ -33,6 +33,7 @@ private:
     void parameterGestureChanged(int, bool) override {}
 
     void updateDelayKnobs(bool tempoSyncActive);
+    void updateButtonEnabled(bool granularEnabled);
 
     GDelayAudioProcessor& audioProcessor;
 

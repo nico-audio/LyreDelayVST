@@ -69,8 +69,9 @@ public:
         return milliseconds / 1000.0f * sampleRate;
     }
 
-    Parameters params;
+    void randomizeParams();
 
+    Parameters params;
     Measurement levelL, levelR;
 
 private:

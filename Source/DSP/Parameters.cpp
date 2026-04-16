@@ -204,3 +204,21 @@ void Parameters::smoothen() noexcept
     density = densitySmoother.getNextValue();
     texture = textureSmoother.getNextValue();
 }
+
+void Parameters::randomizeGranularParams()
+{
+    auto randomizeParam = [this](juce::AudioParameterFloat* targetParam)
+    {
+        if (targetParam == nullptr) {
+            return;
+        }
+        const auto& range = targetParam->getNormalisableRange();
+        float randomVal = range.convertFrom0to1(grParameterRandomizer.nextFloat());
+        targetParam->setValueNotifyingHost(targetParam->convertTo0to1(randomVal));
+    };
+
+    randomizeParam(sizeParam);
+    randomizeParam(pitchParam);
+    randomizeParam(densityParam);
+    randomizeParam(textureParam);
+}

@@ -61,10 +61,14 @@ GDelayAudioProcessorEditor::GDelayAudioProcessorEditor (GDelayAudioProcessor& p)
     randomizerButton.setBounds(0, 0, 35, 35);
     randomizerButton.setImages(
         false, true, true,
-        randomizerIcon, 1.0f, juce::Colours::white,
+        randomizerIcon, 1.0f, juce::Colours::grey,
         randomizerIcon, 1.0f, juce::Colours::white,
         randomizerIcon, 1.0f, juce::Colour(206, 148, 92),
         0.0f);
+    randomizerButton.onClick = [this]
+    {
+        audioProcessor.randomizeParams();
+    };
 
     // Dev module
     //inspector = std::make_unique<melatonin::Inspector>(*this);
@@ -79,12 +83,15 @@ GDelayAudioProcessorEditor::GDelayAudioProcessorEditor (GDelayAudioProcessor& p)
     setLookAndFeel(&buttonLF);
 
     updateDelayKnobs(audioProcessor.params.tempoSyncParam->get());
+    updateButtonEnabled(audioProcessor.params.granularToggleParam->get());
     audioProcessor.params.tempoSyncParam->addListener(this);
+    audioProcessor.params.granularToggleParam->addListener(this);
 }
 
 GDelayAudioProcessorEditor::~GDelayAudioProcessorEditor()
 {
     audioProcessor.params.tempoSyncParam->removeListener(this);
+    audioProcessor.params.granularToggleParam->removeListener(this);
     setLookAndFeel(nullptr);
 }
 
@@ -165,23 +172,34 @@ void GDelayAudioProcessorEditor::resized()
     audioProcessor.waveViewer.setBounds(15, 45, waveViewerWidth, waveViewerHeight);
 }
 
-void GDelayAudioProcessorEditor::parameterValueChanged(int, float value)
+void GDelayAudioProcessorEditor::parameterValueChanged(int parameterIndex, float newValue)
 {
-    if (juce::MessageManager::getInstance()->isThisTheMessageThread()) {
-        updateDelayKnobs(value != 0.0f);
-    }
-    else {
-        juce::MessageManager::callAsync([this, value]
+    auto updateUI = [this, parameterIndex, newValue]
+    {
+        if (parameterIndex == audioProcessor.params.tempoSyncParam->getParameterIndex())
         {
-            updateDelayKnobs(value != 0.0f);
-        });
-    }
+            updateDelayKnobs(newValue != 0.0f);
+        }
+        if (parameterIndex == audioProcessor.params.granularToggleParam->getParameterIndex())
+        {
+            bool enabled = (newValue != 0.0f);
+            randomizerButton.setEnabled(enabled);
+        }
+    };
 
-    //DBG("parameter changed: " << value);
+    if (juce::MessageManager::getInstance()->isThisTheMessageThread())
+        updateUI();
+    else
+        juce::MessageManager::callAsync(updateUI);
 }
 
 void GDelayAudioProcessorEditor::updateDelayKnobs(bool tempoSyncActive)
 {
     delayTimeKnob.setVisible(!tempoSyncActive);
     delayNoteKnob.setVisible(tempoSyncActive);
+}
+
+void GDelayAudioProcessorEditor::updateButtonEnabled(bool granularEnabled)
+{
+    randomizerButton.setEnabled(granularEnabled);
 }
