@@ -22,6 +22,7 @@ public:
     void reset() noexcept;
     void update() noexcept;
     void smoothen() noexcept;
+    void randomizeGranularParams();
 
     float gain = 0.0f;
     float delayTime = 0.0f;
@@ -40,6 +41,7 @@ public:
     bool bypassed = false;
     bool granularisActive = false;
     bool randomIsActive = false;
+    //bool lastRandomizerState = false;
    
     juce::AudioParameterBool* tempoSyncParam;
     juce::AudioParameterBool* bypassParam;
@@ -93,6 +95,9 @@ private:
     // Texture
     juce::AudioParameterFloat* textureParam;
     juce::LinearSmoothedValue<float> textureSmoother;
+
+    // Granular parameter randomizer
+    juce::Random grParameterRandomizer;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Parameters)
 };

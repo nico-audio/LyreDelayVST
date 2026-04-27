@@ -33,6 +33,12 @@ GDelayAudioProcessor::~GDelayAudioProcessor()
 {
 }
 
+void GDelayAudioProcessor::randomizeParams()
+{
+    if (params.granularisActive == true) {
+        params.randomizeGranularParams();
+    }
+}
 
 const juce::String GDelayAudioProcessor::getName() const
 {
