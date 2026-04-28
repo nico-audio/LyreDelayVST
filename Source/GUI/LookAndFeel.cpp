@@ -24,13 +24,6 @@ juce::Typeface::createSystemTypefaceFor(BinaryData::Induction_otf, BinaryData::I
 const juce::Typeface::Ptr Fonts::patopianTypeface =
 juce::Typeface::createSystemTypefaceFor(BinaryData::Patopian_1986_ttf, BinaryData::Patopian_1986_ttfSize);
 
-/*
-juce::Font Fonts::getFont(float height)
-{
-    return juce::Font(typeface).withHeight(height);
-}
-*/
-
 juce::Font Fonts::getInterdim(float height)
 {
     return juce::Font(interdimTypeface).withHeight(height);
@@ -77,7 +70,7 @@ void RotaryKnobLookAndFeel::drawRotarySlider(juce::Graphics& g, int x, int y, in
     // knob gradient
     auto innerRect = knobRect.reduced(2.0f, 2.0f);
 
-    auto knobGrad = juce::ImageCache::getFromMemory(BinaryData::knob_conical_gradient_png, BinaryData::knob_conical_gradient_pngSize);
+    auto knobGrad = juce::ImageCache::getFromMemory(BinaryData::texture_knob_cop1_png, BinaryData::texture_knob_cop1_pngSize);
     g.setImageResamplingQuality(juce::Graphics::highResamplingQuality);
     g.setOpacity(1.0f);
     g.drawImage(knobGrad, innerRect.toFloat(), juce::RectanglePlacement::stretchToFit);
