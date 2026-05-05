@@ -21,6 +21,8 @@ public:
         const juce::ParameterID& parameterID, ButtonType type = ButtonType::Text, ButtonSize size = ButtonSize::Small);
     ~LabeledButton() override;
 
+    //=============================================================================
+
     void setClickingTogglesState(bool shouldToggle);
     void setToggleState(bool shouldBeOn, juce::NotificationType notification);
     bool getToggleState() const;
@@ -29,6 +31,8 @@ public:
 
     void setButtonSize(ButtonSize size);
     void setImage(const juce::Image& normal, const juce::Image& over, const juce::Image& down);
+
+    //=============================================================================
 
     void resized() override;
 

@@ -12,6 +12,10 @@
 #include "LookAndFeel.h"
 #include "LayoutHelper.h"
 
+//=============================================================================
+// CONSTRUCTOR/ DESTRUCTOR
+//=============================================================================
+
 LabeledButton::LabeledButton(const juce::String& labelText, const juce::String& buttonText, juce::AudioProcessorValueTreeState& apvts,
     const juce::ParameterID& parameterID, ButtonType type, ButtonSize size) : buttonType(type), buttonSize(size)
 {
@@ -59,6 +63,10 @@ LabeledButton::~LabeledButton()
 {
 }
 
+//==============================================================================
+// BUTTON FORWARDING
+//==============================================================================
+
 void LabeledButton::setClickingTogglesState(bool shouldToggle)
 {
     button->setClickingTogglesState(shouldToggle);
@@ -74,18 +82,25 @@ bool LabeledButton::getToggleState() const
     return button->getToggleState();
 }
 
+//==============================================================================
+// IMAGE
+//==============================================================================
+
 void LabeledButton::setImage(const juce::Image& normal,
                              const juce::Image& over,
                              const juce::Image& down)
 {
     if (auto* imgButton = dynamic_cast<juce::ImageButton*>(button.get())){
-        imgButton->setBounds(30, 6, 35, 35);
         imgButton->setImages(false, true, true,
             normal, 1.0f, juce::Colours::grey,
             over, 1.0f, juce::Colours::white,
-            down, 1.0f, juce::Colour(206, 148, 92));
+            down, 1.0f, juce::Colour(206, 148, 92), 0.0f);
     }
 }
+
+//==============================================================================
+// LAYOUT
+//==============================================================================
 
 void LabeledButton::resized()
 {
@@ -109,6 +124,9 @@ void LabeledButton::resized()
             centreBelow(label, *button, 0);
             break;
     }
+
+    if (buttonType == ButtonType::Image)
+        button->setBounds(button->getBounds().withSizeKeepingCentre(35, 35));
 }
 
 void LabeledButton::setButtonSize(ButtonSize size) 
