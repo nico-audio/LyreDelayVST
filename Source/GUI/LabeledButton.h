@@ -25,18 +25,12 @@ public:
     void setToggleState(bool shouldBeOn, juce::NotificationType notification);
     bool getToggleState() const;
     
-    //juce::TextButton& getButton() { return button; }
     juce::Button& getButton() { return *button; }
 
     void setButtonSize(ButtonSize size);
     void setImage(const juce::Image& normal, const juce::Image& over, const juce::Image& down);
 
     void resized() override;
-
-    //juce::Label label;
-    //juce::TextButton button;
-
-    //juce::AudioProcessorValueTreeState::ButtonAttachment attachment;
 
 private:
     ButtonType buttonType;
@@ -46,7 +40,6 @@ private:
     std::unique_ptr<juce::Button> button;
 
     std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> attachment;
-    //juce::AudioProcessorValueTreeState::ButtonAttachment attachment;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(LabeledButton)
 };

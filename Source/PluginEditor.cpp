@@ -14,6 +14,10 @@
 GDelayAudioProcessorEditor::GDelayAudioProcessorEditor (GDelayAudioProcessor& p)
     : AudioProcessorEditor (&p), audioProcessor (p), meter (p.levelL, p.levelR)
 {
+    //==============================================================================
+    // DELAY GROUP
+    //==============================================================================
+
     delayGroup.setText("Delay");
     delayGroup.setTextLabelPosition(juce::Justification::horizontallyCentred);
     delayGroup.addAndMakeVisible(delayTimeKnob);
@@ -25,6 +29,10 @@ GDelayAudioProcessorEditor::GDelayAudioProcessorEditor (GDelayAudioProcessor& p)
     delayGroup.addAndMakeVisible(tempoSyncButton);
     addAndMakeVisible(delayGroup);
 
+    //==============================================================================
+    // GRANULAR GROUP
+    //==============================================================================
+
     grainGroup.setText("Granular");
     grainGroup.setTextLabelPosition(juce::Justification::horizontallyCentred);
     grainGroup.addAndMakeVisible(granularToggleButton);
@@ -35,6 +43,10 @@ GDelayAudioProcessorEditor::GDelayAudioProcessorEditor (GDelayAudioProcessor& p)
     grainGroup.addAndMakeVisible(randomizerButton);
     addAndMakeVisible(grainGroup);
     
+    //==============================================================================
+    // OUTPUT GROUP
+    //==============================================================================
+
     outputGroup.setText("Output");
     outputGroup.setTextLabelPosition(juce::Justification::horizontallyCentred);
     addAndMakeVisible(meter);
@@ -44,6 +56,10 @@ GDelayAudioProcessorEditor::GDelayAudioProcessorEditor (GDelayAudioProcessor& p)
 
     addAndMakeVisible(audioProcessor.waveViewer);
     audioProcessor.waveViewer.setColours(Colors::AudioVisualizer::visualizerBG, Colors::AudioVisualizer::visualizerWave);
+
+    //==============================================================================
+    // BUTTONS
+    //==============================================================================
 
     auto bypassIcon = juce::ImageCache::getFromMemory(BinaryData::Bypassplaceholder_png, BinaryData::Bypassplaceholder_pngSize);
     bypassButton.setClickingTogglesState(true);
@@ -57,25 +73,15 @@ GDelayAudioProcessorEditor::GDelayAudioProcessorEditor (GDelayAudioProcessor& p)
     addAndMakeVisible(bypassButton);
 
     auto randomizerIcon = juce::ImageCache::getFromMemory(BinaryData::randomizer_dice_png, BinaryData::randomizer_dice_pngSize);
-    //randomizerButton.setClickingTogglesState(false);
-    //randomizerButton.setBounds(0, 0, 35, 35);
     randomizerButton.setImage(randomizerIcon, randomizerIcon, randomizerIcon);
-    /*    
-    randomizerButton.setImages(
-        false, true, true,
-        randomizerIcon, 1.0f, juce::Colours::grey,
-        randomizerIcon, 1.0f, juce::Colours::white,
-        randomizerIcon, 1.0f, juce::Colour(206, 148, 92),
-        0.0f);
-    */
     randomizerButton.getButton().onClick = [this]
     {
         audioProcessor.randomizeParams();
     };
 
     // Dev module
-    inspector = std::make_unique<melatonin::Inspector>(*this);
-    inspector->setVisible(true);
+    //inspector = std::make_unique<melatonin::Inspector>(*this);
+    //inspector->setVisible(true);
 
     setSize (720, 490);
 

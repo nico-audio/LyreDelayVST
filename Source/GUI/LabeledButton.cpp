@@ -29,6 +29,7 @@ LabeledButton::LabeledButton(const juce::String& labelText, const juce::String& 
 
     addAndMakeVisible(*button);
 
+    // Label
     label.setText(labelText, juce::dontSendNotification);
     label.setJustificationType(juce::Justification::centred);
     label.setMinimumHorizontalScale(1.0f);
@@ -37,12 +38,6 @@ LabeledButton::LabeledButton(const juce::String& labelText, const juce::String& 
     jassert(button != nullptr);
 
     attachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(apvts, parameterID.getParamID(),*button);
-
-    //attachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(apvts, parameterID.getParamID(), *button);
-
-    //button.setButtonText(buttonText);
-    //button.setClickingTogglesState(true);
-    //addAndMakeVisible(button);
 
     // adjust component size based on button size
     int w = 0;
@@ -84,6 +79,7 @@ void LabeledButton::setImage(const juce::Image& normal,
                              const juce::Image& down)
 {
     if (auto* imgButton = dynamic_cast<juce::ImageButton*>(button.get())){
+        imgButton->setBounds(30, 6, 35, 35);
         imgButton->setImages(false, true, true,
             normal, 1.0f, juce::Colours::grey,
             over, 1.0f, juce::Colours::white,

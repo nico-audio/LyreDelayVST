@@ -56,17 +56,10 @@ private:
     LabeledButton randomizerButton{ "", "", audioProcessor.apvts, Params::randomPushParamID, LabeledButton::ButtonType::Image, LabeledButton::ButtonSize::Large };
     
     juce::ImageButton bypassButton;
-    //juce::ImageButton randomizerButton;
 
     juce::AudioProcessorValueTreeState::ButtonAttachment bypassAttachment{
         audioProcessor.apvts, Params::bypassParamID.getParamID(), bypassButton
     };
-
-    /*
-    juce::AudioProcessorValueTreeState::ButtonAttachment randomizerAttachment{
-        audioProcessor.apvts, Params::randomPushParamID.getParamID(), randomizerButton
-    };
-    */
 
     juce::GroupComponent grainGroup, delayGroup, outputGroup;
 
