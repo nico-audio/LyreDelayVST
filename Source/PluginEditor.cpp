@@ -14,6 +14,10 @@
 GDelayAudioProcessorEditor::GDelayAudioProcessorEditor (GDelayAudioProcessor& p)
     : AudioProcessorEditor (&p), audioProcessor (p), meter (p.levelL, p.levelR)
 {
+    //==============================================================================
+    // DELAY GROUP
+    //==============================================================================
+
     delayGroup.setText("Delay");
     delayGroup.setTextLabelPosition(juce::Justification::horizontallyCentred);
     delayGroup.addAndMakeVisible(delayTimeKnob);
@@ -25,6 +29,10 @@ GDelayAudioProcessorEditor::GDelayAudioProcessorEditor (GDelayAudioProcessor& p)
     delayGroup.addAndMakeVisible(tempoSyncButton);
     addAndMakeVisible(delayGroup);
 
+    //==============================================================================
+    // GRANULAR GROUP
+    //==============================================================================
+
     grainGroup.setText("Granular");
     grainGroup.setTextLabelPosition(juce::Justification::horizontallyCentred);
     grainGroup.addAndMakeVisible(granularToggleButton);
@@ -35,6 +43,10 @@ GDelayAudioProcessorEditor::GDelayAudioProcessorEditor (GDelayAudioProcessor& p)
     grainGroup.addAndMakeVisible(randomizerButton);
     addAndMakeVisible(grainGroup);
     
+    //==============================================================================
+    // OUTPUT GROUP
+    //==============================================================================
+
     outputGroup.setText("Output");
     outputGroup.setTextLabelPosition(juce::Justification::horizontallyCentred);
     addAndMakeVisible(meter);
@@ -44,6 +56,10 @@ GDelayAudioProcessorEditor::GDelayAudioProcessorEditor (GDelayAudioProcessor& p)
 
     addAndMakeVisible(audioProcessor.waveViewer);
     audioProcessor.waveViewer.setColours(Colors::AudioVisualizer::visualizerBG, Colors::AudioVisualizer::visualizerWave);
+
+    //==============================================================================
+    // BUTTONS
+    //==============================================================================
 
     auto bypassIcon = juce::ImageCache::getFromMemory(BinaryData::Bypassplaceholder_png, BinaryData::Bypassplaceholder_pngSize);
     bypassButton.setClickingTogglesState(true);
@@ -58,17 +74,17 @@ GDelayAudioProcessorEditor::GDelayAudioProcessorEditor (GDelayAudioProcessor& p)
 
     auto randomizerIcon = juce::ImageCache::getFromMemory(BinaryData::randomizer_dice_png, BinaryData::randomizer_dice_pngSize);
     randomizerButton.setClickingTogglesState(false);
-    randomizerButton.setBounds(0, 0, 35, 35);
-    randomizerButton.setImages(
-        false, true, true,
-        randomizerIcon, 1.0f, juce::Colours::grey,
-        randomizerIcon, 1.0f, juce::Colours::white,
-        randomizerIcon, 1.0f, juce::Colour(206, 148, 92),
-        0.0f);
-    randomizerButton.onClick = [this]
+    randomizerButton.setImage(randomizerIcon, randomizerIcon, randomizerIcon);
+    randomizerButton.getButton().onClick = [this]
     {
         audioProcessor.randomizeParams();
     };
+
+    auto granularIcon = juce::ImageCache::getFromMemory(BinaryData::grainicon_png, BinaryData::grainicon_pngSize);
+    granularToggleButton.setImage(granularIcon, granularIcon, granularIcon);
+    granularToggleButton.setImageSize(25, 25);
+
+    //==============================================================================
 
     // Dev module
     //inspector = std::make_unique<melatonin::Inspector>(*this);
@@ -87,6 +103,8 @@ GDelayAudioProcessorEditor::GDelayAudioProcessorEditor (GDelayAudioProcessor& p)
     audioProcessor.params.tempoSyncParam->addListener(this);
     audioProcessor.params.granularToggleParam->addListener(this);
 }
+
+//==============================================================================
 
 GDelayAudioProcessorEditor::~GDelayAudioProcessorEditor()
 {
@@ -159,7 +177,7 @@ void GDelayAudioProcessorEditor::resized()
     grainPitch.setTopLeftPosition(20, 200);
     grainDensity.setTopLeftPosition(110, 75);
     textureKnob.setTopLeftPosition(110, 200);
-    randomizerButton.setTopLeftPosition(90, 330);
+    randomizerButton.setTopLeftPosition(50, 318);
 
     mixKnob.setTopLeftPosition(550, 120);
     gainKnob.setTopLeftPosition(mixKnob.getX(), mixKnob.getBottom() + 10);
@@ -171,6 +189,8 @@ void GDelayAudioProcessorEditor::resized()
     // Audio visualizer
     audioProcessor.waveViewer.setBounds(15, 45, waveViewerWidth, waveViewerHeight);
 }
+
+//==============================================================================
 
 void GDelayAudioProcessorEditor::parameterValueChanged(int parameterIndex, float newValue)
 {

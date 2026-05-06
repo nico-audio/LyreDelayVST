@@ -12,7 +12,7 @@
 #include <JuceHeader.h>
 
 // Center button with text above
-static void centreBelow(juce::Label& label, juce::TextButton& button, int gap = 0)
+static void centreBelow(juce::Label& label, juce::Button& button, int gap = 0)
 {
     // Ensure the button has a valid size
     jassert(button.getWidth() > 0 && button.getHeight() > 0);
