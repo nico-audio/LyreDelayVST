@@ -14,6 +14,7 @@
       </GROUP>
       <FILE id="NHEBEo" name="Bypass-placeholder.png" compile="0" resource="1"
             file="Assets/Bypass-placeholder.png"/>
+      <FILE id="y5OrBA" name="grain-icon.png" compile="0" resource="1" file="Assets/grain-icon.png"/>
       <FILE id="r5joBf" name="knob_conical_gradient.png" compile="0" resource="1"
             file="Assets/knob_conical_gradient.png"/>
       <FILE id="gAWYdl" name="Lyre_BG_Texture_brushed_metal.png" compile="0"

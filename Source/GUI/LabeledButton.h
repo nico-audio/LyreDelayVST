@@ -30,6 +30,7 @@ public:
     juce::Button& getButton() { return *button; }
 
     void setButtonSize(ButtonSize size);
+    void setImageSize(int width, int height);
     void setImage(const juce::Image& normal, const juce::Image& over, const juce::Image& down);
 
     //=============================================================================
@@ -42,6 +43,9 @@ private:
 
     juce::Label label;
     std::unique_ptr<juce::Button> button;
+
+    int imageWidth = 35;
+    int imageHeight = 35;
 
     std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> attachment;
 

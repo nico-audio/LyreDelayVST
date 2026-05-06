@@ -119,18 +119,25 @@ void LabeledButton::resized()
             break;
 
         case ButtonSize::Large:
-            label.setBounds(0, 0, 110, 20);
-            button->setBounds(0, 0, 50, 25);
+            label.setBounds(0, 0, 110, 15);
+            button->setBounds(0, 25, 50, 25);
             centreBelow(label, *button, 0);
             break;
     }
 
-    if (buttonType == ButtonType::Image)
-        button->setBounds(button->getBounds().withSizeKeepingCentre(35, 35));
+    if (buttonType == ButtonType::Image) {
+        button->setBounds(getLocalBounds().withSizeKeepingCentre(imageWidth, imageHeight));
+    }
 }
 
 void LabeledButton::setButtonSize(ButtonSize size) 
 { 
     buttonSize = size; 
     resized(); 
+}
+
+void LabeledButton::setImageSize(int width, int height) {
+    imageWidth = width;
+    imageHeight = height;
+    resized();
 }

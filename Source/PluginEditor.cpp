@@ -80,6 +80,10 @@ GDelayAudioProcessorEditor::GDelayAudioProcessorEditor (GDelayAudioProcessor& p)
         audioProcessor.randomizeParams();
     };
 
+    auto granularIcon = juce::ImageCache::getFromMemory(BinaryData::grainicon_png, BinaryData::grainicon_pngSize);
+    granularToggleButton.setImage(granularIcon, granularIcon, granularIcon);
+    granularToggleButton.setImageSize(25, 25);
+
     //==============================================================================
 
     // Dev module

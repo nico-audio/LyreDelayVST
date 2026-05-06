@@ -52,7 +52,7 @@ private:
 
 
     LabeledButton tempoSyncButton{ "Sync", "", audioProcessor.apvts, Params::tempoSyncParamID, LabeledButton::ButtonType::Text, LabeledButton::ButtonSize::Medium };
-    LabeledButton granularToggleButton{ "granular", "", audioProcessor.apvts, Params::granularToggleParamID, LabeledButton::ButtonType::Text, LabeledButton::ButtonSize::Large };
+    LabeledButton granularToggleButton{ "granular", "", audioProcessor.apvts, Params::granularToggleParamID, LabeledButton::ButtonType::Image, LabeledButton::ButtonSize::Large };
     LabeledButton randomizerButton{ "", "", audioProcessor.apvts, Params::randomPushParamID, LabeledButton::ButtonType::Image, LabeledButton::ButtonSize::Large };
     
     juce::ImageButton bypassButton;
