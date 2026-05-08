@@ -87,8 +87,8 @@ GDelayAudioProcessorEditor::GDelayAudioProcessorEditor (GDelayAudioProcessor& p)
     //==============================================================================
 
     // Dev module
-    //inspector = std::make_unique<melatonin::Inspector>(*this);
-    //inspector->setVisible(true);
+    inspector = std::make_unique<melatonin::Inspector>(*this);
+    inspector->setVisible(true);
 
     setSize (720, 490);
 

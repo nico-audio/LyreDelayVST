@@ -52,7 +52,7 @@ void RotaryKnob::resized()
     switch (knobSize)
     {
         case KnobSize::Small:
-            sliderDiameter = 67;
+            sliderDiameter = 68;
             break;
         case KnobSize::Medium:
             sliderDiameter = 80;
