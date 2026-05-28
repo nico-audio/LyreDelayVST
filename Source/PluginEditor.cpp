@@ -125,41 +125,49 @@ void GDelayAudioProcessorEditor::paint (juce::Graphics& g)
     // top logo image
     const float scaleFactor { 0.15f };
 
-    auto rect = getLocalBounds().withHeight(40);
-    g.setColour(Colors::header);
-    g.fillRect(rect);
     auto image = juce::ImageCache::getFromMemory(BinaryData::lyre_logo_1_png, BinaryData::lyre_logo_1_pngSize);
     int destWidth = image.getWidth() * scaleFactor;
     int destHeight = image.getHeight() * scaleFactor;
 
-    float verticalPosition = rect.getY() + (rect.getHeight() - destHeight) / 2;
+    float horizontalPosition = logoBounds.getRight() - destWidth;
+    float verticalPosition = logoBounds.getBottom() - destHeight;
 
-    g.drawImage(image, getWidth() / 2 - destWidth / 2, verticalPosition, destWidth, destHeight, 0, 0, image.getWidth(), image.getHeight());
+    g.drawImage(image, horizontalPosition , verticalPosition, destWidth, destHeight, 0, 0, image.getWidth(), image.getHeight());
 }
 
 void GDelayAudioProcessorEditor::resized()
 {
     auto bounds = getLocalBounds();
     
+    //==============================================================================
+    // LOGO
+    //==============================================================================
+    
+    // Sizing
+    const int logoWidth = 100;
+    const int logoHeight = 40;
+
+    // Positioning
+    logoBounds = juce::Rectangle<int>(bounds.getWidth() / 2 , bounds.getBottom() - logoHeight, logoWidth, logoHeight);
+
+    //==============================================================================
+    // GROUPS
+    //==============================================================================
+    
+    int topMargin = 75;
+    int height = bounds.getHeight() - 110;
+    
     const int groupSpacing { 10 };
     const int delayGroupWidth { 300 };
     const int outputGroupWidth { 170 };
     const int delayLeftEdge { 10 };
     const int outputRightEdge { 180 };
-    const int waveViewerHeight{ 50 };
+    const int waveViewerHeight{ 60 };
     const int waveViewerWidth { 690 };
-    
-    int topMargin = 100;
-    int height = bounds.getHeight() - 110;
 
-    // Position the groups
     delayGroup.setBounds(delayLeftEdge, topMargin, delayGroupWidth, height);
-    
     outputGroup.setBounds(bounds.getWidth() - outputRightEdge, topMargin, outputGroupWidth, height);
-    
-    grainGroup.setBounds(delayGroup.getRight() + groupSpacing, topMargin,
-        outputGroup.getX() - delayGroup.getRight() - 20,
-        height);
+    grainGroup.setBounds(delayGroup.getRight() + groupSpacing, topMargin, outputGroup.getX() - delayGroup.getRight() - 20, height);
     
     // Position the knobs inside the groups
     delayTimeKnob.setTopLeftPosition(115, 20);
@@ -183,11 +191,11 @@ void GDelayAudioProcessorEditor::resized()
     gainKnob.setTopLeftPosition(mixKnob.getX(), mixKnob.getBottom() + 10);
     meter.setBounds(612, 135, 96, 220);
 
-    bypassButton.setTopLeftPosition(bounds.getRight() - bypassButton.getWidth() - 10, 10);
+    bypassButton.setTopLeftPosition(bounds.getRight() - bypassButton.getWidth() - 10, 463);
 
     
     // Audio visualizer
-    audioProcessor.waveViewer.setBounds(15, 45, waveViewerWidth, waveViewerHeight);
+    audioProcessor.waveViewer.setBounds(15, 10, waveViewerWidth, waveViewerHeight);
 }
 
 //==============================================================================
