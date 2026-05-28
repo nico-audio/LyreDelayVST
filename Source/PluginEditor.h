@@ -62,6 +62,7 @@ private:
     };
 
     juce::Rectangle<int> logoBounds;
+    juce::Rectangle<int> waveViewerBounds;
 
     juce::GroupComponent grainGroup, delayGroup, outputGroup;
 

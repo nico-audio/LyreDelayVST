@@ -55,7 +55,8 @@ GDelayAudioProcessorEditor::GDelayAudioProcessorEditor (GDelayAudioProcessor& p)
     addAndMakeVisible(outputGroup);
 
     addAndMakeVisible(audioProcessor.waveViewer);
-    audioProcessor.waveViewer.setColours(Colors::AudioVisualizer::visualizerBG, Colors::AudioVisualizer::visualizerWave);
+    audioProcessor.waveViewer.setColours(juce::Colours::transparentBlack, Colors::AudioVisualizer::visualizerWave);
+    audioProcessor.waveViewer.setOpaque(false);
 
     //==============================================================================
     // BUTTONS
@@ -115,14 +116,19 @@ GDelayAudioProcessorEditor::~GDelayAudioProcessorEditor()
 
 void GDelayAudioProcessorEditor::paint (juce::Graphics& g)
 {
-    // background texture
+    //==============================================================================
+    // BACKGROUND
+    //==============================================================================
     auto bgTexture = juce::ImageCache::getFromMemory(BinaryData::Lyre_BG_Texture_brushed_metal_png, BinaryData::Lyre_BG_Texture_brushed_metal_pngSize);
     g.drawImageAt(bgTexture, 0, 0);
     auto fillType = juce::FillType(bgTexture, juce::AffineTransform::scale(0.5f));
     g.setFillType(fillType);
     g.fillRect(getLocalBounds());
 
-    // top logo image
+    //==============================================================================
+    // LOGO
+    //==============================================================================
+
     const float scaleFactor { 0.15f };
 
     auto image = juce::ImageCache::getFromMemory(BinaryData::lyre_logo_1_png, BinaryData::lyre_logo_1_pngSize);
@@ -133,6 +139,17 @@ void GDelayAudioProcessorEditor::paint (juce::Graphics& g)
     float verticalPosition = logoBounds.getBottom() - destHeight;
 
     g.drawImage(image, horizontalPosition , verticalPosition, destWidth, destHeight, 0, 0, image.getWidth(), image.getHeight());
+
+    //==============================================================================
+    // AUDIO VISUALIZER
+    //==============================================================================
+
+    auto visualizerBounds = audioProcessor.waveViewer.getBounds().toFloat();
+    g.setColour(Colors::AudioVisualizer::visualizerBG);
+    g.fillRoundedRectangle(visualizerBounds, 6.0f);
+    g.setColour(juce::Colours::black.withAlpha(0.4f));
+    g.drawRoundedRectangle(visualizerBounds, 6.0f, 1.0f);
+
 }
 
 void GDelayAudioProcessorEditor::resized()
@@ -194,7 +211,10 @@ void GDelayAudioProcessorEditor::resized()
     bypassButton.setTopLeftPosition(bounds.getRight() - bypassButton.getWidth() - 10, 463);
 
     
-    // Audio visualizer
+    //==============================================================================
+    // AUDIO VISUALIZER
+    //==============================================================================
+    
     audioProcessor.waveViewer.setBounds(15, 10, waveViewerWidth, waveViewerHeight);
 }
 
