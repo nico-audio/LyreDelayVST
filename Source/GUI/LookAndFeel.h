@@ -56,6 +56,7 @@ namespace Colors
     {
         const juce::Colour visualizerBG{ 74, 54, 23 };
         const juce::Colour visualizerWave{ 206, 148, 92 };
+        const juce::Colour avGlow{ 251, 212, 63 };
     }
 }
 
