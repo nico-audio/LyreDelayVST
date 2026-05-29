@@ -87,6 +87,10 @@ GDelayAudioProcessorEditor::GDelayAudioProcessorEditor (GDelayAudioProcessor& p)
     granularToggleButton.setImage(granularIcon, granularIcon, granularIcon);
     granularToggleButton.setImageSize(25, 25);
 
+    auto syncIcon = juce::ImageCache::getFromMemory(BinaryData::syncbutton_png, BinaryData::syncbutton_pngSize);
+    tempoSyncButton.setImage(syncIcon, syncIcon, syncIcon);
+    tempoSyncButton.setImageSize(20, 20);
+
     //==============================================================================
 
     // Dev module
@@ -180,7 +184,7 @@ void GDelayAudioProcessorEditor::resized()
     
     // Position the knobs inside the groups
     delayTimeKnob.setTopLeftPosition(115, 20);
-    tempoSyncButton.setTopLeftPosition(delayTimeKnob.getRight() + 10 , delayTimeKnob.getY() + 50);
+    tempoSyncButton.setTopLeftPosition(30 , 45);
     delayNoteKnob.setTopLeftPosition(delayTimeKnob.getX(), delayTimeKnob.getY());
 
     feedbackKnob.setTopLeftPosition(115, delayTimeKnob.getBottom() + 10);
