@@ -61,6 +61,9 @@ private:
         audioProcessor.apvts, Params::bypassParamID.getParamID(), bypassButton
     };
 
+    juce::Rectangle<int> logoBounds;
+    juce::Rectangle<int> waveViewerBounds;
+
     juce::GroupComponent grainGroup, delayGroup, outputGroup;
 
     MainLookAndFeel mainLF;

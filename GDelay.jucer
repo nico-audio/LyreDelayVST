@@ -52,6 +52,8 @@
         <FILE id="E1I8Kq" name="LookAndFeel.h" compile="0" resource="0" file="Source/GUI/LookAndFeel.h"/>
         <FILE id="NDMvHD" name="RotaryKnob.cpp" compile="1" resource="0" file="Source/GUI/RotaryKnob.cpp"/>
         <FILE id="QkJ6bC" name="RotaryKnob.h" compile="0" resource="0" file="Source/GUI/RotaryKnob.h"/>
+        <FILE id="fcS0nN" name="Visualiser.cpp" compile="1" resource="0" file="Source/GUI/Visualiser.cpp"/>
+        <FILE id="iJz1fx" name="Visualiser.h" compile="0" resource="0" file="Source/GUI/Visualiser.h"/>
       </GROUP>
       <FILE id="wJXJgg" name="Measurement.h" compile="0" resource="0" file="Source/Measurement.h"/>
       <FILE id="bX0Cws" name="DSP.h" compile="0" resource="0" file="Source/DSP.h"/>

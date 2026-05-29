@@ -19,14 +19,10 @@ GDelayAudioProcessor::GDelayAudioProcessor():
         .withInput("Input", juce::AudioChannelSet::stereo(), true)
         .withOutput("Output", juce::AudioChannelSet::stereo(), true)
     ),
-    params(apvts),
-    waveViewer(2)
+    params(apvts)
 {
     lowCutFilter.setType(juce::dsp::StateVariableTPTFilterType::highpass);
     highCutFilter.setType(juce::dsp::StateVariableTPTFilterType::lowpass);
-
-    waveViewer.setRepaintRate(30);
-    waveViewer.setBufferSize(256);
 }
 
 GDelayAudioProcessor::~GDelayAudioProcessor()
@@ -152,6 +148,7 @@ void GDelayAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock
     waitInc = 1.0f / (0.3f * float(sampleRate));  // 300 ms
 
     grEngine.prepare(sampleRate, maxDelayInSamples);
+    audioVisualiser.clear();
 }
 
 void GDelayAudioProcessor::releaseResources()
@@ -332,7 +329,7 @@ void GDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[may
     levelR.updateIfGreater(maxR);
     
     // Push waveform to audio visualizer component
-    waveViewer.pushBuffer(buffer);
+    audioVisualiser.pushBuffer(buffer);
    
     #if JUCE_DEBUG
         protectYourEars(buffer);
