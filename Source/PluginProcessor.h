@@ -15,6 +15,7 @@
 #include "Measurement.h"
 #include "DSP/Grain.h"
 #include "DSP/GranularEngine.h"
+#include "GUI/Visualiser.h"
 
 class GDelayAudioProcessor  : public juce::AudioProcessor
 {
@@ -62,7 +63,8 @@ public:
         *this, nullptr, "Parameters", Parameters::createParameterLayout()
     };
 
-    juce::AudioVisualiserComponent waveViewer;
+    Visualiser audioVisualiser;
+    //juce::AudioVisualiserComponent waveViewer;
 
     static float millisecondsToSamples(float milliseconds, float sampleRate)
     {

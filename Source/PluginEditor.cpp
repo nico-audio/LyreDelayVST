@@ -54,9 +54,11 @@ GDelayAudioProcessorEditor::GDelayAudioProcessorEditor (GDelayAudioProcessor& p)
     addAndMakeVisible(mixKnob);
     addAndMakeVisible(outputGroup);
 
-    addAndMakeVisible(audioProcessor.waveViewer);
-    audioProcessor.waveViewer.setColours(juce::Colours::transparentBlack, Colors::AudioVisualizer::visualizerWave);
-    audioProcessor.waveViewer.setOpaque(false);
+    //==============================================================================
+    // AUDIO VISUALIZER
+    //==============================================================================
+
+    addAndMakeVisible(audioProcessor.audioVisualiser);
 
     //==============================================================================
     // BUTTONS
@@ -140,16 +142,6 @@ void GDelayAudioProcessorEditor::paint (juce::Graphics& g)
 
     g.drawImage(image, horizontalPosition , verticalPosition, destWidth, destHeight, 0, 0, image.getWidth(), image.getHeight());
 
-    //==============================================================================
-    // AUDIO VISUALIZER
-    //==============================================================================
-
-    auto visualizerBounds = audioProcessor.waveViewer.getBounds().toFloat();
-    g.setColour(Colors::AudioVisualizer::visualizerBG);
-    g.fillRoundedRectangle(visualizerBounds, 6.0f);
-    g.setColour(juce::Colours::black.withAlpha(0.4f));
-    g.drawRoundedRectangle(visualizerBounds, 6.0f, 1.0f);
-
 }
 
 void GDelayAudioProcessorEditor::resized()
@@ -179,8 +171,8 @@ void GDelayAudioProcessorEditor::resized()
     const int outputGroupWidth { 170 };
     const int delayLeftEdge { 10 };
     const int outputRightEdge { 180 };
-    const int waveViewerHeight{ 60 };
-    const int waveViewerWidth { 690 };
+    const int waveViewerHeight{ 70 };
+    const int waveViewerWidth { 700 };
 
     delayGroup.setBounds(delayLeftEdge, topMargin, delayGroupWidth, height);
     outputGroup.setBounds(bounds.getWidth() - outputRightEdge, topMargin, outputGroupWidth, height);
@@ -215,7 +207,7 @@ void GDelayAudioProcessorEditor::resized()
     // AUDIO VISUALIZER
     //==============================================================================
     
-    audioProcessor.waveViewer.setBounds(15, 10, waveViewerWidth, waveViewerHeight);
+    audioProcessor.audioVisualiser.setBounds(9, 3, waveViewerWidth, waveViewerHeight);
 }
 
 //==============================================================================
