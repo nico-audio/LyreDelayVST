@@ -30,10 +30,10 @@ void Visualiser::paint (juce::Graphics& g)
     auto visualizerBounds = getLocalBounds().toFloat().reduced(4.0f);
     auto visualizerGlow = visualizerBounds;
 
-    g.setColour(Colors::AudioVisualizer::visualizerWave.withAlpha(0.15f));
+    g.setColour(Colors::AudioVisualizer::avGlow.withAlpha(0.10f));
 
-    for (int i = 0; i < 4; i++) {
-        g.fillRoundedRectangle(visualizerGlow.expanded(i * 1.5f), 10.0f);
+    for (int i = 0; i <= 4; i++) {
+        g.drawRoundedRectangle(visualizerGlow.expanded((float)i * 0.5f), 6.0f, 1.0f);
     }
 
     juce::ColourGradient gradient(Colors::AudioVisualizer::visualizerBG.brighter(0.1f),

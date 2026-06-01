@@ -49,7 +49,7 @@ LabeledButton::LabeledButton(const juce::String& labelText, const juce::String& 
 
     switch (buttonSize)
     {
-        case ButtonSize::Small:  w = 55; h = 55; break;
+        case ButtonSize::Small:  w = 60; h = 55; break;
         case ButtonSize::Medium: w = 65; h = 45; break;
         case ButtonSize::Large:  w = 110; h = 55; break;
     }

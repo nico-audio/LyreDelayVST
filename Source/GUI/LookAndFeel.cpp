@@ -64,7 +64,6 @@ void RotaryKnobLookAndFeel::drawRotarySlider(juce::Graphics& g, int x, int y, in
     
     // knob color
     g.setColour(Colors::Knob::outline);
-    //g.fillEllipse(knobRect);
     g.drawEllipse(knobRect, 2.0f);
 
     // knob gradient
@@ -85,13 +84,6 @@ void RotaryKnobLookAndFeel::drawRotarySlider(juce::Graphics& g, int x, int y, in
     g.drawImage(knobGrad, innerRect.toFloat(), juce::RectanglePlacement::stretchToFit);
     g.restoreState();
    
-    /*
-    auto gradient = juce::ColourGradient(Colors::Knob::gradientTop, 0.0f, innerRect.getY(),
-                                         Colors::Knob::gradientBottom, 0.0f, innerRect.getBottom(), false);
-    g.setGradientFill(gradient);
-    g.fillEllipse(innerRect);
-    */
-
     // draw track
     auto center = bounds.getCentre();
     auto radius = bounds.getWidth() / 2.0f;
