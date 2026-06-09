@@ -49,6 +49,8 @@
         <FILE id="AXhnCp" name="LevelMeter.h" compile="0" resource="0" file="Source/GUI/LevelMeter.h"/>
         <FILE id="ph6H7O" name="LookAndFeel.cpp" compile="1" resource="0" file="Source/GUI/LookAndFeel.cpp"/>
         <FILE id="E1I8Kq" name="LookAndFeel.h" compile="0" resource="0" file="Source/GUI/LookAndFeel.h"/>
+        <FILE id="BZIzhk" name="PresetPanel.cpp" compile="1" resource="0" file="Source/GUI/PresetPanel.cpp"/>
+        <FILE id="VyXZSA" name="PresetPanel.h" compile="0" resource="0" file="Source/GUI/PresetPanel.h"/>
         <FILE id="NDMvHD" name="RotaryKnob.cpp" compile="1" resource="0" file="Source/GUI/RotaryKnob.cpp"/>
         <FILE id="QkJ6bC" name="RotaryKnob.h" compile="0" resource="0" file="Source/GUI/RotaryKnob.h"/>
         <FILE id="fcS0nN" name="Visualiser.cpp" compile="1" resource="0" file="Source/GUI/Visualiser.cpp"/>

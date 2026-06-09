@@ -12,7 +12,7 @@
 #include <melatonin_inspector/melatonin_inspector.h>
 
 GDelayAudioProcessorEditor::GDelayAudioProcessorEditor (GDelayAudioProcessor& p)
-    : AudioProcessorEditor (&p), audioProcessor (p), meter (p.levelL, p.levelR)
+    : AudioProcessorEditor (&p), audioProcessor (p), meter (p.levelL, p.levelR), presetPanel(p.apvts)
 {
     //==============================================================================
     // DELAY GROUP
@@ -55,10 +55,11 @@ GDelayAudioProcessorEditor::GDelayAudioProcessorEditor (GDelayAudioProcessor& p)
     addAndMakeVisible(outputGroup);
 
     //==============================================================================
-    // AUDIO VISUALIZER
+    // DISPLAY PANELS
     //==============================================================================
 
     addAndMakeVisible(audioProcessor.audioVisualiser);
+    addAndMakeVisible(presetPanel);
 
     //==============================================================================
     // BUTTONS
@@ -107,6 +108,7 @@ GDelayAudioProcessorEditor::GDelayAudioProcessorEditor (GDelayAudioProcessor& p)
 
     updateDelayKnobs(audioProcessor.params.tempoSyncParam->get());
     updateButtonEnabled(audioProcessor.params.granularToggleParam->get());
+    
     audioProcessor.params.tempoSyncParam->addListener(this);
     audioProcessor.params.granularToggleParam->addListener(this);
 }
@@ -208,10 +210,12 @@ void GDelayAudioProcessorEditor::resized()
 
     
     //==============================================================================
-    // AUDIO VISUALIZER
+    // DISPLAY PANEL
     //==============================================================================
     
     audioProcessor.audioVisualiser.setBounds(9, 3, waveViewerWidth, waveViewerHeight);
+
+    presetPanel.setBounds(0, bounds.getBottom() - 60, 350, 60);
 }
 
 //==============================================================================

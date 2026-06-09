@@ -19,6 +19,9 @@ public:
     
     LabeledButton(const juce::String& labelText, const juce::String& buttonText, juce::AudioProcessorValueTreeState& apvts,
         const juce::ParameterID& parameterID, ButtonType type = ButtonType::Text, ButtonSize size = ButtonSize::Small);
+
+    LabeledButton(const juce::String& labelText, const juce::String& buttonText, ButtonType type = ButtonType::Text, ButtonSize size = ButtonSize::Small);
+
     ~LabeledButton() override;
 
     //=============================================================================
@@ -38,6 +41,8 @@ public:
     void resized() override;
 
 private:
+    void init(const juce::String& labelText, const juce::String& buttonText);
+    
     ButtonType buttonType;
     ButtonSize buttonSize = ButtonSize::Medium;
 

@@ -15,6 +15,7 @@
 #include "GUI/LookAndFeel.h"
 #include "GUI/LevelMeter.h"
 #include "GUI/LabeledButton.h"
+#include "GUI/PresetPanel.h"
 #include <melatonin_inspector/melatonin_inspector.h>
 
 
@@ -70,6 +71,8 @@ private:
     ButtonLookAndFeel buttonLF;
 
     LevelMeter meter;
+
+    PresetPanel presetPanel;
 
     std::unique_ptr<melatonin::Inspector> inspector;
 

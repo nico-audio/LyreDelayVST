@@ -29,6 +29,10 @@ namespace Params
     static const juce::ParameterID grainDensityParamID{ "grainDensity", 1 };
     static const juce::ParameterID textureParamID{ "texture", 1 };
     static const juce::ParameterID randomPushParamID{ "randomPush", 1 };
+    static const juce::ParameterID prevPresetParamID{ "previousPreset", 1 };
+    static const juce::ParameterID nextPresetParamID{ "nextPreset", 1 };
+    static const juce::ParameterID savePresetParamID{ "savePreset", 1 };
+    static const juce::ParameterID deletePresetParamID{ "deletePreset", 1 };
 
     namespace ParameterNames
     {
