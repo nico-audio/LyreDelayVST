@@ -10,10 +10,10 @@
 
 #include "LookAndFeel.h"
 
-/*
-const juce::Typeface::Ptr Fonts::typeface = juce::Typeface::createSystemTypefaceFor(
-    BinaryData::INTERDIM_TTF, BinaryData::INTERDIM_TTFSize);
-*/
+
+//=============================================================================
+// FONTS
+//=============================================================================
 
 const juce::Typeface::Ptr Fonts::interdimTypeface =
 juce::Typeface::createSystemTypefaceFor(BinaryData::INTERDIM_TTF,BinaryData::INTERDIM_TTFSize);
@@ -38,6 +38,10 @@ juce::Font Fonts::getPatopian(float height)
 {
     return juce::Font(patopianTypeface).withHeight(height);
 }
+
+//=============================================================================
+// KNOBS
+//=============================================================================
 
 RotaryKnobLookAndFeel::RotaryKnobLookAndFeel()
 {
@@ -195,6 +199,10 @@ void RotaryKnobLookAndFeel::fillTextEditorBackground(
     g.fillRoundedRectangle(textEditor.getLocalBounds().reduced(4, 0).toFloat(), 4.0f);
 }
 
+//=============================================================================
+// MAIN LOOK AND FEEL
+//=============================================================================
+
 MainLookAndFeel::MainLookAndFeel()
 {
     setColour(juce::GroupComponent::textColourId, Colors::Group::label);
@@ -204,6 +212,10 @@ juce::Font MainLookAndFeel::getLabelFont([[maybe_unused]] juce::Label& label)
 {
     return Fonts::getInterdim(14.0f);
 }
+
+//=============================================================================
+// BUTTONS
+//=============================================================================
 
 ButtonLookAndFeel::ButtonLookAndFeel()
 {
@@ -257,4 +269,42 @@ void ButtonLookAndFeel::drawButtonText(juce::Graphics& g, juce::TextButton& butt
 
     g.setFont(Fonts::getInterdim(12.0f));
     g.drawText(button.getButtonText(), buttonRect, juce::Justification::centred, false);
+}
+
+//=============================================================================
+// COMBO BOX
+//=============================================================================
+
+ComboBoxLookAndFeel::ComboBoxLookAndFeel()
+{
+}
+
+void ComboBoxLookAndFeel::drawComboBox(juce::Graphics& g, int width, int height,
+                                       [[maybe_unused]] bool isButtonDown, [[maybe_unused]] int buttonX,
+                                       int buttonY, int buttonW, int buttonH, juce::ComboBox& box) 
+{
+    auto bounds = juce::Rectangle<int>(0, 0, width, height).reduced(1);
+
+    // Box background
+    g.setColour(Colors::PresetPanel::comboBoxBG);  // testing, change this later
+    g.fillRoundedRectangle(bounds.toFloat(), 4.0f);
+
+    // Outline
+    g.setColour(Colors::PresetPanel::comboBoxOutline);
+    g.drawRoundedRectangle(bounds.toFloat(), 4.0f, 1.0f);
+
+    // Arrow
+    juce::Path arrow;
+    arrow.addTriangle(width - 18.0f, height * 0.4f,
+                      width - 8.0f, height * 0.4f,
+                      width - 13.0f, height * 0.6f);
+
+    g.setColour(juce::Colours::white.withAlpha(0.8f));
+    g.fillPath(arrow);
+}
+
+void ComboBoxLookAndFeel::positionComboBoxText(juce::ComboBox& box, juce::Label& label)
+{
+    label.setBounds(8, 0, box.getWidth() - 30, box.getHeight());
+    label.setFont(Fonts::getInterdim(15.0f));
 }

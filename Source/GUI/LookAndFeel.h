@@ -58,6 +58,12 @@ namespace Colors
         const juce::Colour visualizerWave{ 206, 148, 92 };
         const juce::Colour avGlow{ 251, 212, 63 };
     }
+
+    namespace PresetPanel
+    {
+        const juce::Colour comboBoxBG{ 53, 53, 53 };
+        const juce::Colour comboBoxOutline{ 32, 33, 36 };
+    }
 }
 
 class Fonts
@@ -128,9 +134,30 @@ public:
                               bool shouldDrawButtonAsHighlighted,
                               bool shouldDrawButtonAsDown) override;
     
-    void drawButtonText(juce::Graphics & g, juce::TextButton & button,
+    void drawButtonText(juce::Graphics& g, juce::TextButton & button,
                         bool shouldDrawButtonAsHighlighted,
                         bool shouldDrawButtonAsDown) override;
 private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(ButtonLookAndFeel)
+};
+
+class ComboBoxLookAndFeel : public juce::LookAndFeel_V4
+{
+public:
+    ComboBoxLookAndFeel();
+
+    static ComboBoxLookAndFeel* get()
+    {
+        static ComboBoxLookAndFeel instance;
+        return &instance;
+    }
+
+    void drawComboBox(juce::Graphics& g, int width, int height,
+                      bool isButtonDown, int buttonX, int buttonY,
+                      int buttonW, int buttonH, juce::ComboBox& box) override;
+
+    void positionComboBoxText(juce::ComboBox& box, juce::Label& label) override;
+
+private:
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(ComboBoxLookAndFeel)
 };

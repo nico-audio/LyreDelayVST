@@ -19,8 +19,25 @@
 LabeledButton::LabeledButton(const juce::String& labelText, const juce::String& buttonText, juce::AudioProcessorValueTreeState& apvts,
     const juce::ParameterID& parameterID, ButtonType type, ButtonSize size) : buttonType(type), buttonSize(size)
 {
+    init(labelText, buttonText);
 
-    if (type == ButtonType::Text){
+    jassert(button != nullptr);
+    attachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(apvts, parameterID.getParamID(), *button);
+
+    jassert(apvts.getParameter(parameterID.getParamID()) != nullptr);
+    
+}
+
+LabeledButton::LabeledButton(const juce::String& labelText, const juce::String& buttonText, ButtonType type, ButtonSize size)
+    : buttonType(type), buttonSize(size)
+{
+    init(labelText, buttonText);
+}
+
+void LabeledButton::init(const juce::String& labelText, const juce::String& buttonText)
+{
+
+    if (buttonType == ButtonType::Text){
         auto* txtButton = new juce::TextButton(buttonText);
         txtButton->setClickingTogglesState(true);
         button.reset(txtButton);
@@ -39,9 +56,8 @@ LabeledButton::LabeledButton(const juce::String& labelText, const juce::String& 
     label.setMinimumHorizontalScale(1.0f);
     addAndMakeVisible(label);
 
-    jassert(button != nullptr);
-
-    attachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(apvts, parameterID.getParamID(),*button);
+    //jassert(button != nullptr);
+    //attachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(apvts, parameterID.getParamID(),*button);
 
     // adjust component size based on button size
     int w = 0;
@@ -56,7 +72,6 @@ LabeledButton::LabeledButton(const juce::String& labelText, const juce::String& 
 
     setSize(w, h);
 
-    jassert(apvts.getParameter(parameterID.getParamID()) != nullptr);
 }
 
 LabeledButton::~LabeledButton()
