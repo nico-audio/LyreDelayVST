@@ -62,7 +62,7 @@ GDelayAudioProcessorEditor::GDelayAudioProcessorEditor (GDelayAudioProcessor& p)
     addAndMakeVisible(presetPanel);
 
     //==============================================================================
-    // BUTTONS
+    // IMAGE BUTTONS
     //==============================================================================
 
     auto bypassIcon = juce::ImageCache::getFromMemory(BinaryData::Bypassplaceholder_png, BinaryData::Bypassplaceholder_pngSize);
@@ -95,8 +95,8 @@ GDelayAudioProcessorEditor::GDelayAudioProcessorEditor (GDelayAudioProcessor& p)
     //==============================================================================
 
     // Dev module
-    //inspector = std::make_unique<melatonin::Inspector>(*this);
-    //inspector->setVisible(true);
+    inspector = std::make_unique<melatonin::Inspector>(*this);
+    inspector->setVisible(true);
 
     setSize (720, 490);
 
