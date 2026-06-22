@@ -16,6 +16,7 @@
 #include "DSP/Grain.h"
 #include "DSP/GranularEngine.h"
 #include "GUI/Visualiser.h"
+#include "Model/PresetManager.h"
 
 class GDelayAudioProcessor  : public juce::AudioProcessor
 {
@@ -63,8 +64,9 @@ public:
         *this, nullptr, "Parameters", Parameters::createParameterLayout()
     };
 
+    PresetManager& getPresetManager() { return *presetManager; }
+
     Visualiser audioVisualiser;
-    //juce::AudioVisualiserComponent waveViewer;
 
     static float millisecondsToSamples(float milliseconds, float sampleRate)
     {
@@ -77,6 +79,7 @@ public:
     Measurement levelL, levelR;
 
 private:
+    std::unique_ptr<PresetManager> presetManager;
     DelayLine delayLineL, delayLineR;
 
     float feedbackL = 0.0f;

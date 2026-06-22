@@ -17,10 +17,14 @@ GDelayAudioProcessor::GDelayAudioProcessor():
     AudioProcessor(
         BusesProperties()
         .withInput("Input", juce::AudioChannelSet::stereo(), true)
-        .withOutput("Output", juce::AudioChannelSet::stereo(), true)
-    ),
-    params(apvts)
+        .withOutput("Output", juce::AudioChannelSet::stereo(), true)), 
+        params(apvts)
 {
+    apvts.state.setProperty(PresetManager::presetNameProperty, "", nullptr);
+    apvts.state.setProperty("version", ProjectInfo::versionString, nullptr);
+
+    presetManager = std::make_unique<PresetManager>(apvts);
+    
     lowCutFilter.setType(juce::dsp::StateVariableTPTFilterType::highpass);
     highCutFilter.setType(juce::dsp::StateVariableTPTFilterType::lowpass);
 }

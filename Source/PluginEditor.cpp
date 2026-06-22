@@ -12,7 +12,7 @@
 #include <melatonin_inspector/melatonin_inspector.h>
 
 GDelayAudioProcessorEditor::GDelayAudioProcessorEditor (GDelayAudioProcessor& p)
-    : AudioProcessorEditor (&p), audioProcessor (p), meter (p.levelL, p.levelR), presetPanel(p.apvts)
+    : AudioProcessorEditor (&p), audioProcessor (p), meter (p.levelL, p.levelR), presetPanel(p.getPresetManager())
 {
     //==============================================================================
     // DELAY GROUP
@@ -95,8 +95,8 @@ GDelayAudioProcessorEditor::GDelayAudioProcessorEditor (GDelayAudioProcessor& p)
     //==============================================================================
 
     // Dev module
-    inspector = std::make_unique<melatonin::Inspector>(*this);
-    inspector->setVisible(true);
+    //inspector = std::make_unique<melatonin::Inspector>(*this);
+    //inspector->setVisible(true);
 
     setSize (720, 490);
 

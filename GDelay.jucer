@@ -25,6 +25,11 @@
             file="Assets/texture_knob_cop1.png"/>
     </GROUP>
     <GROUP id="{F4EB2649-9D18-B53A-5C88-218FAE2EC3CD}" name="Source">
+      <GROUP id="{92C13870-7B96-E70D-4869-F11F07DDEC48}" name="Model">
+        <FILE id="H5uAHn" name="PresetManager.cpp" compile="1" resource="0"
+              file="Source/Model/PresetManager.cpp"/>
+        <FILE id="uiK3Ln" name="PresetManager.h" compile="0" resource="0" file="Source/Model/PresetManager.h"/>
+      </GROUP>
       <GROUP id="{AC75722F-10BE-4030-4BFD-F0528D4988BA}" name="DSP">
         <FILE id="C8aJcA" name="DelayLine.cpp" compile="1" resource="0" file="Source/DSP/DelayLine.cpp"/>
         <FILE id="kVDqU2" name="DelayLine.h" compile="0" resource="0" file="Source/DSP/DelayLine.h"/>
