@@ -37,6 +37,9 @@ void PresetManager::savePreset(const juce::String& presetName)
     }
 
     currentPreset.setValue(presetName);
+    //DBG(valueTreeState.state.toXmlString())
+    valueTreeState.state.setProperty("version", ProjectInfo::versionString, nullptr);
+
     const auto xml = valueTreeState.copyState().createXml();
     const auto presetFile = defaultDirectory.getChildFile(presetName + "." + extension);
     if (!xml->writeTo(presetFile)) {
@@ -82,7 +85,6 @@ void PresetManager::loadPreset(const juce::String& presetName)
 
     juce::XmlDocument xmlDocument{ presetFile };
     const auto valueTreeToLoad = juce::ValueTree::fromXml(*xmlDocument.getDocumentElement());
-
     valueTreeState.replaceState(valueTreeToLoad);
     currentPreset.setValue(presetName);
 }
@@ -135,5 +137,7 @@ juce::String PresetManager::getCurrentPreset() const
 
 void PresetManager::valueTreeRedirected(juce::ValueTree& treeWhichHasBeenChanged)
 {
-    treeWhichHasBeenChanged.getPropertyAsValue(presetNameProperty, nullptr);
+    //treeWhichHasBeenChanged.getPropertyAsValue(presetNameProperty, nullptr);
+
+    currentPreset.referTo(treeWhichHasBeenChanged.getPropertyAsValue(presetNameProperty,nullptr));
 }

@@ -18,7 +18,7 @@ PresetPanel::PresetPanel(PresetManager& pm) : presetManager(pm),
                                               previousPresetButton("", "<", LabeledButton::ButtonType::Text, LabeledButton::ButtonSize::Small),
                                               nextPresetButton("", ">", LabeledButton::ButtonType::Text, LabeledButton::ButtonSize::Small),
                                               saveButton("", "", LabeledButton::ButtonType::Image, LabeledButton::ButtonSize::Small),
-                                              deleteButton("", "D", LabeledButton::ButtonType::Text, LabeledButton::ButtonSize::Small)
+                                              deleteButton("", "", LabeledButton::ButtonType::Image, LabeledButton::ButtonSize::Small)
 {
     saveButton.setMouseCursor(juce::MouseCursor::PointingHandCursor);
     deleteButton.setMouseCursor(juce::MouseCursor::PointingHandCursor);
@@ -52,7 +52,11 @@ PresetPanel::PresetPanel(PresetManager& pm) : presetManager(pm),
     // IMAGE BUTTONS
     auto saveIcon = juce::ImageCache::getFromMemory(BinaryData::saveicon_png, BinaryData::saveicon_pngSize);
     saveButton.setImage(saveIcon, saveIcon, saveIcon);
-    saveButton.setImageSize(15, 15);
+    saveButton.setImageSize(20, 20);
+
+    auto deleteIcon = juce::ImageCache::getFromMemory(BinaryData::delete_icon_png, BinaryData::delete_icon_pngSize);
+    deleteButton.setImage(deleteIcon, deleteIcon, deleteIcon);
+    deleteButton.setImageSize(20, 20);
 
 }
 
@@ -81,7 +85,7 @@ void PresetPanel::resized()
     presetList.setBounds(previousPresetButton.getRight() + 5, 30, 120, 25 );
     nextPresetButton.setTopLeftPosition(presetList.getRight() + 5, previousPresetButton.getY());
     saveButton.setTopLeftPosition(nextPresetButton.getRight(), previousPresetButton.getY() + 5);
-    deleteButton.setTopLeftPosition(saveButton.getRight(), previousPresetButton.getY());
+    deleteButton.setTopLeftPosition(saveButton.getRight(), previousPresetButton.getY() + 5);
 }
 
 //==============================================================================
