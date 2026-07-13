@@ -65,8 +65,8 @@ void LabeledButton::init(const juce::String& labelText, const juce::String& butt
 
     switch (buttonSize)
     {
-        case ButtonSize::Small:  w = 60; h = 55; break;
-        case ButtonSize::Medium: w = 65; h = 45; break;
+        case ButtonSize::Small:  w = 40; h = 55; break;
+        case ButtonSize::Medium: w = 60; h = 55; break;
         case ButtonSize::Large:  w = 110; h = 55; break;
     }
 
@@ -107,8 +107,8 @@ void LabeledButton::setImage(const juce::Image& normal,
 {
     if (auto* imgButton = dynamic_cast<juce::ImageButton*>(button.get())){
         imgButton->setImages(false, true, true,
-            normal, 1.0f, juce::Colours::grey,
-            over, 1.0f, juce::Colours::white,
+            normal, 1.0f, juce::Colours::grey.withAlpha(0.0f),
+            over, 1.0f, juce::Colours::white.withAlpha(0.2f),
             down, 1.0f, juce::Colour(206, 148, 92), 0.0f);
     }
 }
@@ -122,7 +122,7 @@ void LabeledButton::resized()
     switch (buttonSize)
     {
         case ButtonSize::Small:
-            label.setBounds(0, 0, 60, 20);
+            label.setBounds(0, 0, 40, 20);
             button->setBounds(0, 25, 25, 25);
             centreBelow(label, *button, 0);
             break;

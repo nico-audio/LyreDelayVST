@@ -37,11 +37,11 @@ namespace Colors
     }
     namespace Button
     {
-        const juce::Colour text{ 255, 255, 240 };
+        const juce::Colour text{ 243, 178, 75 };
         const juce::Colour textToggled{ 255, 255, 240 };
-        const juce::Colour background{ 74, 54, 23 };
+        const juce::Colour background{ 54, 41, 24 };
         const juce::Colour backgroundToggled{ 206, 148, 92 };
-        const juce::Colour outline{ 69, 69, 69 };
+        const juce::Colour outline{ 177, 144, 106 };
     }
     
     namespace LevelMeter
@@ -54,15 +54,15 @@ namespace Colors
 
     namespace AudioVisualizer
     {
-        const juce::Colour visualizerBG{ 74, 54, 23 };
-        const juce::Colour visualizerWave{ 206, 148, 92 };
+        const juce::Colour visualizerBG{ 30, 19, 4 };
+        const juce::Colour visualizerWave{ 158, 101, 48 };
         const juce::Colour avGlow{ 251, 212, 63 };
     }
 
     namespace PresetPanel
     {
-        const juce::Colour comboBoxBG{ 53, 53, 53 };
-        const juce::Colour comboBoxOutline{ 32, 33, 36 };
+        const juce::Colour comboBoxBG{ 28, 23, 15 };
+        const juce::Colour comboBoxOutline{ 247, 206, 95 };
     }
 }
 

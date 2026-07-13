@@ -52,7 +52,7 @@ private:
     RotaryKnob textureKnob{ "Texture", audioProcessor.apvts, Params::textureParamID };
 
 
-    LabeledButton tempoSyncButton{ "Sync", "", audioProcessor.apvts, Params::tempoSyncParamID, LabeledButton::ButtonType::Image, LabeledButton::ButtonSize::Small };
+    LabeledButton tempoSyncButton{ "Sync", "", audioProcessor.apvts, Params::tempoSyncParamID, LabeledButton::ButtonType::Image, LabeledButton::ButtonSize::Medium };
     LabeledButton granularToggleButton{ "granular", "", audioProcessor.apvts, Params::granularToggleParamID, LabeledButton::ButtonType::Image, LabeledButton::ButtonSize::Large };
     LabeledButton randomizerButton{ "", "", audioProcessor.apvts, Params::randomPushParamID, LabeledButton::ButtonType::Image, LabeledButton::ButtonSize::Large };
     

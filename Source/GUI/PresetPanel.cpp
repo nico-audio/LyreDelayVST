@@ -17,8 +17,8 @@
 PresetPanel::PresetPanel(PresetManager& pm) : presetManager(pm), 
                                               previousPresetButton("", "<", LabeledButton::ButtonType::Text, LabeledButton::ButtonSize::Small),
                                               nextPresetButton("", ">", LabeledButton::ButtonType::Text, LabeledButton::ButtonSize::Small),
-                                              saveButton("", "S", LabeledButton::ButtonType::Text, LabeledButton::ButtonSize::Small),
-                                              deleteButton("", "D", LabeledButton::ButtonType::Text, LabeledButton::ButtonSize::Small)
+                                              saveButton("", "", LabeledButton::ButtonType::Image, LabeledButton::ButtonSize::Small),
+                                              deleteButton("", "", LabeledButton::ButtonType::Image, LabeledButton::ButtonSize::Small)
 {
     saveButton.setMouseCursor(juce::MouseCursor::PointingHandCursor);
     deleteButton.setMouseCursor(juce::MouseCursor::PointingHandCursor);
@@ -48,6 +48,18 @@ PresetPanel::PresetPanel(PresetManager& pm) : presetManager(pm),
     presetList.setTextWhenNothingSelected("Lyre Init");
     loadPresetList();
     presetList.setLookAndFeel(&comboLF);
+
+    // IMAGE BUTTONS
+    auto saveIcon = juce::ImageCache::getFromMemory(BinaryData::save_button_4_png, BinaryData::save_button_4_pngSize);
+    auto saveIconPressed = juce::ImageCache::getFromMemory(BinaryData::save_button_2_png, BinaryData::save_button_2_pngSize);
+    saveButton.setImage(saveIcon, saveIcon, saveIconPressed);
+    saveButton.setImageSize(30, 30);
+
+    auto deleteIcon = juce::ImageCache::getFromMemory(BinaryData::deletebutton_2_png, BinaryData::deletebutton_2_pngSize);
+    auto deleteIconDown = juce::ImageCache::getFromMemory(BinaryData::deletebutton_1_png, BinaryData::deletebutton_1_pngSize);
+    deleteButton.setImage(deleteIcon, deleteIcon, deleteIcon);
+    deleteButton.setImageSize(30, 30);
+
 }
 
 
@@ -68,14 +80,14 @@ PresetPanel::~PresetPanel()
 
 void PresetPanel::resized()
 {
-    const auto container = getLocalBounds().reduced(6);
-    auto bounds = container;
+    //const auto container = getLocalBounds().reduced(6);
+    //auto bounds = container;
 
-    previousPresetButton.setTopLeftPosition(0, 11);
-    presetList.setBounds(previousPresetButton.getRight() - 5, 30, 120, 25 );
-    nextPresetButton.setTopLeftPosition(presetList.getRight() - 5, previousPresetButton.getY());
-    saveButton.setTopLeftPosition(nextPresetButton.getRight() - 25, previousPresetButton.getY());
-    deleteButton.setTopLeftPosition(saveButton.getRight() - 25, previousPresetButton.getY());
+    previousPresetButton.setTopLeftPosition(2, 9);
+    presetList.setBounds(previousPresetButton.getRight() + 5, 30, 120, 25 );
+    nextPresetButton.setTopLeftPosition(presetList.getRight() + 5, previousPresetButton.getY());
+    saveButton.setTopLeftPosition(nextPresetButton.getRight(), previousPresetButton.getY() + 5);
+    deleteButton.setTopLeftPosition(saveButton.getRight(), previousPresetButton.getY() + 5);
 }
 
 //==============================================================================

@@ -246,7 +246,7 @@ void ButtonLookAndFeel::drawButtonBackground(juce::Graphics& g, juce::Button& bu
     g.fillRoundedRectangle(buttonRect, cornerSize);
 
     g.setColour(Colors::Button::outline);
-    g.drawRoundedRectangle(buttonRect, cornerSize, 2.0f);
+    g.drawRoundedRectangle(buttonRect, cornerSize, 0.5f);
 }
 
 void ButtonLookAndFeel::drawButtonText(juce::Graphics& g, juce::TextButton& button,
