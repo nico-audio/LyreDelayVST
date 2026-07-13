@@ -50,13 +50,15 @@ PresetPanel::PresetPanel(PresetManager& pm) : presetManager(pm),
     presetList.setLookAndFeel(&comboLF);
 
     // IMAGE BUTTONS
-    auto saveIcon = juce::ImageCache::getFromMemory(BinaryData::saveicon_png, BinaryData::saveicon_pngSize);
-    saveButton.setImage(saveIcon, saveIcon, saveIcon);
-    saveButton.setImageSize(20, 20);
+    auto saveIcon = juce::ImageCache::getFromMemory(BinaryData::save_button_4_png, BinaryData::save_button_4_pngSize);
+    auto saveIconPressed = juce::ImageCache::getFromMemory(BinaryData::save_button_2_png, BinaryData::save_button_2_pngSize);
+    saveButton.setImage(saveIcon, saveIcon, saveIconPressed);
+    saveButton.setImageSize(30, 30);
 
-    auto deleteIcon = juce::ImageCache::getFromMemory(BinaryData::delete_icon_png, BinaryData::delete_icon_pngSize);
+    auto deleteIcon = juce::ImageCache::getFromMemory(BinaryData::deletebutton_2_png, BinaryData::deletebutton_2_pngSize);
+    auto deleteIconDown = juce::ImageCache::getFromMemory(BinaryData::deletebutton_1_png, BinaryData::deletebutton_1_pngSize);
     deleteButton.setImage(deleteIcon, deleteIcon, deleteIcon);
-    deleteButton.setImageSize(20, 20);
+    deleteButton.setImageSize(30, 30);
 
 }
 

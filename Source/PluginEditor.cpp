@@ -127,12 +127,10 @@ void GDelayAudioProcessorEditor::paint (juce::Graphics& g)
     //==============================================================================
     // BACKGROUND
     //==============================================================================
-    auto bgTexture = juce::ImageCache::getFromMemory(BinaryData::Lyre_BG_Texture_brushed_metal_png, BinaryData::Lyre_BG_Texture_brushed_metal_pngSize);
-    g.drawImageAt(bgTexture, 0, 0);
-    auto fillType = juce::FillType(bgTexture, juce::AffineTransform::scale(0.5f));
-    g.setFillType(fillType);
-    g.fillRect(getLocalBounds());
 
+    auto bgTexture = juce::ImageCache::getFromMemory(BinaryData::bg_texture_png, BinaryData::bg_texture_pngSize);
+    g.drawImage(bgTexture, 0, 0, getWidth(), getHeight(), 25, 10, bgTexture.getWidth() * 0.8, bgTexture.getHeight() * 0.9);
+   
     //==============================================================================
     // LOGO
     //==============================================================================

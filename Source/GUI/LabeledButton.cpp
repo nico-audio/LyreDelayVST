@@ -107,8 +107,8 @@ void LabeledButton::setImage(const juce::Image& normal,
 {
     if (auto* imgButton = dynamic_cast<juce::ImageButton*>(button.get())){
         imgButton->setImages(false, true, true,
-            normal, 1.0f, juce::Colours::grey,
-            over, 1.0f, juce::Colours::white,
+            normal, 1.0f, juce::Colours::grey.withAlpha(0.0f),
+            over, 1.0f, juce::Colours::white.withAlpha(0.2f),
             down, 1.0f, juce::Colour(206, 148, 92), 0.0f);
     }
 }
