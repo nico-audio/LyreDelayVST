@@ -15,12 +15,15 @@
       <FILE id="AMpOeZ" name="bg_texture.png" compile="0" resource="1" file="Assets/bg_texture.png"/>
       <FILE id="NHEBEo" name="Bypass-placeholder.png" compile="0" resource="1"
             file="Assets/Bypass-placeholder.png"/>
+      <FILE id="iZmtgw" name="bypass_icon.png" compile="0" resource="1" file="Assets/bypass_icon.png"/>
       <FILE id="KhYRCz" name="delete-button_1.png" compile="0" resource="1"
             file="Assets/delete-button_1.png"/>
       <FILE id="vMYdCu" name="delete-button_2.png" compile="0" resource="1"
             file="Assets/delete-button_2.png"/>
       <FILE id="y5OrBA" name="grain-icon.png" compile="0" resource="1" file="Assets/grain-icon.png"/>
       <FILE id="xgfCID" name="lyre_logo_1.png" compile="0" resource="1" file="Assets/lyre_logo_1.png"/>
+      <FILE id="IdDpbG" name="panelbg_texture_4.png" compile="0" resource="1"
+            file="Assets/panelbg_texture_4.png"/>
       <FILE id="mLXFKQ" name="randomizer_dice.png" compile="0" resource="1"
             file="Assets/randomizer_dice.png"/>
       <FILE id="vHRzq8" name="save_button_2.png" compile="0" resource="1"

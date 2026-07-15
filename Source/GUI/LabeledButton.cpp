@@ -103,13 +103,13 @@ bool LabeledButton::getToggleState() const
 
 void LabeledButton::setImage(const juce::Image& normal,
                              const juce::Image& over,
-                             const juce::Image& down)
+                             const juce::Image& down, juce::Colour overColour = juce::Colours::white.withAlpha(0.2f), juce::Colour downColour = juce::Colour(206, 148, 92))
 {
     if (auto* imgButton = dynamic_cast<juce::ImageButton*>(button.get())){
         imgButton->setImages(false, true, true,
             normal, 1.0f, juce::Colours::grey.withAlpha(0.0f),
-            over, 1.0f, juce::Colours::white.withAlpha(0.2f),
-            down, 1.0f, juce::Colour(206, 148, 92), 0.0f);
+            over, 1.0f, overColour,
+            down, 1.0f, downColour);
     }
 }
 

@@ -12,7 +12,7 @@
 #include <melatonin_inspector/melatonin_inspector.h>
 
 GDelayAudioProcessorEditor::GDelayAudioProcessorEditor (GDelayAudioProcessor& p)
-    : AudioProcessorEditor (&p), audioProcessor (p), meter (p.levelL, p.levelR), presetPanel(p.getPresetManager())
+    : AudioProcessorEditor (&p), audioProcessor (p), meter (p.levelL, p.levelR), presetPanel(p.getPresetManager(), p)
 {
     //==============================================================================
     // DELAY GROUP
@@ -65,40 +65,29 @@ GDelayAudioProcessorEditor::GDelayAudioProcessorEditor (GDelayAudioProcessor& p)
     // IMAGE BUTTONS
     //==============================================================================
 
-    auto bypassIcon = juce::ImageCache::getFromMemory(BinaryData::Bypassplaceholder_png, BinaryData::Bypassplaceholder_pngSize);
-    bypassButton.setClickingTogglesState(true);
-    bypassButton.setBounds(0, 0, 20, 20);
-    bypassButton.setImages(
-        false, true, true,
-        bypassIcon, 1.0f, juce::Colours::white,
-        bypassIcon, 1.0f, juce::Colours::white,
-        bypassIcon, 1.0f, juce::Colours::grey,
-        0.0f);
-    addAndMakeVisible(bypassButton);
-
     auto randomizerIcon = juce::ImageCache::getFromMemory(BinaryData::randomizer_dice_png, BinaryData::randomizer_dice_pngSize);
     randomizerButton.setClickingTogglesState(false);
-    randomizerButton.setImage(randomizerIcon, randomizerIcon, randomizerIcon);
+    randomizerButton.setImage(randomizerIcon, randomizerIcon, randomizerIcon, juce::Colour(255, 255, 240).withAlpha(0.5f),juce::Colour(206, 148, 92));
     randomizerButton.getButton().onClick = [this]
     {
         audioProcessor.randomizeParams();
     };
 
     auto granularIcon = juce::ImageCache::getFromMemory(BinaryData::grainicon_png, BinaryData::grainicon_pngSize);
-    granularToggleButton.setImage(granularIcon, granularIcon, granularIcon);
+    granularToggleButton.setImage(granularIcon, granularIcon, granularIcon, juce::Colours::white.withAlpha(0.5f), juce::Colour(206, 148, 92));
     granularToggleButton.setImageSize(25, 25);
 
     auto syncIcon = juce::ImageCache::getFromMemory(BinaryData::syncbutton_png, BinaryData::syncbutton_pngSize);
-    tempoSyncButton.setImage(syncIcon, syncIcon, syncIcon);
+    tempoSyncButton.setImage(syncIcon, syncIcon, syncIcon, juce::Colours::white.withAlpha(0.5f), juce::Colour(206, 148, 92));
     tempoSyncButton.setImageSize(20, 20);
 
     //==============================================================================
 
     // Dev module
-    //inspector = std::make_unique<melatonin::Inspector>(*this);
-    //inspector->setVisible(true);
+    inspector = std::make_unique<melatonin::Inspector>(*this);
+    inspector->setVisible(true);
 
-    setSize (720, 490);
+    setSize (750, 520);
 
     // gain track color override
     gainKnob.slider.setColour(juce::Slider::rotarySliderFillColourId, juce::Colour (42, 192, 8));
@@ -168,15 +157,15 @@ void GDelayAudioProcessorEditor::resized()
     //==============================================================================
     
     int topMargin = 75;
-    int height = bounds.getHeight() - 110;
+    int height = bounds.getHeight() - 130;
     
     const int groupSpacing { 10 };
     const int delayGroupWidth { 300 };
-    const int outputGroupWidth { 170 };
+    const int outputGroupWidth { 190 };
     const int delayLeftEdge { 10 };
-    const int outputRightEdge { 180 };
+    const int outputRightEdge { 200 };
     const int waveViewerHeight{ 70 };
-    const int waveViewerWidth { 700 };
+    const int waveViewerWidth { 730 };
 
     delayGroup.setBounds(delayLeftEdge, topMargin, delayGroupWidth, height);
     outputGroup.setBounds(bounds.getWidth() - outputRightEdge, topMargin, outputGroupWidth, height);
@@ -200,20 +189,17 @@ void GDelayAudioProcessorEditor::resized()
     textureKnob.setTopLeftPosition(110, 200);
     randomizerButton.setTopLeftPosition(50, 318);
 
-    mixKnob.setTopLeftPosition(550, 120);
+    mixKnob.setTopLeftPosition(570, 120);
     gainKnob.setTopLeftPosition(mixKnob.getX(), mixKnob.getBottom() + 10);
-    meter.setBounds(612, 135, 96, 220);
+    meter.setBounds(630, 135, 96, 220);
 
-    bypassButton.setTopLeftPosition(bounds.getRight() - bypassButton.getWidth() - 10, 463);
-
-    
     //==============================================================================
     // DISPLAY PANEL
     //==============================================================================
     
     audioProcessor.audioVisualiser.setBounds(9, 3, waveViewerWidth, waveViewerHeight);
 
-    presetPanel.setBounds(0, bounds.getBottom() - 60, 350, 60);
+    presetPanel.setBounds(12, bounds.getBottom() - 45, 730, 40);
 }
 
 //==============================================================================
