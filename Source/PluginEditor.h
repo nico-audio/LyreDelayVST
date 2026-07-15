@@ -56,7 +56,7 @@ private:
     LabeledButton granularToggleButton{ "granular", "", audioProcessor.apvts, Params::granularToggleParamID, LabeledButton::ButtonType::Image, LabeledButton::ButtonSize::Large };
     LabeledButton randomizerButton{ "", "", audioProcessor.apvts, Params::randomPushParamID, LabeledButton::ButtonType::Image, LabeledButton::ButtonSize::Large };
 
-    juce::Rectangle<int> logoBounds;
+    //juce::Rectangle<int> logoBounds;
     juce::Rectangle<int> waveViewerBounds;
 
     juce::GroupComponent grainGroup, delayGroup, outputGroup;

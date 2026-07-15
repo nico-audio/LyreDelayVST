@@ -119,21 +119,6 @@ void GDelayAudioProcessorEditor::paint (juce::Graphics& g)
 
     auto bgTexture = juce::ImageCache::getFromMemory(BinaryData::bg_texture_png, BinaryData::bg_texture_pngSize);
     g.drawImage(bgTexture, 0, 0, getWidth(), getHeight(), 25, 10, bgTexture.getWidth() * 0.8, bgTexture.getHeight() * 0.9);
-   
-    //==============================================================================
-    // LOGO
-    //==============================================================================
-
-    const float scaleFactor { 0.15f };
-
-    auto image = juce::ImageCache::getFromMemory(BinaryData::lyre_logo_1_png, BinaryData::lyre_logo_1_pngSize);
-    int destWidth = image.getWidth() * scaleFactor;
-    int destHeight = image.getHeight() * scaleFactor;
-
-    float horizontalPosition = logoBounds.getRight() - destWidth;
-    float verticalPosition = logoBounds.getBottom() - destHeight;
-
-    g.drawImage(image, horizontalPosition , verticalPosition, destWidth, destHeight, 0, 0, image.getWidth(), image.getHeight());
 
 }
 
@@ -141,17 +126,6 @@ void GDelayAudioProcessorEditor::resized()
 {
     auto bounds = getLocalBounds();
     
-    //==============================================================================
-    // LOGO
-    //==============================================================================
-    
-    // Sizing
-    const int logoWidth = 100;
-    const int logoHeight = 40;
-
-    // Positioning
-    logoBounds = juce::Rectangle<int>(bounds.getWidth() / 2 , bounds.getBottom() - logoHeight, logoWidth, logoHeight);
-
     //==============================================================================
     // GROUPS
     //==============================================================================

@@ -100,12 +100,29 @@ void PresetPanel::paint(juce::Graphics& g)
 
     g.setColour(juce::Colours::white.withAlpha(0.6f));
     g.drawRoundedRectangle(panelBounds, 5.0f, 0.2f);
+
+
+    //==============================================================================
+    // LOGO
+    //==============================================================================
+
+    const float scaleFactor{ 0.09f };
+
+    auto logo = juce::ImageCache::getFromMemory(BinaryData::lyre_logo_4_png, BinaryData::lyre_logo_4_pngSize);
+    int destWidth = logo.getWidth() * scaleFactor;
+    int destHeight = logo.getHeight() * scaleFactor;
+    int offset = 5;
+
+    float horizontalPosition = logoBounds.getRight() - destWidth;
+    //float verticalPosition = logoBounds.getBottom() - destHeight;
+    float verticalPosition = getLocalBounds().getCentreY() - offset;
+
+    g.drawImage(logo, horizontalPosition, verticalPosition, destWidth, destHeight, 0, 0, logo.getWidth(), logo.getHeight());
 }
 
 void PresetPanel::resized()
 {
-    //const auto container = getLocalBounds().reduced(6);
-    //auto bounds = container;
+    auto bounds = getLocalBounds();
 
     previousPresetButton.setTopLeftPosition(2, -14);
     presetList.setBounds(previousPresetButton.getRight() + 5, 7, 120, 25 );
@@ -114,6 +131,18 @@ void PresetPanel::resized()
     deleteButton.setTopLeftPosition(saveButton.getRight(), previousPresetButton.getY() + 5);
 
     bypassButton.setTopLeftPosition(675, -9);
+
+    //==============================================================================
+    // LOGO
+    //==============================================================================
+
+    // Sizing
+    const int logoWidth = 80;
+    const int logoHeight = 40;
+
+    // Positioning
+    logoBounds = juce::Rectangle<int>(bounds.getRight() - 150, bounds.getBottom() - logoHeight, logoWidth, logoHeight);
+
 }
 
 //==============================================================================

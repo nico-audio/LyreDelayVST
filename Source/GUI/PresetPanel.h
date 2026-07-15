@@ -42,6 +42,8 @@ private:
     juce::ComboBox presetList;
     std::unique_ptr<juce::FileChooser> fileChooser;
 
+    juce::Rectangle<int> logoBounds;
+
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PresetPanel)
 };
