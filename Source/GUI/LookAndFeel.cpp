@@ -210,7 +210,7 @@ MainLookAndFeel::MainLookAndFeel()
 }
 juce::Font MainLookAndFeel::getLabelFont([[maybe_unused]] juce::Label& label)
 {
-    return Fonts::getInterdim(14.0f);
+    return Fonts::getInterdim(13.0f);
 }
 
 //=============================================================================

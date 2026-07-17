@@ -65,16 +65,16 @@ GDelayAudioProcessorEditor::GDelayAudioProcessorEditor (GDelayAudioProcessor& p)
     // IMAGE BUTTONS
     //==============================================================================
 
-    auto randomizerIcon = juce::ImageCache::getFromMemory(BinaryData::randomizer_dice_png, BinaryData::randomizer_dice_pngSize);
+    auto randomizerIcon = juce::ImageCache::getFromMemory(BinaryData::randomizer_dice_white_png, BinaryData::randomizer_dice_white_pngSize);
     randomizerButton.setClickingTogglesState(false);
-    randomizerButton.setImage(randomizerIcon, randomizerIcon, randomizerIcon, juce::Colour(255, 255, 240).withAlpha(0.5f),juce::Colour(206, 148, 92));
+    randomizerButton.setImage(randomizerIcon, randomizerIcon, randomizerIcon, juce::Colour(206, 148, 92), juce::Colour(206, 148, 92));
     randomizerButton.getButton().onClick = [this]
     {
         audioProcessor.randomizeParams();
     };
 
-    auto granularIcon = juce::ImageCache::getFromMemory(BinaryData::grainicon_png, BinaryData::grainicon_pngSize);
-    granularToggleButton.setImage(granularIcon, granularIcon, granularIcon, juce::Colours::white.withAlpha(0.5f), juce::Colour(206, 148, 92));
+    auto granularIcon = juce::ImageCache::getFromMemory(BinaryData::granular_button_white_png, BinaryData::granular_button_white_pngSize);
+    granularToggleButton.setImage(granularIcon, granularIcon, granularIcon, juce::Colour(206, 148, 92), juce::Colour(206, 148, 92));
     granularToggleButton.setImageSize(25, 25);
 
     auto syncIcon = juce::ImageCache::getFromMemory(BinaryData::sync_button_white_png, BinaryData::sync_button_white_pngSize);
