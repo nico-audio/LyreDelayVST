@@ -210,7 +210,7 @@ MainLookAndFeel::MainLookAndFeel()
 }
 juce::Font MainLookAndFeel::getLabelFont([[maybe_unused]] juce::Label& label)
 {
-    return Fonts::getInterdim(14.0f);
+    return Fonts::getInterdim(13.0f);
 }
 
 //=============================================================================
@@ -275,6 +275,8 @@ void ButtonLookAndFeel::drawButtonText(juce::Graphics& g, juce::TextButton& butt
 // COMBO BOX
 //=============================================================================
 
+/*
+*/
 ComboBoxLookAndFeel::ComboBoxLookAndFeel()
 {
 }
@@ -286,25 +288,45 @@ void ComboBoxLookAndFeel::drawComboBox(juce::Graphics& g, int width, int height,
     auto bounds = juce::Rectangle<int>(0, 0, width, height).reduced(1);
 
     // Box background
-    g.setColour(Colors::PresetPanel::comboBoxBG);  // testing, change this later
-    g.fillRoundedRectangle(bounds.toFloat(), 4.0f);
+    constexpr float cornerRadius = 6.0f;
+    constexpr float padding = cornerRadius - 2.0f;
+
+    juce::ColourGradient boxGradient(Colors::PresetPanel::comboBoxGradTop, 0.0f, bounds.getY(), 
+                                     Colors::PresetPanel::comboBoxGradBtm, 0.0f, bounds.getBottom(), false);
+    
+    
+    g.setGradientFill(boxGradient);
+    g.fillRoundedRectangle(bounds.toFloat(), 6.0f);
+
+    // Top Highlight
+    g.setColour(juce::Colours::white.withAlpha(0.05f));
+    g.drawLine(bounds.getX() + padding, bounds.getY() + 1.0f, bounds.getRight() - padding, bounds.getY() + 1.0f);
+    
+    // Bottom shadow
+    g.setColour(juce::Colours::black.withAlpha(0.15f));
+    g.drawLine(bounds.getX() + padding, bounds.getBottom() - 1.0f, bounds.getRight() - padding, bounds.getBottom() - 1.0f);
 
     // Outline
-    g.setColour(Colors::PresetPanel::comboBoxOutline);
-    g.drawRoundedRectangle(bounds.toFloat(), 4.0f, 1.0f);
+    g.setColour(Colors::PresetPanel::comboBoxOutline.withAlpha(0.55f));
+    g.drawRoundedRectangle(bounds.toFloat(), 6.0f, 1.0f);
 
     // Arrow
     juce::Path arrow;
-    arrow.addTriangle(width - 18.0f, height * 0.4f,
-                      width - 8.0f, height * 0.4f,
-                      width - 13.0f, height * 0.6f);
 
-    g.setColour(juce::Colours::white.withAlpha(0.8f));
-    g.fillPath(arrow);
+    float arrowX = width - 16.0f;
+    float arrowY = height * 0.5f;
+
+    arrow.startNewSubPath(arrowX - 4.0f, arrowY - 2.0f);
+    arrow.lineTo(arrowX, arrowY + 2.0f);
+    arrow.lineTo(arrowX + 4.0f, arrowY - 2.0f);
+
+    g.setColour(Colors::PresetPanel::arrow);
+    g.strokePath(arrow, juce::PathStrokeType(1.8f, juce::PathStrokeType::curved, juce::PathStrokeType::rounded));
 }
 
 void ComboBoxLookAndFeel::positionComboBoxText(juce::ComboBox& box, juce::Label& label)
 {
-    label.setBounds(8, 0, box.getWidth() - 30, box.getHeight());
-    label.setFont(Fonts::getInterdim(15.0f));
+    label.setBounds(12, 0, box.getWidth() - 34, box.getHeight());
+    label.setFont(Fonts::getInterdim(14.0f));
+    label.setJustificationType(juce::Justification::centredLeft);
 }

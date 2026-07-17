@@ -34,7 +34,7 @@ public:
 
     void setButtonSize(ButtonSize size);
     void setImageSize(int width, int height);
-    void setImage(const juce::Image& normal, const juce::Image& over, const juce::Image& down);
+    void setImage(const juce::Image& normal, const juce::Image& over, const juce::Image& down, juce::Colour overColour, juce::Colour downColour);
 
     //=============================================================================
 

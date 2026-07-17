@@ -14,11 +14,13 @@
 // CONSTRUCTOR/ DESTRUCTOR
 //=============================================================================
 
-PresetPanel::PresetPanel(PresetManager& pm) : presetManager(pm), 
+PresetPanel::PresetPanel(PresetManager& pm, GDelayAudioProcessor& processor) : presetManager(pm),
+                                              audioProcessor(processor),
                                               previousPresetButton("", "<", LabeledButton::ButtonType::Text, LabeledButton::ButtonSize::Small),
                                               nextPresetButton("", ">", LabeledButton::ButtonType::Text, LabeledButton::ButtonSize::Small),
                                               saveButton("", "", LabeledButton::ButtonType::Image, LabeledButton::ButtonSize::Small),
-                                              deleteButton("", "", LabeledButton::ButtonType::Image, LabeledButton::ButtonSize::Small)
+                                              deleteButton("", "", LabeledButton::ButtonType::Image, LabeledButton::ButtonSize::Small),
+                                              bypassButton("", "", audioProcessor.apvts, Params::bypassParamID, LabeledButton::ButtonType::Image, LabeledButton::ButtonSize::Small)
 {
     saveButton.setMouseCursor(juce::MouseCursor::PointingHandCursor);
     deleteButton.setMouseCursor(juce::MouseCursor::PointingHandCursor);
@@ -30,6 +32,7 @@ PresetPanel::PresetPanel(PresetManager& pm) : presetManager(pm),
     saveButton.getButton().addListener(this);
     deleteButton.getButton().addListener(this);
     presetList.addListener(this);
+    bypassButton.getButton().addListener(this);
     
     // MAKE VISIBLE
     addAndMakeVisible(previousPresetButton);
@@ -37,12 +40,14 @@ PresetPanel::PresetPanel(PresetManager& pm) : presetManager(pm),
     addAndMakeVisible(saveButton);
     addAndMakeVisible(deleteButton);
     addAndMakeVisible(presetList);
+    addAndMakeVisible(bypassButton);
 
     // TOGGLE STATE
     previousPresetButton.setClickingTogglesState(false);
     nextPresetButton.setClickingTogglesState(false);
     saveButton.setClickingTogglesState(false);
     deleteButton.setClickingTogglesState(false);
+    bypassButton.setClickingTogglesState(true);
     
     // PRESET LIST
     presetList.setTextWhenNothingSelected("Lyre Init");
@@ -52,15 +57,19 @@ PresetPanel::PresetPanel(PresetManager& pm) : presetManager(pm),
     // IMAGE BUTTONS
     auto saveIcon = juce::ImageCache::getFromMemory(BinaryData::save_button_4_png, BinaryData::save_button_4_pngSize);
     auto saveIconPressed = juce::ImageCache::getFromMemory(BinaryData::save_button_2_png, BinaryData::save_button_2_pngSize);
-    saveButton.setImage(saveIcon, saveIcon, saveIconPressed);
-    saveButton.setImageSize(30, 30);
+    saveButton.setImage(saveIcon, saveIconPressed, saveIconPressed, juce::Colours::white.withAlpha(0.1f), juce::Colours::transparentWhite);
+    saveButton.setImageSize(25, 25);
 
     auto deleteIcon = juce::ImageCache::getFromMemory(BinaryData::deletebutton_2_png, BinaryData::deletebutton_2_pngSize);
     auto deleteIconDown = juce::ImageCache::getFromMemory(BinaryData::deletebutton_1_png, BinaryData::deletebutton_1_pngSize);
-    deleteButton.setImage(deleteIcon, deleteIcon, deleteIcon);
-    deleteButton.setImageSize(30, 30);
+    deleteButton.setImage(deleteIcon, deleteIcon, deleteIcon, juce::Colours::white.withAlpha(0.1f), juce::Colours::transparentWhite);
+    deleteButton.setImageSize(25, 25);
 
+    auto bypassIcon = juce::ImageCache::getFromMemory(BinaryData::bypass_icon_png, BinaryData::bypass_icon_pngSize);
+    bypassButton.setImageSize(20, 20);
+    bypassButton.setImage(bypassIcon, bypassIcon, bypassIcon, juce::Colours::grey.withAlpha(1.0f), juce::Colours::red.withAlpha(0.5f));
 }
+
 
 
 PresetPanel::~PresetPanel()
@@ -69,6 +78,7 @@ PresetPanel::~PresetPanel()
     nextPresetButton.getButton().removeListener(this);
     saveButton.getButton().removeListener(this);
     deleteButton.getButton().removeListener(this);
+    bypassButton.getButton().removeListener(this);
     presetList.removeListener(this);
 
     presetList.setLookAndFeel(nullptr);
@@ -78,16 +88,60 @@ PresetPanel::~PresetPanel()
 // LAYOUT
 //==============================================================================
 
+void PresetPanel::paint(juce::Graphics& g)
+{  
+    // PANEL BACKGROUND
+    auto panelBg = juce::ImageCache::getFromMemory(BinaryData::panelbg_texture_4_png, BinaryData::panelbg_texture_4_pngSize);
+    g.drawImage(panelBg, 0, 0, getWidth(), getHeight(), 0, 0, panelBg.getWidth(), panelBg.getHeight());
+    
+    // OUTLINE
+    auto panelBounds = getLocalBounds().toFloat().reduced(0.3f);
+    auto panelStroke = panelBounds;
+
+    g.setColour(juce::Colours::white.withAlpha(0.6f));
+    g.drawRoundedRectangle(panelBounds, 5.0f, 0.2f);
+
+
+    //==============================================================================
+    // LOGO
+    //==============================================================================
+
+    const float scaleFactor{ 0.09f };
+
+    auto logo = juce::ImageCache::getFromMemory(BinaryData::lyre_logo_4_png, BinaryData::lyre_logo_4_pngSize);
+    int destWidth = logo.getWidth() * scaleFactor;
+    int destHeight = logo.getHeight() * scaleFactor;
+    int offset = 5;
+
+    float horizontalPosition = logoBounds.getRight() - destWidth;
+    float verticalPosition = getLocalBounds().getCentreY() - offset;
+
+    g.drawImage(logo, horizontalPosition, verticalPosition, destWidth, destHeight, 0, 0, logo.getWidth(), logo.getHeight());
+}
+
 void PresetPanel::resized()
 {
-    //const auto container = getLocalBounds().reduced(6);
-    //auto bounds = container;
+    auto bounds = getLocalBounds();
 
-    previousPresetButton.setTopLeftPosition(2, 9);
-    presetList.setBounds(previousPresetButton.getRight() + 5, 30, 120, 25 );
+    previousPresetButton.setTopLeftPosition(2, -13);
+    presetList.setBounds(previousPresetButton.getRight() + 5, 7, 120, 25 );
     nextPresetButton.setTopLeftPosition(presetList.getRight() + 5, previousPresetButton.getY());
     saveButton.setTopLeftPosition(nextPresetButton.getRight(), previousPresetButton.getY() + 5);
     deleteButton.setTopLeftPosition(saveButton.getRight(), previousPresetButton.getY() + 5);
+
+    bypassButton.setTopLeftPosition(675, -9);
+
+    //==============================================================================
+    // LOGO
+    //==============================================================================
+
+    // Sizing
+    const int logoWidth = 80;
+    const int logoHeight = 40;
+
+    // Positioning
+    logoBounds = juce::Rectangle<int>(bounds.getRight() - 150, bounds.getBottom() - logoHeight, logoWidth, logoHeight);
+
 }
 
 //==============================================================================
