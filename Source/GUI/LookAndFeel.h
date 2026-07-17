@@ -61,8 +61,10 @@ namespace Colors
 
     namespace PresetPanel
     {
-        const juce::Colour comboBoxBG{ 28, 23, 15 };
-        const juce::Colour comboBoxOutline{ 247, 206, 95 };
+        const juce::Colour comboBoxGradTop{ 64, 59, 55 };
+        const juce::Colour comboBoxGradBtm{ 45, 41, 38 };
+        const juce::Colour comboBoxOutline{ 138, 105, 74 };
+        const juce::Colour arrow{ 229, 168, 106 };
     }
 }
 

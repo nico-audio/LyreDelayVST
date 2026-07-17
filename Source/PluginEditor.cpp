@@ -77,8 +77,8 @@ GDelayAudioProcessorEditor::GDelayAudioProcessorEditor (GDelayAudioProcessor& p)
     granularToggleButton.setImage(granularIcon, granularIcon, granularIcon, juce::Colours::white.withAlpha(0.5f), juce::Colour(206, 148, 92));
     granularToggleButton.setImageSize(25, 25);
 
-    auto syncIcon = juce::ImageCache::getFromMemory(BinaryData::syncbutton_png, BinaryData::syncbutton_pngSize);
-    tempoSyncButton.setImage(syncIcon, syncIcon, syncIcon, juce::Colours::white.withAlpha(0.5f), juce::Colour(206, 148, 92));
+    auto syncIcon = juce::ImageCache::getFromMemory(BinaryData::sync_button_white_png, BinaryData::sync_button_white_pngSize);
+    tempoSyncButton.setImage(syncIcon, syncIcon, syncIcon, juce::Colour(206, 148, 92), juce::Colour(206, 148, 92));
     tempoSyncButton.setImageSize(20, 20);
 
     //==============================================================================

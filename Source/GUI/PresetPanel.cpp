@@ -67,7 +67,7 @@ PresetPanel::PresetPanel(PresetManager& pm, GDelayAudioProcessor& processor) : p
 
     auto bypassIcon = juce::ImageCache::getFromMemory(BinaryData::bypass_icon_png, BinaryData::bypass_icon_pngSize);
     bypassButton.setImageSize(20, 20);
-    bypassButton.setImage(bypassIcon, bypassIcon, bypassIcon, juce::Colours::grey.withAlpha(1.0f), juce::Colours::red);
+    bypassButton.setImage(bypassIcon, bypassIcon, bypassIcon, juce::Colours::grey.withAlpha(1.0f), juce::Colours::red.withAlpha(0.5f));
 }
 
 
@@ -114,7 +114,6 @@ void PresetPanel::paint(juce::Graphics& g)
     int offset = 5;
 
     float horizontalPosition = logoBounds.getRight() - destWidth;
-    //float verticalPosition = logoBounds.getBottom() - destHeight;
     float verticalPosition = getLocalBounds().getCentreY() - offset;
 
     g.drawImage(logo, horizontalPosition, verticalPosition, destWidth, destHeight, 0, 0, logo.getWidth(), logo.getHeight());
@@ -124,7 +123,7 @@ void PresetPanel::resized()
 {
     auto bounds = getLocalBounds();
 
-    previousPresetButton.setTopLeftPosition(2, -14);
+    previousPresetButton.setTopLeftPosition(2, -13);
     presetList.setBounds(previousPresetButton.getRight() + 5, 7, 120, 25 );
     nextPresetButton.setTopLeftPosition(presetList.getRight() + 5, previousPresetButton.getY());
     saveButton.setTopLeftPosition(nextPresetButton.getRight(), previousPresetButton.getY() + 5);
