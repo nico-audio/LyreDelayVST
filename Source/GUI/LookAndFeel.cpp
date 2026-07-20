@@ -208,6 +208,7 @@ MainLookAndFeel::MainLookAndFeel()
     setColour(juce::GroupComponent::textColourId, Colors::Group::label);
     setColour(juce::GroupComponent::outlineColourId, Colors::Group::outline);
 }
+
 juce::Font MainLookAndFeel::getLabelFont([[maybe_unused]] juce::Label& label)
 {
     return Fonts::getInterdim(13.0f);
@@ -275,8 +276,6 @@ void ButtonLookAndFeel::drawButtonText(juce::Graphics& g, juce::TextButton& butt
 // COMBO BOX
 //=============================================================================
 
-/*
-*/
 ComboBoxLookAndFeel::ComboBoxLookAndFeel()
 {
 }
@@ -296,7 +295,7 @@ void ComboBoxLookAndFeel::drawComboBox(juce::Graphics& g, int width, int height,
     
     
     g.setGradientFill(boxGradient);
-    g.fillRoundedRectangle(bounds.toFloat(), 6.0f);
+    g.fillRoundedRectangle(bounds.toFloat(), cornerRadius);
 
     // Top Highlight
     g.setColour(juce::Colours::white.withAlpha(0.05f));
