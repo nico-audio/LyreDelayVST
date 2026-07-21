@@ -7,6 +7,8 @@
   <MAINGROUP id="qi5Naz" name="Lyre">
     <GROUP id="{CB2CAC95-A9C6-6993-A8E1-A8462E4AC6AE}" name="Assets">
       <GROUP id="{155CCA96-9466-5A41-34C5-1D0A61CC58EE}" name="Fonts">
+        <FILE id="l54Wiy" name="Fake Receipt.otf" compile="0" resource="1"
+              file="Assets/Fonts/Fake Receipt.otf"/>
         <FILE id="dG2Iom" name="Induction.otf" compile="0" resource="1" file="Assets/Fonts/Induction.otf"/>
         <FILE id="QTx8TS" name="INTERDIM.TTF" compile="0" resource="1" file="Assets/Fonts/INTERDIM.TTF"/>
         <FILE id="IK5WUs" name="Patopian 1986.ttf" compile="0" resource="1"
