@@ -27,7 +27,7 @@ PresetManager::PresetManager(juce::AudioProcessorValueTreeState& apvts) : valueT
             jassertfalse;
         }
     }
-    
+
     valueTreeState.state.addListener(this);
     currentPreset.referTo(valueTreeState.state.getPropertyAsValue(presetNameProperty, nullptr));
 }
@@ -54,6 +54,11 @@ void PresetManager::deletePreset(const juce::String& presetName)
     if (presetName.isEmpty()) {
         return;
     }
+    
+    if (findFactoryPreset(presetName) != nullptr){
+        DBG("Cannot delete factory presets!");
+        return;
+    }
 
     const auto presetFile = defaultDirectory.getChildFile(presetName + "." + extension);
     if (!presetFile.existsAsFile()) {
@@ -61,12 +66,13 @@ void PresetManager::deletePreset(const juce::String& presetName)
         jassertfalse;
         return;
     }
-    
+
     if (!presetFile.deleteFile()) {
         DBG("Preset file " + presetFile.getFullPathName() + " could not be deleted");
         jassertfalse;
         return;
     }
+
 
     currentPreset.setValue("");
 }
