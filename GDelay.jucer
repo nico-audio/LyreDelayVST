@@ -2,7 +2,7 @@
 
 <JUCERPROJECT id="CQE3fq" name="Lyre" projectType="audioplug" useAppConfig="0"
               addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1" pluginFormats="buildAU,buildLV2,buildStandalone,buildVST3"
-              version="0.0.1" pluginManufacturer="Nico" bundleIdentifier="NicoLyre"
+              version="0.0.2" pluginManufacturer="Nico" bundleIdentifier="NicoLyre"
               pluginManufacturerCode="Nico" pluginCode="Lyre" cppLanguageStandard="20">
   <MAINGROUP id="qi5Naz" name="Lyre">
     <GROUP id="{CB2CAC95-A9C6-6993-A8E1-A8462E4AC6AE}" name="Assets">
