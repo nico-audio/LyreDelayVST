@@ -106,12 +106,12 @@ void PresetPanel::paint(juce::Graphics& g)
     // LOGO
     //==============================================================================
 
-    const float scaleFactor{ 0.09f };
+    const float scaleFactor{ 0.10f };
 
-    auto logo = juce::ImageCache::getFromMemory(BinaryData::lyre_logo_4_png, BinaryData::lyre_logo_4_pngSize);
+    auto logo = juce::ImageCache::getFromMemory(BinaryData::lyre_logo_6_png, BinaryData::lyre_logo_6_pngSize);
     int destWidth = logo.getWidth() * scaleFactor;
     int destHeight = logo.getHeight() * scaleFactor;
-    int offset = 5;
+    int offset = 7;
 
     float horizontalPosition = logoBounds.getRight() - destWidth;
     float verticalPosition = getLocalBounds().getCentreY() - offset;

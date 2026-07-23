@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Parameters presetName="Bouncy Eight" version="0.0.1">
+  <PARAM id="delayNote" value="6.0"/>
+  <PARAM id="delayTime" value="100.0000076293945"/>
+  <PARAM id="feedback" value="50.0"/>
+  <PARAM id="gain" value="0.0"/>
+  <PARAM id="highCut" value="12000.0"/>
+  <PARAM id="lowCut" value="100.0"/>
+  <PARAM id="mix" value="50.0"/>
+  <PARAM id="stereoWidth" value="100.0"/>
+  <PARAM id="tempoSync" value="1.0"/>
+  <PARAM id="bypass"/>
+  <PARAM id="grainSize" value="30.0"/>
+  <PARAM id="granularToggle" value="0.0"/>
+  <PARAM id="grainDensity"/>
+  <PARAM id="grainPitch"/>
+  <PARAM id="randomPush"/>
+  <PARAM id="texture"/>
+</Parameters>

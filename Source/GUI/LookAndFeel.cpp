@@ -24,6 +24,9 @@ juce::Typeface::createSystemTypefaceFor(BinaryData::Induction_otf, BinaryData::I
 const juce::Typeface::Ptr Fonts::patopianTypeface =
 juce::Typeface::createSystemTypefaceFor(BinaryData::Patopian_1986_ttf, BinaryData::Patopian_1986_ttfSize);
 
+const juce::Typeface::Ptr Fonts::fakeReceiptTypeface =
+juce::Typeface::createSystemTypefaceFor(BinaryData::Fake_Receipt_otf, BinaryData::Fake_Receipt_otfSize);
+
 juce::Font Fonts::getInterdim(float height)
 {
     return juce::Font(interdimTypeface).withHeight(height);
@@ -37,6 +40,11 @@ juce::Font Fonts::getInduction(float height)
 juce::Font Fonts::getPatopian(float height)
 {
     return juce::Font(patopianTypeface).withHeight(height);
+}
+
+juce::Font Fonts::getFakeReceipt(float height)
+{
+    return juce::Font(fakeReceiptTypeface).withHeight(height);
 }
 
 //=============================================================================
@@ -208,6 +216,7 @@ MainLookAndFeel::MainLookAndFeel()
     setColour(juce::GroupComponent::textColourId, Colors::Group::label);
     setColour(juce::GroupComponent::outlineColourId, Colors::Group::outline);
 }
+
 juce::Font MainLookAndFeel::getLabelFont([[maybe_unused]] juce::Label& label)
 {
     return Fonts::getInterdim(13.0f);
@@ -275,8 +284,6 @@ void ButtonLookAndFeel::drawButtonText(juce::Graphics& g, juce::TextButton& butt
 // COMBO BOX
 //=============================================================================
 
-/*
-*/
 ComboBoxLookAndFeel::ComboBoxLookAndFeel()
 {
 }
@@ -296,7 +303,7 @@ void ComboBoxLookAndFeel::drawComboBox(juce::Graphics& g, int width, int height,
     
     
     g.setGradientFill(boxGradient);
-    g.fillRoundedRectangle(bounds.toFloat(), 6.0f);
+    g.fillRoundedRectangle(bounds.toFloat(), cornerRadius);
 
     // Top Highlight
     g.setColour(juce::Colours::white.withAlpha(0.05f));
@@ -327,6 +334,6 @@ void ComboBoxLookAndFeel::drawComboBox(juce::Graphics& g, int width, int height,
 void ComboBoxLookAndFeel::positionComboBoxText(juce::ComboBox& box, juce::Label& label)
 {
     label.setBounds(12, 0, box.getWidth() - 34, box.getHeight());
-    label.setFont(Fonts::getInterdim(14.0f));
+    label.setFont(Fonts::getFakeReceipt(14.0f));
     label.setJustificationType(juce::Justification::centredLeft);
 }

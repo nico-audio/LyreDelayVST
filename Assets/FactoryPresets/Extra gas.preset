@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Parameters presetName="Extra gas" version="0.0.1">
+  <PARAM id="delayNote" value="10.0"/>
+  <PARAM id="delayTime" value="73.60000610351562"/>
+  <PARAM id="feedback" value="-71.0"/>
+  <PARAM id="gain" value="4.700000762939453"/>
+  <PARAM id="highCut" value="1020.0"/>
+  <PARAM id="lowCut" value="20.0"/>
+  <PARAM id="mix" value="54.0"/>
+  <PARAM id="stereoWidth" value="0.0"/>
+  <PARAM id="tempoSync" value="0.0"/>
+  <PARAM id="bypass"/>
+  <PARAM id="grainSize" value="50.0"/>
+  <PARAM id="granularToggle" value="1.0"/>
+  <PARAM id="grainDensity" value="39.0"/>
+  <PARAM id="grainPitch" value="-6.0"/>
+  <PARAM id="randomPush"/>
+  <PARAM id="texture" value="0.2199999988079071"/>
+</Parameters>

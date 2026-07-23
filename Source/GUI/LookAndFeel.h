@@ -76,10 +76,12 @@ public:
     static juce::Font getInterdim(float height = 14.0f);
     static juce::Font getInduction(float height = 14.0f);
     static juce::Font getPatopian(float height = 10.0f);
+    static juce::Font getFakeReceipt(float height = 12.0f);
 private:
     static const juce::Typeface::Ptr interdimTypeface;
     static const juce::Typeface::Ptr inductionTypeface;
     static const juce::Typeface::Ptr patopianTypeface;
+    static const juce::Typeface::Ptr fakeReceiptTypeface;
 };
 
 class RotaryKnobLookAndFeel : public juce::LookAndFeel_V4
