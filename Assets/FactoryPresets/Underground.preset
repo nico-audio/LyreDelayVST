@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Parameters presetName="Underground" version="0.0.1">
+  <PARAM id="delayNote" value="6.0"/>
+  <PARAM id="delayTime" value="100.0000076293945"/>
+  <PARAM id="feedback" value="53.0"/>
+  <PARAM id="gain" value="9.0"/>
+  <PARAM id="highCut" value="12000.0"/>
+  <PARAM id="lowCut" value="100.0"/>
+  <PARAM id="mix" value="100.0"/>
+  <PARAM id="stereoWidth" value="100.0"/>
+  <PARAM id="tempoSync" value="0.0"/>
+  <PARAM id="bypass"/>
+  <PARAM id="grainSize" value="500.0"/>
+  <PARAM id="granularToggle" value="1.0"/>
+  <PARAM id="grainDensity" value="200.0"/>
+  <PARAM id="grainPitch" value="9.05999755859375"/>
+  <PARAM id="randomPush"/>
+  <PARAM id="texture" value="0.2800000011920929"/>
+</Parameters>

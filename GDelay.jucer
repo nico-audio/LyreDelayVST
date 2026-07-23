@@ -6,6 +6,33 @@
               pluginManufacturerCode="Nico" pluginCode="Lyre" cppLanguageStandard="20">
   <MAINGROUP id="qi5Naz" name="Lyre">
     <GROUP id="{CB2CAC95-A9C6-6993-A8E1-A8462E4AC6AE}" name="Assets">
+      <GROUP id="{117F213A-7AE4-94AB-4D49-06AB405C6AEB}" name="FactoryPresets">
+        <FILE id="Ak77Fa" name="Anime.preset" compile="0" resource="1" file="Assets/FactoryPresets/Anime.preset"/>
+        <FILE id="x2UVm0" name="Bouncy Eight.preset" compile="0" resource="1"
+              file="Assets/FactoryPresets/Bouncy Eight.preset"/>
+        <FILE id="hyq7EH" name="Chills.preset" compile="0" resource="1" file="Assets/FactoryPresets/Chills.preset"/>
+        <FILE id="a3IHPa" name="Crystals.preset" compile="0" resource="1" file="Assets/FactoryPresets/Crystals.preset"/>
+        <FILE id="RjiUF5" name="Digital.preset" compile="0" resource="1" file="Assets/FactoryPresets/Digital.preset"/>
+        <FILE id="pVFHmB" name="Dissipation.preset" compile="0" resource="1"
+              file="Assets/FactoryPresets/Dissipation.preset"/>
+        <FILE id="Gdceii" name="Dreamy.preset" compile="0" resource="1" file="Assets/FactoryPresets/Dreamy.preset"/>
+        <FILE id="TBLVPN" name="Extra gas.preset" compile="0" resource="1"
+              file="Assets/FactoryPresets/Extra gas.preset"/>
+        <FILE id="TqFZNn" name="Quarter Pong.preset" compile="0" resource="1"
+              file="Assets/FactoryPresets/Quarter Pong.preset"/>
+        <FILE id="NAs03Z" name="Razor cut.preset" compile="0" resource="1"
+              file="Assets/FactoryPresets/Razor cut.preset"/>
+        <FILE id="dWCAtn" name="Robotic monster.preset" compile="0" resource="1"
+              file="Assets/FactoryPresets/Robotic monster.preset"/>
+        <FILE id="kkAMXH" name="Sixteen flutter.preset" compile="0" resource="1"
+              file="Assets/FactoryPresets/Sixteen flutter.preset"/>
+        <FILE id="fIm1Av" name="Slapback.preset" compile="0" resource="1" file="Assets/FactoryPresets/Slapback.preset"/>
+        <FILE id="TAjgoK" name="Tails.preset" compile="0" resource="1" file="Assets/FactoryPresets/Tails.preset"/>
+        <FILE id="JcvIwd" name="Twilight clouds.preset" compile="0" resource="1"
+              file="Assets/FactoryPresets/Twilight clouds.preset"/>
+        <FILE id="LES6qR" name="Underground.preset" compile="0" resource="1"
+              file="Assets/FactoryPresets/Underground.preset"/>
+      </GROUP>
       <GROUP id="{155CCA96-9466-5A41-34C5-1D0A61CC58EE}" name="Fonts">
         <FILE id="l54Wiy" name="Fake Receipt.otf" compile="0" resource="1"
               file="Assets/Fonts/Fake Receipt.otf"/>
@@ -38,6 +65,9 @@
     </GROUP>
     <GROUP id="{F4EB2649-9D18-B53A-5C88-218FAE2EC3CD}" name="Source">
       <GROUP id="{92C13870-7B96-E70D-4869-F11F07DDEC48}" name="Model">
+        <FILE id="j1JKCo" name="FactoryPreset.cpp" compile="1" resource="0"
+              file="Source/Model/FactoryPreset.cpp"/>
+        <FILE id="QIPhLi" name="FactoryPreset.h" compile="0" resource="0" file="Source/Model/FactoryPreset.h"/>
         <FILE id="H5uAHn" name="PresetManager.cpp" compile="1" resource="0"
               file="Source/Model/PresetManager.cpp"/>
         <FILE id="uiK3Ln" name="PresetManager.h" compile="0" resource="0" file="Source/Model/PresetManager.h"/>

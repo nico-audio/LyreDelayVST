@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Parameters presetName="Slapback" version="0.0.1">
+  <PARAM id="delayNote" value="10.0"/>
+  <PARAM id="delayTime" value="60.00000381469727"/>
+  <PARAM id="feedback" value="0.0"/>
+  <PARAM id="gain" value="0.0"/>
+  <PARAM id="highCut" value="400.0"/>
+  <PARAM id="lowCut" value="250.0"/>
+  <PARAM id="mix" value="50.0"/>
+  <PARAM id="stereoWidth" value="0.0"/>
+  <PARAM id="tempoSync" value="0.0"/>
+  <PARAM id="bypass"/>
+  <PARAM id="grainSize" value="30.0"/>
+  <PARAM id="granularToggle" value="0.0"/>
+  <PARAM id="grainDensity"/>
+  <PARAM id="grainPitch"/>
+  <PARAM id="randomPush"/>
+  <PARAM id="texture"/>
+</Parameters>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Parameters presetName="Tails" version="0.0.1">
+  <PARAM id="delayNote" value="10.0"/>
+  <PARAM id="delayTime" value="100.0000076293945"/>
+  <PARAM id="feedback" value="67.0"/>
+  <PARAM id="gain" value="8.0"/>
+  <PARAM id="highCut" value="20000.0"/>
+  <PARAM id="lowCut" value="20.0"/>
+  <PARAM id="mix" value="55.0"/>
+  <PARAM id="stereoWidth" value="61.0"/>
+  <PARAM id="tempoSync" value="0.0"/>
+  <PARAM id="bypass"/>
+  <PARAM id="grainSize" value="500.0"/>
+  <PARAM id="granularToggle" value="1.0"/>
+  <PARAM id="grainDensity" value="200.0"/>
+  <PARAM id="grainPitch" value="-8.610000610351562"/>
+  <PARAM id="randomPush"/>
+  <PARAM id="texture" value="0.75"/>
+</Parameters>

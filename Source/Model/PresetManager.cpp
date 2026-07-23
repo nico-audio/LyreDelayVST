@@ -9,12 +9,14 @@
 */
 
 #include "PresetManager.h"
+#include "FactoryPreset.h"
 
 const juce::File PresetManager::defaultDirectory{ juce::File::getSpecialLocation(juce::File::SpecialLocationType::commonDocumentsDirectory)
                                                                                   .getChildFile("LyreDelay").getChildFile(ProjectInfo::projectName)
 };
 const juce::String PresetManager::extension{ "preset" };
 const juce::String PresetManager::presetNameProperty{ "presetName" };
+
 
 PresetManager::PresetManager(juce::AudioProcessorValueTreeState& apvts) : valueTreeState(apvts)
 {
@@ -75,18 +77,33 @@ void PresetManager::loadPreset(const juce::String& presetName)
         return;
     }
 
-    const auto presetFile = defaultDirectory.getChildFile(presetName + "." + extension);
+    //==============================================================================
+    // USER PRESET
+    //==============================================================================
+    const auto userPresetFile = defaultDirectory.getChildFile(presetName + "." + extension);
 
-    if (!presetFile.existsAsFile()){
-        DBG("Preset file " + presetFile.getFullPathName() + " does not exist");
-        jassertfalse;
-        return;
+    if (userPresetFile.existsAsFile()) {
+        juce::XmlDocument document(userPresetFile);
+
+        if (auto xml = document.getDocumentElement()) {
+            valueTreeState.replaceState(juce::ValueTree::fromXml(*xml));
+            currentPreset.setValue(presetName);
+
+            return;
+        }
     }
 
-    juce::XmlDocument xmlDocument{ presetFile };
-    const auto valueTreeToLoad = juce::ValueTree::fromXml(*xmlDocument.getDocumentElement());
-    valueTreeState.replaceState(valueTreeToLoad);
-    currentPreset.setValue(presetName);
+    //==============================================================================
+    // FACTORY PRESET
+    //==============================================================================
+    if (auto* preset = findFactoryPreset(presetName)){
+        std::unique_ptr<juce::XmlElement> xml(juce::XmlDocument::parse(juce::String::fromUTF8(static_cast<const char*>(preset->data), preset->size)));
+        
+        if (xml != nullptr){
+            valueTreeState.replaceState(juce::ValueTree::fromXml(*xml));
+            currentPreset.setValue(presetName);
+        }
+    }
 }
 
 int PresetManager::loadNextPreset()
@@ -120,11 +137,16 @@ int PresetManager::loadPreviousPreset()
 
 juce::StringArray PresetManager::getAllPresets() const
 {
-    juce::StringArray presets;
-    const auto fileArray = defaultDirectory.findChildFiles(juce::File::TypesOfFileToFind::findFiles, false, "*." + extension);
+    juce::StringArray presets = getFactoryPresetNames();
+    
+    const auto userFileArray = defaultDirectory.findChildFiles(juce::File::TypesOfFileToFind::findFiles, false, "*." + extension);
 
-    for (const auto& file : fileArray) {
-        presets.add(file.getFileNameWithoutExtension());
+    for (const auto& userFile : userFileArray) {
+        auto name = userFile.getFileNameWithoutExtension();
+
+        if (!presets.contains(name)) {
+            presets.add(name);
+        }
     }
 
     return presets;

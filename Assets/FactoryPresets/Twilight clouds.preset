@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Parameters presetName="Twilight clouds" version="0.0.1">
+  <PARAM id="delayNote" value="10.0"/>
+  <PARAM id="delayTime" value="100.0000076293945"/>
+  <PARAM id="feedback" value="0.0"/>
+  <PARAM id="gain" value="8.600000381469727"/>
+  <PARAM id="highCut" value="418.0"/>
+  <PARAM id="lowCut" value="7110.0"/>
+  <PARAM id="mix" value="60.0"/>
+  <PARAM id="stereoWidth" value="51.0"/>
+  <PARAM id="tempoSync" value="0.0"/>
+  <PARAM id="bypass"/>
+  <PARAM id="grainSize" value="500.0"/>
+  <PARAM id="granularToggle" value="1.0"/>
+  <PARAM id="grainDensity" value="200.0"/>
+  <PARAM id="grainPitch" value="12.0"/>
+  <PARAM id="randomPush"/>
+  <PARAM id="texture" value="1.0"/>
+</Parameters>
