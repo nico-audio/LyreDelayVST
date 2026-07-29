@@ -28,12 +28,15 @@ Visualiser::~Visualiser()
 void Visualiser::paint (juce::Graphics& g)
 {
     auto visualizerBounds = getLocalBounds().toFloat().reduced(4.0f);
-    auto visualizerGlow = visualizerBounds;
+
+    constexpr float cornerSize = 6.0f;
+    constexpr float lineThickness = 1.0f;
+    constexpr float glowSpread = 0.5f;
 
     g.setColour(Colors::AudioVisualizer::avGlow.withAlpha(0.10f));
 
     for (int i = 0; i <= 4; i++) {
-        g.drawRoundedRectangle(visualizerGlow.expanded((float)i * 0.5f), 6.0f, 1.0f);
+        g.drawRoundedRectangle(visualizerBounds.expanded((float)i * glowSpread), cornerSize, lineThickness);
     }
 
     juce::ColourGradient gradient(Colors::AudioVisualizer::visualizerBG.brighter(0.1f),
@@ -43,10 +46,18 @@ void Visualiser::paint (juce::Graphics& g)
     );
 
     g.setGradientFill(gradient);
-    g.fillRoundedRectangle(visualizerBounds, 6.0f);
-    g.drawRoundedRectangle(visualizerBounds, 6.0f, 1.0f);
+    g.fillRoundedRectangle(visualizerBounds, cornerSize);
+    g.drawRoundedRectangle(visualizerBounds, cornerSize, lineThickness);
+
+    // Prevent waveform from being drawn past the bounds
+    g.saveState();
+    juce::Path clipPath;
+    clipPath.addRoundedRectangle(visualizerBounds, cornerSize);
+    g.reduceClipRegion(clipPath);
 
     AudioVisualiserComponent::paint(g);
+
+    g.restoreState();
 }
 
 void Visualiser::resized()
