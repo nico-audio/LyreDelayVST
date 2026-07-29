@@ -27,7 +27,7 @@ public:
 
 private:
     void spawnGrain(Grain& grain, int delayWriteIndex, int bufferSize, int grainDurationSamples, float pitchRatio);
-    float processGrain(Grain& grain, DelayLine& delayLine);
+    float processGrain(Grain& grain, DelayLine& delayLineL, DelayLine& delayLineR, float& outL, float& outR);
 
     inline float msToSamples(float ms) const
     {
