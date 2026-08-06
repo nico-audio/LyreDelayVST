@@ -32,8 +32,9 @@ namespace Colors
     }
     namespace Group
     {
-        const juce::Colour label{ 255, 255, 240 };
-        const juce::Colour outline{ 122, 84, 50 };
+        const juce::Colour outline{ 9, 7, 4 };
+        const juce::Colour outlineDim{ 90, 55, 38 };
+        const juce::Colour label{ 228, 216, 194 };
     }
     namespace Button
     {
@@ -115,7 +116,10 @@ class MainLookAndFeel : public juce::LookAndFeel_V4
 public:
     MainLookAndFeel();
 
-    juce::Font getLabelFont(juce::Label&) override;
+    void drawGroupComponentOutline(juce::Graphics& g, int width, int height, 
+                                   const juce::String& text, const juce::Justification& position, 
+                                   juce::GroupComponent& group) override;
+
 private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MainLookAndFeel)
 };

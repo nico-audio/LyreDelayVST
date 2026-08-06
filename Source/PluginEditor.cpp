@@ -93,7 +93,6 @@ GDelayAudioProcessorEditor::GDelayAudioProcessorEditor (GDelayAudioProcessor& p)
     gainKnob.slider.setColour(juce::Slider::rotarySliderFillColourId, juce::Colour (42, 192, 8));
 
     setLookAndFeel(&mainLF);
-    setLookAndFeel(&buttonLF);
 
     updateDelayKnobs(audioProcessor.params.tempoSyncParam->get());
     updateButtonEnabled(audioProcessor.params.granularToggleParam->get());
@@ -130,7 +129,7 @@ void GDelayAudioProcessorEditor::resized()
     // GROUPS
     //==============================================================================
     
-    int topMargin = 75;
+    int topMargin = 80;
     int height = bounds.getHeight() - 130;
     
     const int groupSpacing { 10 };

@@ -61,7 +61,6 @@ private:
     juce::GroupComponent grainGroup, delayGroup, outputGroup;
 
     MainLookAndFeel mainLF;
-    ButtonLookAndFeel buttonLF;
 
     LevelMeter meter;
 

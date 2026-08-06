@@ -71,11 +71,13 @@ void LabeledButton::init(const juce::String& labelText, const juce::String& butt
     }
 
     setSize(w, h);
+    setLookAndFeel(&buttonLF);
 
 }
 
 LabeledButton::~LabeledButton()
 {
+    setLookAndFeel(nullptr);
 }
 
 //==============================================================================

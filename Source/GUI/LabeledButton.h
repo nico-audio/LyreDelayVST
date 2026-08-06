@@ -10,6 +10,7 @@
 
 #pragma once
 #include <JuceHeader.h>
+#include "LookAndFeel.h"
 
 class LabeledButton : public juce::Component
 {
@@ -42,6 +43,8 @@ public:
 
 private:
     void init(const juce::String& labelText, const juce::String& buttonText);
+
+    ButtonLookAndFeel buttonLF;
     
     ButtonType buttonType;
     ButtonSize buttonSize = ButtonSize::Medium;

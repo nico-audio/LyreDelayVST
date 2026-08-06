@@ -213,13 +213,53 @@ void RotaryKnobLookAndFeel::fillTextEditorBackground(
 
 MainLookAndFeel::MainLookAndFeel()
 {
-    setColour(juce::GroupComponent::textColourId, Colors::Group::label);
-    setColour(juce::GroupComponent::outlineColourId, Colors::Group::outline);
 }
 
-juce::Font MainLookAndFeel::getLabelFont([[maybe_unused]] juce::Label& label)
+void MainLookAndFeel::drawGroupComponentOutline(juce::Graphics& g, int width, int height, 
+                                                const juce::String& text, const juce::Justification& position, 
+                                                juce::GroupComponent& group)
 {
-    return Fonts::getInterdim(13.0f);
+    const float cornerSize = 8.0f;
+    const float outlineThickness = 1.4f;
+
+    auto bounds = juce::Rectangle<float>(0, 0, (float)width, (float)height).reduced(outlineThickness * 0.5f);
+
+    // Border
+    const float engraveOffset = 1.0f;
+
+    g.setColour(juce::Colours::black.withAlpha(0.55f));
+    g.drawRoundedRectangle(bounds.translated(-engraveOffset, -engraveOffset), cornerSize, outlineThickness);
+
+    g.setColour(juce::Colours::white.withAlpha(0.15f));
+    g.drawRoundedRectangle(bounds.translated(engraveOffset, engraveOffset), cornerSize, outlineThickness);
+
+    g.setColour(Colors::Group::outline.withAlpha(0.8f));
+    g.drawRoundedRectangle(bounds, cornerSize, outlineThickness * 0.75f);
+
+    // Group label
+    if (text.isEmpty()) {
+        return;
+    }
+
+    auto font = Fonts::getInterdim(13.0f);
+    g.setFont(font);
+    const int textWidth = (int)juce::GlyphArrangement::getStringWidth(font, text);
+    const int textPadding = 4;
+
+    const int bottomMargin = 8;
+    const int textX = (width - textWidth) / 2;
+    const int textY = height - (int)font.getHeight() - bottomMargin;
+    juce::Rectangle<int> textBounds(textX, textY, textWidth + textPadding, (int)font.getHeight());
+
+    g.setColour(juce::Colours::black.withAlpha(0.5f));
+    g.drawText(text, textBounds.translated(-engraveOffset, -engraveOffset), juce::Justification::centred, false);
+
+    g.setColour(juce::Colours::white.withAlpha(0.15f));
+    g.drawText(text, textBounds.translated(engraveOffset, engraveOffset), juce::Justification::centred, false);
+
+    g.setColour(Colors::Group::label.withAlpha(0.75f));
+    g.drawText(text, textBounds, juce::Justification::centred, false);
+    
 }
 
 //=============================================================================
