@@ -57,7 +57,6 @@ void LabeledButton::init(const juce::String& labelText, const juce::String& butt
     addAndMakeVisible(label);
 
     //jassert(button != nullptr);
-    //attachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(apvts, parameterID.getParamID(),*button);
 
     // adjust component size based on button size
     int w = 0;
