@@ -93,7 +93,6 @@ GDelayAudioProcessorEditor::GDelayAudioProcessorEditor (GDelayAudioProcessor& p)
     gainKnob.slider.setColour(juce::Slider::rotarySliderFillColourId, juce::Colour (42, 192, 8));
 
     setLookAndFeel(&mainLF);
-    setLookAndFeel(&buttonLF);
 
     updateDelayKnobs(audioProcessor.params.tempoSyncParam->get());
     updateButtonEnabled(audioProcessor.params.granularToggleParam->get());
@@ -130,7 +129,7 @@ void GDelayAudioProcessorEditor::resized()
     // GROUPS
     //==============================================================================
     
-    int topMargin = 75;
+    int topMargin = 80;
     int height = bounds.getHeight() - 130;
     
     const int groupSpacing { 10 };
@@ -146,22 +145,22 @@ void GDelayAudioProcessorEditor::resized()
     grainGroup.setBounds(delayGroup.getRight() + groupSpacing, topMargin, outputGroup.getX() - delayGroup.getRight() - 20, height);
     
     // Position the knobs inside the groups
-    delayTimeKnob.setTopLeftPosition(115, 20);
+    delayTimeKnob.setTopLeftPosition(115, 10);
     tempoSyncButton.setTopLeftPosition(30 , 45);
     delayNoteKnob.setTopLeftPosition(delayTimeKnob.getX(), delayTimeKnob.getY());
 
     feedbackKnob.setTopLeftPosition(115, delayTimeKnob.getBottom() + 10);
-    stereoKnob.setTopLeftPosition(30, 260);
 
-    lowCutKnob.setTopLeftPosition(stereoKnob.getRight() + 20, 260);
+    lowCutKnob.setTopLeftPosition(feedbackKnob.getX(), feedbackKnob.getBottom());
+    stereoKnob.setTopLeftPosition((lowCutKnob.getX() - lowCutKnob.getWidth()) - 20, lowCutKnob.getY());
     highCutKnob.setTopLeftPosition(lowCutKnob.getRight() + 20, lowCutKnob.getY());
 
-    granularToggleButton.setTopLeftPosition(50, 20);
+    randomizerButton.setTopLeftPosition(50, 15);
     grainSize.setTopLeftPosition(20, 75);
-    grainPitch.setTopLeftPosition(20, 200);
-    grainDensity.setTopLeftPosition(110, 75);
-    textureKnob.setTopLeftPosition(110, 200);
-    randomizerButton.setTopLeftPosition(50, 318);
+    grainDensity.setTopLeftPosition(grainSize.getRight() + 15, grainSize.getY());
+    grainPitch.setTopLeftPosition(grainSize.getX(), 200);
+    textureKnob.setTopLeftPosition(grainPitch.getRight() + 15, grainPitch.getY());
+    granularToggleButton.setTopLeftPosition(50, 315);
 
     mixKnob.setTopLeftPosition(570, 120);
     gainKnob.setTopLeftPosition(mixKnob.getX(), mixKnob.getBottom() + 10);

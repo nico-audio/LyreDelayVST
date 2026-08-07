@@ -53,15 +53,14 @@ private:
 
 
     LabeledButton tempoSyncButton{ "Sync", "", audioProcessor.apvts, Params::tempoSyncParamID, LabeledButton::ButtonType::Image, LabeledButton::ButtonSize::Medium };
-    LabeledButton granularToggleButton{ "granular", "", audioProcessor.apvts, Params::granularToggleParamID, LabeledButton::ButtonType::Image, LabeledButton::ButtonSize::Large };
-    LabeledButton randomizerButton{ "", "", audioProcessor.apvts, Params::randomPushParamID, LabeledButton::ButtonType::Image, LabeledButton::ButtonSize::Large };
+    LabeledButton granularToggleButton{ "", "", audioProcessor.apvts, Params::granularToggleParamID, LabeledButton::ButtonType::Image, LabeledButton::ButtonSize::Large };
+    LabeledButton randomizerButton{ "Randomize", "", audioProcessor.apvts, Params::randomPushParamID, LabeledButton::ButtonType::Image, LabeledButton::ButtonSize::Large };
 
     juce::Rectangle<int> waveViewerBounds;
 
     juce::GroupComponent grainGroup, delayGroup, outputGroup;
 
     MainLookAndFeel mainLF;
-    ButtonLookAndFeel buttonLF;
 
     LevelMeter meter;
 

@@ -154,7 +154,6 @@ void GranularEngine::process(float& grainSumL, float& grainSumR, DelayLine& dela
         int jitteredInterval = samplesBetweenGrains;
 
         if (availableGrain != nullptr){
-
             if (texture > 0.0f) {
                 const float randomSigned = textureRange.nextFloat() * 2.0f - 1.0f;
                 const float maxDensityJitter = 0.5f;
@@ -210,6 +209,11 @@ void GranularEngine::process(float& grainSumL, float& grainSumR, DelayLine& dela
         }
     }
 
+    
+    //==============================================================================
+    // OUTPUT
+    //==============================================================================
+    
     // Sum grains    
     grainSumL = 0.0f;
     grainSumR = 0.0f;

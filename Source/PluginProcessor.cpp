@@ -301,8 +301,9 @@ void GDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[may
         grEngine.process(grainL, grainR, delayLineL, delayLineR);
 
         if (params.granularisActive) {
-            wetL = grainL;
-            wetR = grainR;
+            constexpr float granularMakeupGain = 2.5f;
+            wetL = grainL * granularMakeupGain;
+            wetR = grainR * granularMakeupGain;
         }
        
         //float mixL = dryL + wetL * params.mix;
