@@ -16,8 +16,12 @@
         <FILE id="pVFHmB" name="Dissipation.preset" compile="0" resource="1"
               file="Assets/FactoryPresets/Dissipation.preset"/>
         <FILE id="Gdceii" name="Dreamy.preset" compile="0" resource="1" file="Assets/FactoryPresets/Dreamy.preset"/>
+        <FILE id="lJvFJh" name="Drown.preset" compile="0" resource="1" file="Assets/FactoryPresets/Drown.preset"/>
+        <FILE id="KAtzUb" name="Enchantment.preset" compile="0" resource="1"
+              file="Assets/FactoryPresets/Enchantment.preset"/>
         <FILE id="TBLVPN" name="Extra gas.preset" compile="0" resource="1"
               file="Assets/FactoryPresets/Extra gas.preset"/>
+        <FILE id="YwWC4Z" name="Microns.preset" compile="0" resource="1" file="Assets/FactoryPresets/Microns.preset"/>
         <FILE id="TqFZNn" name="Quarter Pong.preset" compile="0" resource="1"
               file="Assets/FactoryPresets/Quarter Pong.preset"/>
         <FILE id="NAs03Z" name="Razor cut.preset" compile="0" resource="1"
@@ -32,6 +36,7 @@
               file="Assets/FactoryPresets/Twilight clouds.preset"/>
         <FILE id="LES6qR" name="Underground.preset" compile="0" resource="1"
               file="Assets/FactoryPresets/Underground.preset"/>
+        <FILE id="mz90pK" name="Waves.preset" compile="0" resource="1" file="Assets/FactoryPresets/Waves.preset"/>
       </GROUP>
       <GROUP id="{155CCA96-9466-5A41-34C5-1D0A61CC58EE}" name="Fonts">
         <FILE id="l54Wiy" name="Fake Receipt.otf" compile="0" resource="1"

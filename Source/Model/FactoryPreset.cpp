@@ -21,7 +21,10 @@ namespace
         { "Digital", BinaryData::Digital_preset, BinaryData::Digital_presetSize },
         { "Dissipation", BinaryData::Dissipation_preset, BinaryData::Dissipation_presetSize },
         { "Dreamy", BinaryData::Dreamy_preset, BinaryData::Dreamy_presetSize },
+        { "Drown", BinaryData::Drown_preset, BinaryData::Drown_presetSize },
+        { "Enchantment", BinaryData::Enchantment_preset, BinaryData::Enchantment_presetSize },
         { "Extra gas", BinaryData::Extra_gas_preset, BinaryData::Extra_gas_presetSize },
+        { "Microns", BinaryData::Microns_preset, BinaryData::Microns_presetSize },
         { "Quarter Pong", BinaryData::Quarter_Pong_preset, BinaryData::Quarter_Pong_presetSize },
         { "Razor cut", BinaryData::Razor_cut_preset, BinaryData::Razor_cut_presetSize },
         { "Robotic Monster", BinaryData::Robotic_monster_preset, BinaryData::Robotic_monster_presetSize },
@@ -29,7 +32,8 @@ namespace
         { "Slapback", BinaryData::Slapback_preset, BinaryData::Slapback_presetSize },
         { "Tails", BinaryData::Tails_preset, BinaryData::Tails_presetSize },
         { "Twilight Clouds", BinaryData::Twilight_clouds_preset, BinaryData::Twilight_clouds_presetSize },
-        { "Underground", BinaryData::Underground_preset, BinaryData::Underground_presetSize }
+        { "Underground", BinaryData::Underground_preset, BinaryData::Underground_presetSize },
+        { "Waves", BinaryData::Waves_preset, BinaryData::Waves_presetSize }
     };
 
     constexpr int numFactoryPresets = std::size(factoryPresets);
