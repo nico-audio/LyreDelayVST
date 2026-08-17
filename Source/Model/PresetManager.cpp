@@ -67,14 +67,25 @@ void PresetManager::deletePreset(const juce::String& presetName)
         return;
     }
 
-    if (!presetFile.deleteFile()) {
-        DBG("Preset file " + presetFile.getFullPathName() + " could not be deleted");
-        jassertfalse;
-        return;
-    }
+    // Confirmation check
 
+    auto options = juce::MessageBoxOptions::makeOptionsOkCancel(juce::MessageBoxIconType::WarningIcon,
+        "Delete Preset", "The current preset will be deleted, are you sure?",
+        "Delete", "Cancel");
 
-    currentPreset.setValue("");
+    juce::AlertWindow::showAsync(options, [this, presetFile](int result){
+        if (result != 1) {
+            return;
+        }
+        
+        if (!presetFile.deleteFile()) {
+            DBG("Preset file " + presetFile.getFullPathName() + " could not be deleted");
+            jassertfalse;
+            return;
+        }
+
+        currentPreset.setValue("");
+    });
 }
 
 void PresetManager::loadPreset(const juce::String& presetName)
@@ -165,7 +176,5 @@ juce::String PresetManager::getCurrentPreset() const
 
 void PresetManager::valueTreeRedirected(juce::ValueTree& treeWhichHasBeenChanged)
 {
-    //treeWhichHasBeenChanged.getPropertyAsValue(presetNameProperty, nullptr);
-
     currentPreset.referTo(treeWhichHasBeenChanged.getPropertyAsValue(presetNameProperty,nullptr));
 }

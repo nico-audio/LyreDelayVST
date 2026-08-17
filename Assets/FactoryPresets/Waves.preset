@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Parameters presetName="Waves" version="0.0.2">
+  <PARAM id="delayNote" value="10.0"/>
+  <PARAM id="delayTime" value="100.0000076293945"/>
+  <PARAM id="feedback" value="0.0"/>
+  <PARAM id="gain" value="0.0"/>
+  <PARAM id="highCut" value="20000.0"/>
+  <PARAM id="lowCut" value="20.0"/>
+  <PARAM id="mix" value="33.0"/>
+  <PARAM id="stereoWidth" value="0.0"/>
+  <PARAM id="tempoSync" value="0.0"/>
+  <PARAM id="bypass"/>
+  <PARAM id="grainSize" value="111.0"/>
+  <PARAM id="granularToggle" value="1.0"/>
+  <PARAM id="grainDensity" value="11.0"/>
+  <PARAM id="grainPitch" value="0.0"/>
+  <PARAM id="randomPush"/>
+  <PARAM id="texture" value="0.0"/>
+</Parameters>
