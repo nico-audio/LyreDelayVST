@@ -28,6 +28,7 @@ public:
     int loadPreviousPreset();
     juce::StringArray getAllPresets() const;
     juce::String getCurrentPreset() const;
+    void populatePresetComboBox(juce::ComboBox& comboBox);
 
 private:
     void valueTreeRedirected(juce::ValueTree& treeWhichHasBeenChanged) override;

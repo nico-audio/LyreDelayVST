@@ -174,7 +174,6 @@ void PresetPanel::buttonClicked(juce::Button* button)
     if (button == &deleteButton.getButton()) {
         presetManager.deletePreset(presetManager.getCurrentPreset());
         loadPresetList();
-        // add prompt warning!
     }
 }
 
