@@ -378,6 +378,10 @@ void ComboBoxLookAndFeel::positionComboBoxText(juce::ComboBox& box, juce::Label&
     label.setJustificationType(juce::Justification::centredLeft);
 }
 
+//=============================================================================
+// POP-UP MENU
+//=============================================================================
+
 void ComboBoxLookAndFeel::drawPopupMenuBackground(juce::Graphics& g, int width, int height)
 {
     auto bounds = juce::Rectangle<float>(0.0f, 0.0f, (float)width, (float)height);
@@ -410,7 +414,11 @@ void ComboBoxLookAndFeel::drawPopupMenuItem(juce::Graphics& g, const juce::Recta
                                             bool isActive, bool isHighlighted, bool isTicked, bool hasSubMenu, const juce::String& text, 
                                             const juce::String& shotcutKeyText, const juce::Drawable* icon, const juce::Colour* textColour)
 {
-
+    float selectableAlpha = 0.92f;
+    float inactiveAlpha = 0.35f;
+    int namePadding = 6;  // preset name text
+    
+    
     if (isSeparator){
         auto rect  = area.reduced(14, 0);
         rect.removeFromTop(juce::roundToInt(((float)rect.getHeight() * 0.5f) - 0.5f));
@@ -429,17 +437,18 @@ void ComboBoxLookAndFeel::drawPopupMenuItem(juce::Graphics& g, const juce::Recta
     }
 
     auto textColourToUse = textColour != nullptr ? *textColour : juce::Colours::white;
-    textColourToUse = textColourToUse.withAlpha(isActive ? 0.92f : 0.35f);
+    textColourToUse = textColourToUse.withAlpha(isActive ? selectableAlpha : inactiveAlpha);
 
     auto textArea = area.reduced(14, 0);
 
     if (isTicked) {
-        auto dot = textArea.removeFromLeft(10).withSizeKeepingCentre(5, 5).toFloat();
+        auto selectionDot = textArea.removeFromLeft(10).withSizeKeepingCentre(5, 5).toFloat();
         g.setColour(Colors::PresetPanel::arrow);
-        g.fillEllipse(dot);
-        textArea.removeFromLeft(6);
+        g.fillEllipse(selectionDot);
+        textArea.removeFromLeft(namePadding);
     }
 
+    /*
     if (hasSubMenu) {
         auto zone = textArea.removeFromRight(16).toFloat();
         float ax = zone.getCentreX() - 1.0f;
@@ -451,14 +460,16 @@ void ComboBoxLookAndFeel::drawPopupMenuItem(juce::Graphics& g, const juce::Recta
         g.setColour(textColourToUse.withAlpha(0.5f));
         g.strokePath(arrow, juce::PathStrokeType(1.6f, juce::PathStrokeType::curved, juce::PathStrokeType::rounded));
     }
+    */
         g.setColour(textColourToUse);
         g.setFont(getPopupMenuFont());
         g.drawText(text, textArea, juce::Justification::centredLeft, true);
+
 }
 
 juce::Font ComboBoxLookAndFeel::getPopupMenuFont()
 {
-    return Fonts::getFakeReceipt(12.0f);
+    return Fonts::getFakeReceipt(14.0f);
 }
 
 void ComboBoxLookAndFeel::getIdealPopupMenuItemSize(const juce::String& text, bool isSeparator, int standardMenuItemHeight, int& idealWidth, int& idealHeight)
@@ -470,5 +481,11 @@ void ComboBoxLookAndFeel::getIdealPopupMenuItemSize(const juce::String& text, bo
 
 juce::PopupMenu::Options ComboBoxLookAndFeel::getOptionsForComboBoxPopupMenu(juce::ComboBox& box, juce::Label& label)
 {
-    return LookAndFeel_V4::getOptionsForComboBoxPopupMenu(box, label).withMaximumNumColumns(1).withMinimumWidth(box.getWidth());
+    auto options = LookAndFeel_V4::getOptionsForComboBoxPopupMenu(box, label).withMaximumNumColumns(1).withMinimumWidth(box.getWidth());
+
+    auto screenBounds = box.getScreenBounds();
+    auto maxHeight = 200;
+
+    return options.withTargetScreenArea(screenBounds.withHeight(maxHeight).withY(screenBounds.getBottom()));
+
 }

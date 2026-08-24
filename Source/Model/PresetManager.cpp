@@ -152,14 +152,24 @@ int PresetManager::loadPreviousPreset()
     return previousIndex;
 }
 
-juce::StringArray PresetManager::getAllPresets() const
+juce::StringArray PresetManager::getUserPresetNames() const
 {
-    juce::StringArray presets = getFactoryPresetNames();
-    
+    juce::StringArray presets;
+
     const auto userFileArray = defaultDirectory.findChildFiles(juce::File::TypesOfFileToFind::findFiles, false, "*." + extension);
 
     for (const auto& userFile : userFileArray) {
-        auto name = userFile.getFileNameWithoutExtension();
+        presets.add(userFile.getFileNameWithoutExtension());
+    }
+
+    return presets;
+}
+
+juce::StringArray PresetManager::getAllPresets() const
+{
+    juce::StringArray presets = getFactoryPresetNames();
+
+    for (const auto& name : getUserPresetNames()) {
 
         if (!presets.contains(name)) {
             presets.add(name);
