@@ -448,19 +448,6 @@ void ComboBoxLookAndFeel::drawPopupMenuItem(juce::Graphics& g, const juce::Recta
         textArea.removeFromLeft(namePadding);
     }
 
-    /*
-    if (hasSubMenu) {
-        auto zone = textArea.removeFromRight(16).toFloat();
-        float ax = zone.getCentreX() - 1.0f;
-        float ay = zone.getCentreY();
-        juce::Path arrow;
-        arrow.startNewSubPath(ax - 2.0f, ay - 4.0f);
-        arrow.lineTo(ax + 2.0f, ay);
-        arrow.lineTo(ax - 2.0f, ay + 4.0f);
-        g.setColour(textColourToUse.withAlpha(0.5f));
-        g.strokePath(arrow, juce::PathStrokeType(1.6f, juce::PathStrokeType::curved, juce::PathStrokeType::rounded));
-    }
-    */
         g.setColour(textColourToUse);
         g.setFont(getPopupMenuFont());
         g.drawText(text, textArea, juce::Justification::centredLeft, true);
@@ -487,5 +474,4 @@ juce::PopupMenu::Options ComboBoxLookAndFeel::getOptionsForComboBoxPopupMenu(juc
     auto maxHeight = 200;
 
     return options.withTargetScreenArea(screenBounds.withHeight(maxHeight).withY(screenBounds.getBottom()));
-
 }
