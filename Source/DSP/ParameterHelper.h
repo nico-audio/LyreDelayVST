@@ -82,7 +82,7 @@ namespace Params
         static constexpr float filterSkewFactor{ 0.3f };
 
         static constexpr float minGrainSize{ 30.0f };
-        static constexpr float maxGrainSize{ 500.0f };
+        static constexpr float maxGrainSize{ 1000.0f };
         static constexpr float grainStepSize{ 1.0f };
 
         static constexpr float minPitch{ -24.0f };
