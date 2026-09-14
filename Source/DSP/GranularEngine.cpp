@@ -70,7 +70,7 @@ Grain* GranularEngine::findAvailableGrain(std::array<Grain, maxGrains>& pool)
     return nullptr;
 }
 
-void GranularEngine::spawnGrain(Grain& grain, int delayWriteIndex, int bufferSize, int grainDurationSamples, float pitchRatio)
+void GranularEngine::spawnGrain(Grain& grain, int startIndex, int bufferSize, int grainDurationSamples, float pitchRatio)
 {
     // Safety
     jassert(bufferSize > 0);
@@ -81,7 +81,7 @@ void GranularEngine::spawnGrain(Grain& grain, int delayWriteIndex, int bufferSiz
     grain.samplesPlayed = 0;
     grain.grainDuration = grainDurationSamples;
 
-    grain.startIndex = delayWriteIndex - grainDurationSamples;
+    grain.startIndex = startIndex;
 
     grain.stepSize = pitchRatio;
 
