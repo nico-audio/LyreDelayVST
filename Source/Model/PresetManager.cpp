@@ -68,9 +68,8 @@ void PresetManager::deletePreset(const juce::String& presetName)
     }
 
     // Confirmation check
-
     auto options = juce::MessageBoxOptions::makeOptionsOkCancel(juce::MessageBoxIconType::WarningIcon,
-        "Delete Preset", "The current preset will be deleted, are you sure?",
+        "Delete Preset", "\"" + presetName + "\" will be now deleted, are you sure ? ",
         "Delete", "Cancel");
 
     juce::AlertWindow::showAsync(options, [this, presetFile](int result){
