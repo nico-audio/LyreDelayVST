@@ -38,6 +38,10 @@ void GranularEngine::reset()
 
 void GranularEngine::setParameters(float gDensity, float gSizeMs, float pitchSt, float tex, bool gState)
 {
+    if (gState && !isActive) {
+        samplesUntilNextGrain = 0;
+    }
+    
     density = gDensity;
     grainSizeMs = gSizeMs;
     pitchSemitones = pitchSt;
@@ -166,6 +170,7 @@ void GranularEngine::process(float& grainSumL, float& grainSumR, DelayLine& dela
                     << " factor=" << factor
                     << " jittered=" << jitteredInterval);
             }
+
             // Texture - grain size jitter
             int jitteredGrainSizeSamples = grainSizeSamples;
 
@@ -207,6 +212,7 @@ void GranularEngine::process(float& grainSumL, float& grainSumR, DelayLine& dela
 
             DBG("spawn grain!");
         }
+        samplesUntilNextGrain = jitteredInterval;
     }
 
     

@@ -377,3 +377,101 @@ void ComboBoxLookAndFeel::positionComboBoxText(juce::ComboBox& box, juce::Label&
     label.setFont(Fonts::getFakeReceipt(14.0f));
     label.setJustificationType(juce::Justification::centredLeft);
 }
+
+//=============================================================================
+// POP-UP MENU
+//=============================================================================
+
+void ComboBoxLookAndFeel::drawPopupMenuBackground(juce::Graphics& g, int width, int height)
+{
+    auto bounds = juce::Rectangle<float>(0.0f, 0.0f, (float)width, (float)height);
+    constexpr float cornerRadius = 1.0f;
+    constexpr float padding = cornerRadius - 2.0f;
+
+    juce::ColourGradient bgGradient(Colors::PresetPanel::comboBoxGradTop, 0.0f, bounds.getY(),
+                                    Colors::PresetPanel::comboBoxGradBtm, 0.0f, bounds.getBottom(), false);
+    g.setGradientFill(bgGradient);
+    g.fillRoundedRectangle(bounds, cornerRadius);
+
+    g.setColour(juce::Colours::white.withAlpha(0.05f));
+    g.drawLine(bounds.getX() + padding, bounds.getY() + 1.0f, bounds.getRight() - padding, bounds.getY() + 1.0f);
+    g.setColour(juce::Colours::black.withAlpha(0.15f));
+    g.drawLine(bounds.getX() + padding, bounds.getBottom() - 1.0f, bounds.getRight() - padding, bounds.getBottom() - 1.0f);
+
+    // Outline
+    g.setColour(Colors::PresetPanel::comboBoxOutline.withAlpha(0.55f));
+    g.drawRoundedRectangle(bounds.reduced(0.5f), cornerRadius, 1.0f);
+}
+
+void ComboBoxLookAndFeel::drawPopupMenuSectionHeader(juce::Graphics& g, const juce::Rectangle<int>& area, const juce::String& sectionName)
+{
+    g.setColour(Colors::PresetPanel::arrow.withAlpha(0.5f));
+    g.setFont(juce::Font(juce::FontOptions(11.0f)).boldened().withExtraKerningFactor(0.06f));
+    g.drawText(sectionName.toUpperCase(), area.reduced(14, 0), juce::Justification::centredLeft, true);
+}
+
+void ComboBoxLookAndFeel::drawPopupMenuItem(juce::Graphics& g, const juce::Rectangle<int>& area, bool isSeparator, 
+                                            bool isActive, bool isHighlighted, bool isTicked, bool hasSubMenu, const juce::String& text, 
+                                            const juce::String& shotcutKeyText, const juce::Drawable* icon, const juce::Colour* textColour)
+{
+    float selectableAlpha = 0.92f;
+    float inactiveAlpha = 0.35f;
+    int namePadding = 6;  // preset name text
+    
+    
+    if (isSeparator){
+        auto rect  = area.reduced(14, 0);
+        rect.removeFromTop(juce::roundToInt(((float)rect.getHeight() * 0.5f) - 0.5f));
+        g.setColour(Colors::PresetPanel::comboBoxOutline.withAlpha(0.25f));
+        g.fillRect(rect.removeFromTop(1));
+        return;
+    }
+
+    auto rect = area.reduced(4, 1).toFloat();
+
+    if (isHighlighted && isActive) {
+        g.setColour(Colors::PresetPanel::arrow.withAlpha(0.14f));
+        g.fillRoundedRectangle(rect, 4.0f);
+        g.setColour(Colors::PresetPanel::arrow.withAlpha(0.35f));
+        g.drawRoundedRectangle(rect, 4.0f, 1.0f);
+    }
+
+    auto textColourToUse = textColour != nullptr ? *textColour : juce::Colours::white;
+    textColourToUse = textColourToUse.withAlpha(isActive ? selectableAlpha : inactiveAlpha);
+
+    auto textArea = area.reduced(14, 0);
+
+    if (isTicked) {
+        auto selectionDot = textArea.removeFromLeft(10).withSizeKeepingCentre(5, 5).toFloat();
+        g.setColour(Colors::PresetPanel::arrow);
+        g.fillEllipse(selectionDot);
+        textArea.removeFromLeft(namePadding);
+    }
+
+        g.setColour(textColourToUse);
+        g.setFont(getPopupMenuFont());
+        g.drawText(text, textArea, juce::Justification::centredLeft, true);
+
+}
+
+juce::Font ComboBoxLookAndFeel::getPopupMenuFont()
+{
+    return Fonts::getFakeReceipt(14.0f);
+}
+
+void ComboBoxLookAndFeel::getIdealPopupMenuItemSize(const juce::String& text, bool isSeparator, int standardMenuItemHeight, int& idealWidth, int& idealHeight)
+{
+    LookAndFeel_V4::getIdealPopupMenuItemSize(text, isSeparator, standardMenuItemHeight, idealWidth, idealHeight);
+    idealHeight = isSeparator ? 9 : 28;
+    idealWidth += 24;
+}
+
+juce::PopupMenu::Options ComboBoxLookAndFeel::getOptionsForComboBoxPopupMenu(juce::ComboBox& box, juce::Label& label)
+{
+    auto options = LookAndFeel_V4::getOptionsForComboBoxPopupMenu(box, label).withMaximumNumColumns(1).withMinimumWidth(box.getWidth());
+
+    auto screenBounds = box.getScreenBounds();
+    auto maxHeight = 200;
+
+    return options.withTargetScreenArea(screenBounds.withHeight(maxHeight).withY(screenBounds.getBottom()));
+}

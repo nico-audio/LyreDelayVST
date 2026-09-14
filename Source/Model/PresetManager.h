@@ -26,6 +26,7 @@ public:
     void loadPreset(const juce::String& presetName);
     int loadNextPreset();
     int loadPreviousPreset();
+    juce::StringArray getUserPresetNames() const;
     juce::StringArray getAllPresets() const;
     juce::String getCurrentPreset() const;
 

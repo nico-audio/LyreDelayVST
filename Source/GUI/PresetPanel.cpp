@@ -9,6 +9,7 @@
 */
 
 #include "PresetPanel.h"
+#include "../Model/FactoryPreset.h"
 
 //=============================================================================
 // CONSTRUCTOR/ DESTRUCTOR
@@ -142,6 +143,8 @@ void PresetPanel::resized()
     // Positioning
     logoBounds = juce::Rectangle<int>(bounds.getRight() - 150, bounds.getBottom() - logoHeight, logoWidth, logoHeight);
 
+    constexpr int maxVisibleRows = 10;
+    constexpr int rowHeight = 28;   // matches getIdealPopupMenuItemSize's non-separator height
 }
 
 //==============================================================================
@@ -174,22 +177,54 @@ void PresetPanel::buttonClicked(juce::Button* button)
     if (button == &deleteButton.getButton()) {
         presetManager.deletePreset(presetManager.getCurrentPreset());
         loadPresetList();
-        // add prompt warning!
+    }
+}
+
+
+void PresetPanel::loadPresetList()
+{
+    presetList.clear(juce::dontSendNotification);
+
+    const auto factoryPresets = getFactoryPresetNames();
+    const auto userPresets = presetManager.getUserPresetNames();
+    const auto currentPreset = presetManager.getCurrentPreset();
+
+    int itemId = 1;
+    int idToSelect = 0;
+
+    if (!factoryPresets.isEmpty())
+    {
+        presetList.addSectionHeading("Factory");
+        for (const auto& name : factoryPresets)
+        {
+            presetList.addItem(name, itemId);
+            if (name == currentPreset) {
+                idToSelect = itemId;
+            }
+            ++itemId;
+        }
+    }
+
+    if (!userPresets.isEmpty())
+    {
+        presetList.addSectionHeading("User");
+        for (const auto& name : userPresets){
+            presetList.addItem(name, itemId);
+            if (name == currentPreset) {
+                idToSelect = itemId;
+            }
+            ++itemId;
+        }
+    }
+
+    if (idToSelect != 0) {
+        presetList.setSelectedId(idToSelect, juce::dontSendNotification);
     }
 }
 
 void PresetPanel::comboBoxChanged(juce::ComboBox* comboBoxThatHasChanged)
 {
     if (comboBoxThatHasChanged == &presetList) {
-        presetManager.loadPreset(presetList.getItemText(presetList.getSelectedItemIndex()));
+        presetManager.loadPreset(presetList.getText());
     }
-}
-
-void PresetPanel::loadPresetList()
-{
-    presetList.clear(juce::dontSendNotification);
-    const auto allPresets = presetManager.getAllPresets();
-    const auto currentPreset = presetManager.getCurrentPreset();
-    presetList.addItemList(allPresets, 1);
-    presetList.setSelectedItemIndex(allPresets.indexOf(currentPreset), juce::dontSendNotification);
 }

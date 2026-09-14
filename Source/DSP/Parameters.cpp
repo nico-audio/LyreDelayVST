@@ -142,16 +142,16 @@ void Parameters::reset() noexcept
     highCutSmoother.setCurrentAndTargetValue(highCutParam->get());
 
     grainSize = 1.0f;
-    sizeSmoother.setCurrentAndTargetValue(sizeParam->get() * 0.01f);
+    sizeSmoother.setCurrentAndTargetValue(sizeParam->get());
 
     pitch = 0.0f;
     pitchSmoother.setCurrentAndTargetValue(pitchParam->get() * 0.01f);
 
     density = 0.0f;
-    densitySmoother.setCurrentAndTargetValue(densityParam->get() * 0.01f);
+    densitySmoother.setCurrentAndTargetValue(densityParam->get());
 
     texture = 0.0f;
-    textureSmoother.setCurrentAndTargetValue(densityParam->get() * 0.01f);
+    textureSmoother.setCurrentAndTargetValue(textureParam->get() * 0.01f);
 }
 
 void Parameters::update() noexcept

@@ -89,6 +89,9 @@ class RotaryKnobLookAndFeel : public juce::LookAndFeel_V4
 {
 public:
     RotaryKnobLookAndFeel();
+
+    //==============================================================================
+
     static RotaryKnobLookAndFeel* get()
     {
         static RotaryKnobLookAndFeel instance;
@@ -128,6 +131,8 @@ class ButtonLookAndFeel : public juce::LookAndFeel_V4
 {
 public:
     ButtonLookAndFeel();
+
+    //==============================================================================
     
     static ButtonLookAndFeel* get()
     {
@@ -154,6 +159,8 @@ class ComboBoxLookAndFeel : public juce::LookAndFeel_V4
 public:
     ComboBoxLookAndFeel();
 
+    //==============================================================================
+
     static ComboBoxLookAndFeel* get()
     {
         static ComboBoxLookAndFeel instance;
@@ -165,6 +172,18 @@ public:
                       int buttonW, int buttonH, juce::ComboBox& box) override;
 
     void positionComboBoxText(juce::ComboBox& box, juce::Label& label) override;
+
+    //==============================================================================
+
+    void drawPopupMenuBackground(juce::Graphics& g, int width, int height) override;
+    void drawPopupMenuSectionHeader(juce::Graphics& g, const juce::Rectangle<int>& area, const juce::String& sectionName) override;
+    void drawPopupMenuItem(juce::Graphics& g, const juce::Rectangle<int>& area, bool isSeparator, bool isActive,
+                           bool isHighlighted, bool isTicked, bool hasSubMenu, const juce::String& text, const juce::String& shotcutKeyText,
+                           const juce::Drawable* icon, const juce::Colour* textColour) override;
+
+    juce::Font getPopupMenuFont() override;
+    void getIdealPopupMenuItemSize(const juce::String& text, bool isSeparator, int standardMenuItemHeight, int& idealWidth, int& idealHeight) override;
+    juce::PopupMenu::Options getOptionsForComboBoxPopupMenu(juce::ComboBox& box, juce::Label& label) override;
 
 private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(ComboBoxLookAndFeel)

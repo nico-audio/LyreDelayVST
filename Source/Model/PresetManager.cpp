@@ -68,9 +68,8 @@ void PresetManager::deletePreset(const juce::String& presetName)
     }
 
     // Confirmation check
-
     auto options = juce::MessageBoxOptions::makeOptionsOkCancel(juce::MessageBoxIconType::WarningIcon,
-        "Delete Preset", "The current preset will be deleted, are you sure?",
+        "Delete Preset", "\"" + presetName + "\" will be now deleted, are you sure ? ",
         "Delete", "Cancel");
 
     juce::AlertWindow::showAsync(options, [this, presetFile](int result){
@@ -152,14 +151,24 @@ int PresetManager::loadPreviousPreset()
     return previousIndex;
 }
 
-juce::StringArray PresetManager::getAllPresets() const
+juce::StringArray PresetManager::getUserPresetNames() const
 {
-    juce::StringArray presets = getFactoryPresetNames();
-    
+    juce::StringArray presets;
+
     const auto userFileArray = defaultDirectory.findChildFiles(juce::File::TypesOfFileToFind::findFiles, false, "*." + extension);
 
     for (const auto& userFile : userFileArray) {
-        auto name = userFile.getFileNameWithoutExtension();
+        presets.add(userFile.getFileNameWithoutExtension());
+    }
+
+    return presets;
+}
+
+juce::StringArray PresetManager::getAllPresets() const
+{
+    juce::StringArray presets = getFactoryPresetNames();
+
+    for (const auto& name : getUserPresetNames()) {
 
         if (!presets.contains(name)) {
             presets.add(name);
