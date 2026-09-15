@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Parameters presetName="Answers2" version="0.0.4">
+  <PARAM id="delayNote" value="10.0"/>
+  <PARAM id="delayTime" value="440.0000305175781"/>
+  <PARAM id="feedback" value="72.0"/>
+  <PARAM id="gain" value="2.534397125244141"/>
+  <PARAM id="highCut" value="20000.0"/>
+  <PARAM id="lowCut" value="1000.0"/>
+  <PARAM id="mix" value="82.0"/>
+  <PARAM id="stereoWidth" value="60.0"/>
+  <PARAM id="tempoSync" value="0.0"/>
+  <PARAM id="bypass" value="0.0"/>
+  <PARAM id="grainSize" value="310.0"/>
+  <PARAM id="granularToggle" value="1.0"/>
+  <PARAM id="grainDensity" value="45.0"/>
+  <PARAM id="grainPitch" value="-12.0"/>
+  <PARAM id="randomPush"/>
+  <PARAM id="texture" value="0.5399999618530273"/>
+</Parameters>

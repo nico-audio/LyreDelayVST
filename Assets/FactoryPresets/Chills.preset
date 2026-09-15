@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<Parameters presetName="Chills" version="0.0.1">
+<Parameters presetName="Chills" version="0.0.4">
   <PARAM id="delayNote" value="10.0"/>
-  <PARAM id="delayTime" value="100.0000076293945"/>
+  <PARAM id="delayTime" value="660.0000610351562"/>
   <PARAM id="feedback" value="29.0"/>
-  <PARAM id="gain" value="8.063997268676758"/>
+  <PARAM id="gain" value="0.0"/>
   <PARAM id="highCut" value="20000.0"/>
   <PARAM id="lowCut" value="20.0"/>
   <PARAM id="mix" value="55.0"/>

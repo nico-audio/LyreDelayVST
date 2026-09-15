@@ -8,20 +8,21 @@
     <GROUP id="{CB2CAC95-A9C6-6993-A8E1-A8462E4AC6AE}" name="Assets">
       <GROUP id="{117F213A-7AE4-94AB-4D49-06AB405C6AEB}" name="FactoryPresets">
         <FILE id="Ak77Fa" name="Anime.preset" compile="0" resource="1" file="Assets/FactoryPresets/Anime.preset"/>
+        <FILE id="g4ZbBz" name="Answers.preset" compile="0" resource="1" file="Assets/FactoryPresets/Answers.preset"/>
         <FILE id="x2UVm0" name="Bouncy Eight.preset" compile="0" resource="1"
               file="Assets/FactoryPresets/Bouncy Eight.preset"/>
+        <FILE id="Kr0Z0a" name="Brick.preset" compile="0" resource="1" file="Assets/FactoryPresets/Brick.preset"/>
         <FILE id="hyq7EH" name="Chills.preset" compile="0" resource="1" file="Assets/FactoryPresets/Chills.preset"/>
         <FILE id="a3IHPa" name="Crystals.preset" compile="0" resource="1" file="Assets/FactoryPresets/Crystals.preset"/>
         <FILE id="RjiUF5" name="Digital.preset" compile="0" resource="1" file="Assets/FactoryPresets/Digital.preset"/>
         <FILE id="pVFHmB" name="Dissipation.preset" compile="0" resource="1"
               file="Assets/FactoryPresets/Dissipation.preset"/>
         <FILE id="Gdceii" name="Dreamy.preset" compile="0" resource="1" file="Assets/FactoryPresets/Dreamy.preset"/>
-        <FILE id="lJvFJh" name="Drown.preset" compile="0" resource="1" file="Assets/FactoryPresets/Drown.preset"/>
         <FILE id="KAtzUb" name="Enchantment.preset" compile="0" resource="1"
               file="Assets/FactoryPresets/Enchantment.preset"/>
-        <FILE id="TBLVPN" name="Extra gas.preset" compile="0" resource="1"
-              file="Assets/FactoryPresets/Extra gas.preset"/>
+        <FILE id="XVIIXR" name="Haunted.preset" compile="0" resource="1" file="Assets/FactoryPresets/Haunted.preset"/>
         <FILE id="YwWC4Z" name="Microns.preset" compile="0" resource="1" file="Assets/FactoryPresets/Microns.preset"/>
+        <FILE id="tlQSxS" name="Numb.preset" compile="0" resource="1" file="Assets/FactoryPresets/Numb.preset"/>
         <FILE id="TqFZNn" name="Quarter Pong.preset" compile="0" resource="1"
               file="Assets/FactoryPresets/Quarter Pong.preset"/>
         <FILE id="NAs03Z" name="Razor cut.preset" compile="0" resource="1"
@@ -31,9 +32,16 @@
         <FILE id="kkAMXH" name="Sixteen flutter.preset" compile="0" resource="1"
               file="Assets/FactoryPresets/Sixteen flutter.preset"/>
         <FILE id="fIm1Av" name="Slapback.preset" compile="0" resource="1" file="Assets/FactoryPresets/Slapback.preset"/>
+        <FILE id="ZBuADj" name="Spirals.preset" compile="0" resource="1" file="Assets/FactoryPresets/Spirals.preset"/>
+        <FILE id="La0F5c" name="Static.preset" compile="0" resource="1" file="Assets/FactoryPresets/Static.preset"/>
+        <FILE id="Taqhxh" name="Swing.preset" compile="0" resource="1" file="Assets/FactoryPresets/Swing.preset"/>
         <FILE id="TAjgoK" name="Tails.preset" compile="0" resource="1" file="Assets/FactoryPresets/Tails.preset"/>
+        <FILE id="OIPldD" name="Texturize.preset" compile="0" resource="1"
+              file="Assets/FactoryPresets/Texturize.preset"/>
         <FILE id="JcvIwd" name="Twilight clouds.preset" compile="0" resource="1"
               file="Assets/FactoryPresets/Twilight clouds.preset"/>
+        <FILE id="eXbfGx" name="Twisted sister.preset" compile="0" resource="1"
+              file="Assets/FactoryPresets/Twisted sister.preset"/>
         <FILE id="LES6qR" name="Underground.preset" compile="0" resource="1"
               file="Assets/FactoryPresets/Underground.preset"/>
         <FILE id="mz90pK" name="Waves.preset" compile="0" resource="1" file="Assets/FactoryPresets/Waves.preset"/>
@@ -63,6 +71,10 @@
             file="Assets/save_button_2.png"/>
       <FILE id="gVph0d" name="save_button_4.png" compile="0" resource="1"
             file="Assets/save_button_4.png"/>
+      <FILE id="B2YZ9Y" name="spec_lyre_badge.png" compile="0" resource="1"
+            file="Assets/spec_lyre_badge.png"/>
+      <FILE id="xUihAQ" name="Spectrum-ghost-lyre.png" compile="0" resource="1"
+            file="Assets/Spectrum-ghost-lyre.png"/>
       <FILE id="PvhYrt" name="sync_button_white.png" compile="0" resource="1"
             file="Assets/sync_button_white.png"/>
       <FILE id="m2cfhE" name="texture_knob_cop1.png" compile="0" resource="1"

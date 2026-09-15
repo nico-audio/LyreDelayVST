@@ -119,6 +119,9 @@ void GDelayAudioProcessorEditor::paint (juce::Graphics& g)
     auto bgTexture = juce::ImageCache::getFromMemory(BinaryData::bg_texture_png, BinaryData::bg_texture_pngSize);
     g.drawImage(bgTexture, 0, 0, getWidth(), getHeight(), 25, 10, bgTexture.getWidth() * 0.8, bgTexture.getHeight() * 0.9);
 
+    //auto spectrumLogo = juce::ImageCache::getFromMemory(BinaryData::spec_lyre_badge_png, BinaryData::spec_lyre_badge_pngSize);
+    //g.drawImage(spectrumLogo, 620, 400, getWidth() * 0.07f, getHeight() * 0.07f, 0, 0, spectrumLogo.getWidth(), spectrumLogo.getHeight());
+
 }
 
 void GDelayAudioProcessorEditor::resized()
