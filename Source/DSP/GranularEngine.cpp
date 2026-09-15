@@ -131,12 +131,21 @@ float GranularEngine::processGrain(Grain& grain, DelayLine& delayLineL, DelayLin
     //juce::dsp::WindowingFunction<float> window(windowSize, juce::dsp::WindowingFunction<float>::hann);
 
     grain.grainIndexPosition += grain.stepSize;
+
+    if (grain.grainIndexPosition >= static_cast<float>(bufferSize)) {
+        grain.grainIndexPosition -= static_cast<float>(bufferSize);
+    }
+    else if (grain.grainIndexPosition < 0.0f) {
+        grain.grainIndexPosition += static_cast<float>(bufferSize);
+    }
+    
     grain.samplesPlayed++;
 
     if (grain.samplesPlayed >= grain.grainDuration) {
         grain.isActive = false;
     }
-    
+
+    return 0.0f;
 }
 
 void GranularEngine::process(float& grainSumL, float& grainSumR, DelayLine& delayL, DelayLine& delayR)
