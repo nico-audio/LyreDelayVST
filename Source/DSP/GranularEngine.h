@@ -26,7 +26,7 @@ public:
     void process(float& grainSumL, float& grainSumR, DelayLine& delayL, DelayLine& delayR);
 
 private:
-    void spawnGrain(Grain& grain, int delayWriteIndex, int bufferSize, int grainDurationSamples, float pitchRatio);
+    void spawnGrain(Grain& grain, int startIndex, int bufferSize, int grainDurationSamples, float pitchRatio);
     float processGrain(Grain& grain, DelayLine& delayLineL, DelayLine& delayLineR, float& outL, float& outR);
 
     inline float msToSamples(float ms) const
