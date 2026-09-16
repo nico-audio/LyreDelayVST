@@ -17,13 +17,9 @@ void GranularEngine::prepare(double sr, int maxDelaySamples)
     jassert(maxDelaySamples > 0);
 
     sampleRate = sr;
+    normSmoothingCoefficient = 1.0f - std::exp(-1.0f / (0.01f * float(sampleRate)));
 
-    for (auto& grain : grainPool)
-    {
-        grain.reset();
-    }
-
-    samplesUntilNextGrain = 0;
+    reset();
 }
 
 void GranularEngine::reset()
@@ -34,7 +30,12 @@ void GranularEngine::reset()
     }
 
     samplesUntilNextGrain = 0;
+    smoothedNorm = 1.0f;
 }
+
+//==============================================================================
+// PARAMETERS
+//==============================================================================
 
 void GranularEngine::setParameters(float gDensity, float gSizeMs, float pitchSt, float tex, bool gState)
 {
@@ -60,6 +61,10 @@ void GranularEngine::setParameters(float gDensity, float gSizeMs, float pitchSt,
     }
 }
 
+//==============================================================================
+// GRAIN POOL
+//==============================================================================
+
 Grain* GranularEngine::findAvailableGrain(std::array<Grain, maxGrains>& pool)
 {
     for (auto& grain : pool)
@@ -75,30 +80,29 @@ void GranularEngine::spawnGrain(Grain& grain, int startIndex, int bufferSize, in
     // Safety
     jassert(bufferSize > 0);
     jassert(grainDurationSamples > 0);
-    jassert(grain.startIndex >= 0 && grain.startIndex < bufferSize);
+    jassert(startIndex >= 0 && grain.startIndex < bufferSize);
 
     grain.isActive = true;
     grain.samplesPlayed = 0;
     grain.grainDuration = grainDurationSamples;
-
     grain.startIndex = startIndex;
 
     grain.stepSize = pitchRatio;
-
-    // wrapping
-    if (grain.startIndex < 0)
-        grain.startIndex += bufferSize;
-
     grain.grainIndexPosition = grain.startIndex;
 }
 
-float GranularEngine::processGrain(Grain& grain, DelayLine& delayLineL, DelayLine& delayLineR, float& outL, float& outR)
+//==============================================================================
+// PROCESS
+//==============================================================================
+
+void GranularEngine::processGrain(Grain& grain, DelayLine& delayLineL, DelayLine& delayLineR, float& outL, float& outR, float& windowOut)
 {
     outL = 0.0f;
     outR = 0.0f;
+    windowOut = 0.0f;
     
     if (!grain.isActive) {
-        return 0.0f;
+        return;
     }
 
     int bufferSize = delayLineL.getBufferLength();
@@ -129,6 +133,8 @@ float GranularEngine::processGrain(Grain& grain, DelayLine& delayLineL, DelayLin
     float sampleR = sampleR_A + fraction * (sampleR_B - sampleR_A);
 
     //==============================================================================
+    // WINDOWING
+    //==============================================================================
 
     float window;
     if (grain.grainDuration <= 1) {
@@ -142,6 +148,11 @@ float GranularEngine::processGrain(Grain& grain, DelayLine& delayLineL, DelayLin
 
     outL = sampleL * window;
     outR = sampleR * window;
+    windowOut = window;
+
+    //==============================================================================
+    // POSITION UPDATE
+    //==============================================================================
 
     grain.grainIndexPosition += grain.stepSize;
 
@@ -157,19 +168,17 @@ float GranularEngine::processGrain(Grain& grain, DelayLine& delayLineL, DelayLin
     if (grain.samplesPlayed >= grain.grainDuration) {
         grain.isActive = false;
     }
-
-    return 0.0f;
 }
 
 void GranularEngine::process(float& grainSumL, float& grainSumR, DelayLine& delayL, DelayLine& delayR)
 {
-    float grainSizeSamples = msToSamples(grainSizeMs);
-    float pitchRatio = std::pow(2.0f, pitchSemitones / 12.0f);
-
     if (!isActive || samplesBetweenGrains <= 0) {
         return;
     }
-    
+
+    float grainSizeSamples = msToSamples(grainSizeMs);
+    float pitchRatio = std::pow(2.0f, pitchSemitones / 12.0f);
+
     samplesUntilNextGrain--;
 
     if (samplesUntilNextGrain <= 0)
@@ -187,10 +196,6 @@ void GranularEngine::process(float& grainSumL, float& grainSumR, DelayLine& dela
 
                 const float factor = 1.0f + randomSigned * densityJitterAmount;
                 jitteredInterval = juce::jmax(1, (int)std::round(samplesBetweenGrains * factor));
-
-                DBG("Texture density jitter: base=" << samplesBetweenGrains
-                    << " factor=" << factor
-                    << " jittered=" << jitteredInterval);
             }
 
             // Texture - grain size jitter
@@ -204,10 +209,6 @@ void GranularEngine::process(float& grainSumL, float& grainSumR, DelayLine& dela
                 const float factor2 = 1.0f + randomSigned2 * grainJitterAmount;
 
                 jitteredGrainSizeSamples = juce::jmax(1, (int)std::round(grainSizeSamples * factor2));
-
-                DBG("Texture grain size jitter: base=" << grainSizeSamples
-                    << " factor=" << factor2
-                    << " jittered=" << jitteredGrainSizeSamples);
             }
 
             // Texture - position jitter
@@ -222,8 +223,6 @@ void GranularEngine::process(float& grainSumL, float& grainSumR, DelayLine& dela
                 const float factor = random * jitterAmount;
 
                 positionJitterSamples = (int)std::round(jitteredGrainSizeSamples * factor);
-
-                DBG("Texture position jitter: " << positionJitterSamples << " samples");
             }
 
             int startIndex = delayL.getWriteIndex() - jitteredGrainSizeSamples + positionJitterSamples;
@@ -232,7 +231,7 @@ void GranularEngine::process(float& grainSumL, float& grainSumR, DelayLine& dela
 
             spawnGrain(*availableGrain, startIndex, bufferSize, jitteredGrainSizeSamples, pitchRatio);
 
-            DBG("spawn grain!");
+            //DBG("spawn grain!");
         }
         samplesUntilNextGrain = jitteredInterval;
     }
@@ -247,21 +246,23 @@ void GranularEngine::process(float& grainSumL, float& grainSumR, DelayLine& dela
     grainSumR = 0.0f;
     
     int activeGrains = 0;
+
     for (auto& grain : grainPool)
     {
         if (grain.isActive) {
-            float outL, outR;
-            processGrain(grain, delayL, delayR, outL, outR);
+            float outL, outR, windowValue;
+            processGrain(grain, delayL, delayR, outL, outR, windowValue);
             grainSumL += outL;
             grainSumR += outR;
             activeGrains++;
         }
     }
 
-    // Normalize
+    // Normalize (with one-pole smoothing)
     if (activeGrains > 0) {
-        float norm = 1.0f / activeGrains;
-        grainSumL *= norm;
-        grainSumR *= norm;
+        float targetNorm = 1.0f / static_cast<float>(activeGrains);
+        smoothedNorm += (targetNorm - smoothedNorm) * normSmoothingCoefficient;
+        grainSumL *= smoothedNorm;
+        grainSumR *= smoothedNorm;
     }
 }
