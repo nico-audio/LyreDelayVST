@@ -102,33 +102,46 @@ float GranularEngine::processGrain(Grain& grain, DelayLine& delayLineL, DelayLin
     }
 
     int bufferSize = delayLineL.getBufferLength();
-    int readIndex = static_cast<int>(grain.grainIndexPosition);
 
-    if (readIndex < 0) {
-        readIndex += bufferSize;
-    }
-
-    else if (readIndex >= bufferSize) {
-        readIndex -= bufferSize;
-    }
-
-    // Safety: after wrapping, readIndex must be valid
-    jassert(readIndex >= 0 && readIndex < bufferSize);
-
-    float sampleL = delayLineL.readAtIndex(readIndex);
-    float sampleR = delayLineR.readAtIndex(readIndex);
-
-    float phase = static_cast<float>(grain.samplesPlayed) /
-        static_cast<float>(grain.grainDuration - 1);
-
-    float window = 0.5f * (1.0f - std::cos(juce::MathConstants<float>::twoPi * phase));
-    window *= juce::Decibels::decibelsToGain(2.0f); // Normalize Hann to unity RMS
+    //==============================================================================
+    // LINEAR INTERPOLATION
+    //==============================================================================
     
+    float exactPosition = grain.grainIndexPosition;
+    int indexA = static_cast<int>(exactPosition);
+    float fraction = exactPosition - static_cast<float>(indexA);
+    
+    int indexB = indexA + 1;
+    
+    if (indexB >= bufferSize) {
+        indexB -= bufferSize;
+    }
+
+    jassert(indexA >= 0 && indexA < bufferSize);
+    jassert(indexB >= 0 && indexB < bufferSize);
+
+    float sampleL_A = delayLineL.readAtIndex(indexA);
+    float sampleL_B = delayLineL.readAtIndex(indexB);
+    float sampleL = sampleL_A + fraction * (sampleL_B - sampleL_A);
+
+    float sampleR_A = delayLineR.readAtIndex(indexA);
+    float sampleR_B = delayLineR.readAtIndex(indexB);
+    float sampleR = sampleR_A + fraction * (sampleR_B - sampleR_A);
+
+    //==============================================================================
+
+    float window;
+    if (grain.grainDuration <= 1) {
+        window = 1.0f;
+    }
+    else
+    {
+        float phase = static_cast<float>(grain.samplesPlayed) / static_cast<float>(grain.grainDuration - 1);
+        window = 0.5f * (1.0f - std::cos(juce::MathConstants<float>::twoPi * phase));
+    }
+
     outL = sampleL * window;
     outR = sampleR * window;
-    
-    //int windowSize = 1024;
-    //juce::dsp::WindowingFunction<float> window(windowSize, juce::dsp::WindowingFunction<float>::hann);
 
     grain.grainIndexPosition += grain.stepSize;
 

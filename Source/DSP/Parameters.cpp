@@ -151,7 +151,7 @@ void Parameters::reset() noexcept
     densitySmoother.setCurrentAndTargetValue(densityParam->get());
 
     texture = 0.0f;
-    textureSmoother.setCurrentAndTargetValue(textureParam->get() * 0.01f);
+    textureSmoother.setCurrentAndTargetValue(textureParam->get());
 }
 
 void Parameters::update() noexcept
