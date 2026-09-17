@@ -52,7 +52,7 @@ void GranularEngine::setParameters(float gDensity, float gSizeMs, float pitchSt,
     // Granular scheduler counter
     if (density > 0.0f)
     {
-        samplesBetweenGrains = (int)(sampleRate / density);
+        samplesBetweenGrains = static_cast<int>(sampleRate / density);
         samplesBetweenGrains = std::max(1, samplesBetweenGrains);
     }
     else
@@ -195,7 +195,7 @@ void GranularEngine::process(float& grainSumL, float& grainSumR, DelayLine& dela
                 const float densityJitterAmount = texture * maxDensityJitter;
 
                 const float factor = 1.0f + randomSigned * densityJitterAmount;
-                jitteredInterval = juce::jmax(1, (int)std::round(samplesBetweenGrains * factor));
+                jitteredInterval = juce::jmax(1, static_cast<int>(std::round(samplesBetweenGrains * factor));
             }
 
             // Texture - grain size jitter
@@ -208,7 +208,7 @@ void GranularEngine::process(float& grainSumL, float& grainSumR, DelayLine& dela
 
                 const float factor2 = 1.0f + randomSigned2 * grainJitterAmount;
 
-                jitteredGrainSizeSamples = juce::jmax(1, (int)std::round(grainSizeSamples * factor2));
+                jitteredGrainSizeSamples = juce::jmax(1, static_cast<int>(std::round(grainSizeSamples * factor2));
             }
 
             // Texture - position jitter
@@ -222,7 +222,7 @@ void GranularEngine::process(float& grainSumL, float& grainSumR, DelayLine& dela
 
                 const float factor = random * jitterAmount;
 
-                positionJitterSamples = (int)std::round(jitteredGrainSizeSamples * factor);
+                positionJitterSamples = static_cast<int>(std::round(jitteredGrainSizeSamples * factor);
             }
 
             int startIndex = delayL.getWriteIndex() - jitteredGrainSizeSamples + positionJitterSamples;
