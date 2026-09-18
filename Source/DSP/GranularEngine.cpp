@@ -11,10 +11,9 @@
 #include <cmath>
 #include "GranularEngine.h"
 
-void GranularEngine::prepare(double sr, int maxDelaySamples)
+void GranularEngine::prepare(double sr)
 {
     jassert(sr > 0.0);
-    jassert(maxDelaySamples > 0);
 
     sampleRate = sr;
     normSmoothingCoefficient = 1.0f - std::exp(-1.0f / (0.01f * float(sampleRate)));
@@ -85,7 +84,7 @@ void GranularEngine::spawnGrain(Grain& grain, int startIndex, int bufferSize, in
     grain.isActive = true;
     grain.samplesPlayed = 0;
     grain.grainDuration = grainDurationSamples;
-    grain.startIndex = startIndex;
+    grain.startIndex = static_cast<float>(startIndex);
 
     grain.stepSize = pitchRatio;
     grain.grainIndexPosition = grain.startIndex;
@@ -95,11 +94,10 @@ void GranularEngine::spawnGrain(Grain& grain, int startIndex, int bufferSize, in
 // PROCESS
 //==============================================================================
 
-void GranularEngine::processGrain(Grain& grain, DelayLine& delayLineL, DelayLine& delayLineR, float& outL, float& outR, float& windowOut)
+void GranularEngine::processGrain(Grain& grain, DelayLine& delayLineL, DelayLine& delayLineR, float& outL, float& outR)
 {
     outL = 0.0f;
     outR = 0.0f;
-    windowOut = 0.0f;
     
     if (!grain.isActive) {
         return;
@@ -148,7 +146,6 @@ void GranularEngine::processGrain(Grain& grain, DelayLine& delayLineL, DelayLine
 
     outL = sampleL * window;
     outR = sampleR * window;
-    windowOut = window;
 
     //==============================================================================
     // POSITION UPDATE
@@ -195,11 +192,11 @@ void GranularEngine::process(float& grainSumL, float& grainSumR, DelayLine& dela
                 const float densityJitterAmount = texture * maxDensityJitter;
 
                 const float factor = 1.0f + randomSigned * densityJitterAmount;
-                jitteredInterval = juce::jmax(1, static_cast<int>(std::round(samplesBetweenGrains * factor));
+                jitteredInterval = juce::jmax(1, static_cast<int>(std::round(samplesBetweenGrains * factor)));
             }
 
             // Texture - grain size jitter
-            int jitteredGrainSizeSamples = grainSizeSamples;
+            int jitteredGrainSizeSamples = static_cast<int>(std::round(grainSizeSamples));
 
             if (texture > 0.0f) {
                 const float randomSigned2 = textureRange.nextFloat() * 2.0f - 1.0f;
@@ -208,7 +205,7 @@ void GranularEngine::process(float& grainSumL, float& grainSumR, DelayLine& dela
 
                 const float factor2 = 1.0f + randomSigned2 * grainJitterAmount;
 
-                jitteredGrainSizeSamples = juce::jmax(1, static_cast<int>(std::round(grainSizeSamples * factor2));
+                jitteredGrainSizeSamples = juce::jmax(1, static_cast<int>(std::round(grainSizeSamples * factor2)));
             }
 
             // Texture - position jitter
@@ -222,7 +219,7 @@ void GranularEngine::process(float& grainSumL, float& grainSumR, DelayLine& dela
 
                 const float factor = random * jitterAmount;
 
-                positionJitterSamples = static_cast<int>(std::round(jitteredGrainSizeSamples * factor);
+                positionJitterSamples = static_cast<int>(std::round(jitteredGrainSizeSamples * factor));
             }
 
             int startIndex = delayL.getWriteIndex() - jitteredGrainSizeSamples + positionJitterSamples;
@@ -250,8 +247,8 @@ void GranularEngine::process(float& grainSumL, float& grainSumR, DelayLine& dela
     for (auto& grain : grainPool)
     {
         if (grain.isActive) {
-            float outL, outR, windowValue;
-            processGrain(grain, delayL, delayR, outL, outR, windowValue);
+            float outL, outR;
+            processGrain(grain, delayL, delayR, outL, outR);
             grainSumL += outL;
             grainSumR += outR;
             activeGrains++;
