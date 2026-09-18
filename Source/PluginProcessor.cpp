@@ -151,7 +151,7 @@ void GDelayAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock
     wait = 0.0f;
     waitInc = 1.0f / (0.3f * float(sampleRate));  // 300 ms
 
-    grEngine.prepare(sampleRate, maxDelayInSamples);
+    grEngine.prepare(sampleRate);
     audioVisualiser.clear();
 }
 
@@ -190,8 +190,6 @@ void GDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[may
     
     // Update parameters
     params.update();
-
-    //if (params.bypassed) { return; }
 
     // Get tempo from host to sync delay time
     tempo.update(getPlayHead());
@@ -280,11 +278,6 @@ void GDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[may
             }
         }
 
-        /*Multi-tap delay
-        wetL += delayLine.popSample(0, delayInSamples * 2.0f, false) * 0.7f;
-        wetR += delayLine.popSample(1, delayInSamples * 2.0f, false) * 0.7f;
-        */
-
         feedbackL = wetL * params.feedback;
         feedbackL = lowCutFilter.processSample(0, feedbackL);
         feedbackL = highCutFilter.processSample(0, feedbackL);
@@ -306,9 +299,6 @@ void GDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[may
             wetR = grainR * granularMakeupGain;
         }
        
-        //float mixL = dryL + wetL * params.mix;
-        //float mixR = dryR + wetR * params.mix;
-
         float mixL = dryL * (1.0f - params.mix) + wetL * params.mix;
         float mixR = dryR * (1.0f - params.mix) + wetR * params.mix;
 

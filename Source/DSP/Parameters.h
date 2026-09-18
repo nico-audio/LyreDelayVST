@@ -41,7 +41,6 @@ public:
     bool bypassed = false;
     bool granularisActive = false;
     bool randomIsActive = false;
-    //bool lastRandomizerState = false;
    
     juce::AudioParameterBool* tempoSyncParam;
     juce::AudioParameterBool* bypassParam;

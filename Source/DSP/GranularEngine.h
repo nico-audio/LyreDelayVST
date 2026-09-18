@@ -19,7 +19,7 @@ class GranularEngine
 public:
     GranularEngine() = default;
 
-    void prepare(double sampleRate, int maxDelaySamples);
+    void prepare(double sampleRate);
     void reset();
     
     void setParameters(float gDensity, float gSizeMs, float pitchSt, float tex, bool gState);
@@ -27,11 +27,11 @@ public:
 
 private:
     void spawnGrain(Grain& grain, int startIndex, int bufferSize, int grainDurationSamples, float pitchRatio);
-    float processGrain(Grain& grain, DelayLine& delayLineL, DelayLine& delayLineR, float& outL, float& outR);
+    void processGrain(Grain& grain, DelayLine& delayLineL, DelayLine& delayLineR, float& outL, float& outR);
 
     inline float msToSamples(float ms) const
     {
-        return ms * 0.001f * sampleRate;
+        return static_cast<float>(ms * 0.001f * sampleRate);
     }
 
     // sample rate is overriden later
@@ -44,6 +44,9 @@ private:
     float texture = 0.0f;
     bool isActive = false;
 
+    float smoothedNorm = 1.0f;
+    float normSmoothingCoefficient = 0.0f;
+
     // Scheduler
     int samplesBetweenGrains = 0;
     int samplesUntilNextGrain = 0;
@@ -55,4 +58,5 @@ private:
 
     // Random generator
     juce::Random textureRange;
+
 };

@@ -120,9 +120,9 @@ namespace Params
         static constexpr float defaultStereo{ 0.0f };
         static constexpr float defaultHighCutoff{ 20000.0f };
         static constexpr float defaultLowCutoff{ 20.0f };
-        static constexpr float defaultSize{ 1.0f };
+        static constexpr float defaultSize{ 30.0f };
         static constexpr float defaultPitch{ 0.0f };
-        static constexpr float defaultDensity{ 0.0f };
+        static constexpr float defaultDensity{ 30.0f };
         static constexpr float defaultTexture{ 0.0f };
     }
 
