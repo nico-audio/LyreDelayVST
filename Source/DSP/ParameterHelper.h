@@ -203,6 +203,11 @@ namespace Params
         return value;
     }
 
+    static float densityFromString(const juce::String& str)
+    {
+        return str.getFloatValue();
+    }
+
     static float textureFromString(const juce::String& str)
     {
         if (str == "Tight") return 0.1f;
@@ -296,7 +301,7 @@ namespace Params
         return std::make_unique<juce::AudioParameterFloat>(
             grainDensityParamID, ParameterNames::density, Range::densityRange, Defaults::defaultDensity,
             juce::AudioParameterFloatAttributes().withStringFromValueFunction(stringFromHz)
-                                                 .withValueFromStringFunction(hzFromString)
+                                                 .withValueFromStringFunction(densityFromString)
         );
     }
 
