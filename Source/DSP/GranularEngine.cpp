@@ -76,10 +76,12 @@ Grain* GranularEngine::findAvailableGrain(std::array<Grain, maxGrains>& pool)
 
 void GranularEngine::spawnGrain(Grain& grain, int startIndex, int bufferSize, int grainDurationSamples, float pitchRatio)
 {
+    juce::ignoreUnused(bufferSize);
+    
     // Safety
     jassert(bufferSize > 0);
     jassert(grainDurationSamples > 0);
-    jassert(startIndex >= 0 && grain.startIndex < bufferSize);
+    jassert(startIndex >= 0 && startIndex < bufferSize);
 
     grain.isActive = true;
     grain.samplesPlayed = 0;
